@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matchup Page — Irelia vs Aatrox · Prototype v2</title>
+<meta property="og:title" content="Matchup Page — Irelia vs Aatrox">
+<meta property="og:description" content="Runes, build, game plan — and a 60-second quiz on your opponent.">
+<meta property="og:image" content="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg0:#050a14; --panel:#0e1b30; --panel2:#122340; --panel3:#16294a;
+    --line:#1e3251; --line2:#2a4270;
+    --gold:#c8aa6e; --gold2:#f0e6d2; --gold3:#785a28;
+    --teal:#0ac8b9; --red:#e84057; --warn:#f5b04d;
+    --txt:#e8eef7; --dim:#93a5c2; --dim2:#5b6f92;
+    --ff-disp:"Cinzel", Georgia, serif;
+    --ff-body:"Inter", -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{background:
+      radial-gradient(1100px 500px at 18% -10%, rgba(10,200,185,.09) 0%, transparent 55%),
+      radial-gradient(1100px 500px at 82% -10%, rgba(232,64,87,.09) 0%, transparent 55%),
+      radial-gradient(1400px 700px at 50% 115%, #0c1c33 0%, transparent 60%),
+      var(--bg0);
+    color:var(--txt); font-family:var(--ff-body); font-size:14px; min-height:100vh; padding:34px 20px 90px; position:relative}
+  body::after{content:""; position:fixed; inset:0; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .page{max-width:1040px; margin:0 auto}
+
+  @keyframes rise{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+  .rise{animation:rise .55s cubic-bezier(.2,.7,.2,1) both; animation-delay:var(--d,0s)}
+
+  .top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:20px}
+  .mark{font-family:var(--ff-disp); font-weight:800; font-size:17px; letter-spacing:.24em; color:var(--gold2)}
+  .mark b{color:var(--teal)}
+  .ep{font-size:10px; letter-spacing:.2em; color:var(--dim2); font-weight:700; text-transform:uppercase}
+
+  .panel{background:linear-gradient(180deg, rgba(18,35,64,.55), rgba(9,17,32,.9)); border:1px solid var(--line); border-radius:16px}
+
+  /* ================= HERO ================= */
+  .hero{overflow:hidden; position:relative; border:1px solid var(--line2); box-shadow:0 20px 60px rgba(0,0,0,.45)}
+  .hero-art{display:grid; grid-template-columns:1fr 1fr; height:224px; position:relative}
+  .half{position:relative; overflow:hidden}
+  .half img{width:100%; height:100%; object-fit:cover; display:block; transform:scale(1.02); transition:transform 6s ease}
+  .hero:hover .half img{transform:scale(1.08)}
+  .half.you img{object-position:50% 18%}
+  .half.him img{object-position:50% 12%}
+  .half.you::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(5,10,20,.25), rgba(5,10,20,.88) 96%), linear-gradient(0deg, rgba(5,10,20,.85), transparent 55%); box-shadow:inset 4px 0 30px -12px rgba(10,200,185,.65)}
+  .half.him::after{content:""; position:absolute; inset:0; background:linear-gradient(270deg, rgba(5,10,20,.25), rgba(5,10,20,.88) 96%), linear-gradient(0deg, rgba(5,10,20,.85), transparent 55%); box-shadow:inset -4px 0 30px -12px rgba(232,64,87,.6)}
+  .idplate{position:absolute; bottom:14px; z-index:3}
+  .half.you .idplate{left:20px}
+  .half.him .idplate{right:20px; text-align:right}
+  .idplate .side{font-size:9px; font-weight:800; letter-spacing:.3em}
+  .half.you .side{color:var(--teal); text-shadow:0 0 12px rgba(10,200,185,.8)}
+  .half.him .side{color:#ff7286; text-shadow:0 0 12px rgba(232,64,87,.8)}
+  .idplate .nm{font-family:var(--ff-disp); font-size:30px; font-weight:800; letter-spacing:.1em; color:var(--gold2); line-height:1.1; text-shadow:0 2px 18px rgba(0,0,0,.8)}
+  .idplate .rl{font-size:10.5px; color:var(--dim); letter-spacing:.08em}
+  .vs-medal{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:4; width:74px; height:74px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #1b2b4a, #0a1428 70%);
+    border:1px solid var(--gold3); box-shadow:0 0 0 4px rgba(5,10,20,.85), 0 0 0 5px var(--gold3), 0 0 34px rgba(200,170,110,.35);
+    display:flex; align-items:center; justify-content:center}
+  .vs-medal span{font-family:var(--ff-disp); font-weight:800; letter-spacing:.22em; font-size:16px; color:var(--gold); margin-right:-4px}
+  .patch-chip{position:absolute; top:calc(50% + 46px); left:50%; transform:translateX(-50%); z-index:4; font-size:9px; font-weight:800; letter-spacing:.18em; color:var(--dim); background:rgba(5,10,20,.9); border:1px solid var(--line2); border-radius:20px; padding:4px 11px; white-space:nowrap}
+
+  .statline{display:flex; align-items:center; gap:18px; padding:16px 22px 15px; flex-wrap:wrap; border-top:1px solid var(--line)}
+  .wrbar{flex:1; min-width:260px}
+  .wrbar .lbls{display:flex; justify-content:space-between; font-size:10.5px; font-weight:800; letter-spacing:.1em; margin-bottom:6px}
+  .wrbar .lbls .y{color:var(--teal)} .wrbar .lbls .h{color:#ff7286}
+  .wrbar .lbls .g{color:var(--dim2); font-weight:600; letter-spacing:.04em}
+  .wrtrack{height:16px; border-radius:8px; overflow:hidden; display:flex; border:1px solid var(--line2); position:relative}
+  .wrtrack .wy{background:linear-gradient(90deg,#067d74,var(--teal)); box-shadow:2px 0 10px rgba(10,200,185,.5); position:relative}
+  .wrtrack .wh{background:linear-gradient(90deg,#a02a3d,var(--red)); flex:1}
+  .wrtrack .tick{position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(240,230,210,.35)}
+  .hero-tags{display:flex; gap:7px; flex-wrap:wrap}
+  .htag{font-size:9.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; padding:5px 10px; border-radius:6px; border:1px solid var(--line2); color:var(--dim); background:rgba(10,20,40,.6)}
+  .htag.good{color:var(--teal); border-color:rgba(10,200,185,.4)}
+  .htag.warn{color:var(--warn); border-color:rgba(245,176,77,.4)}
+  .import-note{border-top:1px solid var(--line); padding:10px 22px; font-size:10.5px; color:var(--dim2); display:flex; gap:9px; align-items:center}
+  .tagc{border:1px dashed var(--line2); color:var(--dim); border-radius:5px; padding:2px 8px; font-size:9px; letter-spacing:.14em; font-weight:800; flex:none}
+
+  /* ================= sections ================= */
+  .sect{margin-top:26px}
+  .sect-hd{display:flex; align-items:baseline; gap:14px; margin-bottom:12px; padding:0 4px}
+  .sect-hd .no{font-family:var(--ff-disp); font-size:12px; font-weight:800; color:var(--gold); border:1px solid var(--gold3); width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; border-radius:7px; transform:rotate(45deg); flex:none; position:relative; top:3px}
+  .sect-hd .no i{font-style:normal; transform:rotate(-45deg)}
+  .sect-hd h2{font-family:var(--ff-disp); font-size:19px; font-weight:700; letter-spacing:.12em; color:var(--gold2)}
+  .sect-hd .sub{font-size:11px; color:var(--dim2); margin-left:auto; text-align:right}
+
+  /* ================= loadout ================= */
+  .loadout{display:grid; grid-template-columns:1fr 1.22fr; gap:16px}
+  .loadout .panel{padding:20px 22px}
+  .runes{display:grid; grid-template-columns:1fr 1fr; gap:0}
+  .rcol{padding-right:18px}
+  .rcol + .rcol{border-left:1px solid var(--line); padding-left:18px; padding-right:0}
+  .rt{display:flex; align-items:center; gap:8px; font-size:10px; font-weight:800; letter-spacing:.16em; color:var(--gold); margin-bottom:12px}
+  .rt img{width:20px; height:20px; filter:drop-shadow(0 0 6px rgba(200,170,110,.5))}
+  .rt.res{color:var(--dim)}
+  .rune{display:flex; align-items:center; gap:11px; padding:7px 9px; border-radius:10px; margin-bottom:5px; transition:background .15s}
+  .rune:hover{background:rgba(22,41,74,.55)}
+  .rune img,.rune .icon-fallback{width:32px; height:32px; border-radius:50%; border:1px solid var(--gold3); background:#0a1428}
+  .rune.key{background:linear-gradient(90deg, rgba(200,170,110,.12), rgba(200,170,110,.03)); border:1px solid rgba(200,170,110,.35); padding:10px; position:relative; overflow:hidden}
+  .rune.key::before{content:""; position:absolute; width:90px; height:90px; left:-18px; top:50%; transform:translateY(-50%); background:radial-gradient(circle, rgba(200,170,110,.28), transparent 70%); pointer-events:none}
+  .rune.key img,.rune.key .icon-fallback{width:48px; height:48px; border-width:2px; box-shadow:0 0 18px rgba(200,170,110,.45)}
+  .rune .rn{font-size:12.5px; font-weight:700}
+  .rune.key .rn{font-size:13.5px; color:var(--gold2)}
+  .rune .rw{font-size:10px; color:var(--dim2); margin-top:2px; line-height:1.4}
+  .icon-fallback{display:inline-flex; align-items:center; justify-content:center; background:var(--panel3); color:var(--gold); font-weight:800; border:1px solid var(--line2)}
+  .shards{margin-top:12px; font-size:10px; color:var(--dim); display:flex; gap:6px; flex-wrap:wrap}
+  .shards span{border:1px solid var(--line); border-radius:14px; padding:4px 10px; background:rgba(10,20,40,.5); letter-spacing:.04em; display:inline-flex; align-items:center; gap:6px}
+  .shards img{width:15px; height:15px; border-radius:50%; background:#0a1428; border:1px solid var(--gold3); padding:1px}
+  .whyline{font-size:11px; color:var(--dim2); margin-top:14px; line-height:1.6; border-top:1px solid var(--line); padding-top:12px}
+  .whyline b{color:var(--dim)}
+
+  /* build path */
+  .bpath{display:flex; align-items:stretch; gap:10px; flex-wrap:wrap}
+  .bgroup{border:1px solid var(--line); border-radius:12px; background:rgba(10,20,40,.45); padding:10px 12px 9px; position:relative; transition:border-color .15s, transform .15s}
+  .bgroup:hover{border-color:var(--gold3); transform:translateY(-2px)}
+  .bgroup .gl{font-size:8.5px; font-weight:800; letter-spacing:.16em; color:var(--dim2); text-transform:uppercase; margin-bottom:8px; white-space:nowrap}
+  .bgroup .gl b{color:var(--gold); font-weight:800}
+  .bits{display:flex; align-items:center; gap:7px}
+  .bi{position:relative; width:46px; flex:none; text-align:center}
+  .bi .im{width:46px; height:46px; border-radius:9px; overflow:hidden; border:1px solid var(--gold3); background:#0a1428; box-shadow:0 4px 14px rgba(0,0,0,.4)}
+  .bi img{width:100%; height:100%; display:block}
+  .bi .g{display:block; font-size:8.5px; font-weight:800; color:var(--gold); margin-top:4px; letter-spacing:.02em}
+  .arrow{color:var(--gold3); font-size:15px; font-weight:800; padding:0 1px; align-self:center; margin-bottom:14px}
+  .bconn{align-self:center; color:var(--dim2); font-size:17px; margin-bottom:12px}
+  .skillrow{display:flex; gap:10px; align-items:center; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); flex-wrap:wrap}
+  .sq{display:flex; flex-direction:column; align-items:center; gap:5px}
+  .sq .im{width:40px; height:40px; border-radius:9px; overflow:hidden; border:1px solid var(--gold3); background:#0a1428}
+  .sq img{width:100%; height:100%; display:block}
+  .sq em{font-style:normal; font-size:8.5px; font-weight:800; color:var(--dim); letter-spacing:.08em}
+  .gt{color:var(--gold3); font-size:16px; font-weight:800; margin-bottom:16px}
+  .prio{font-size:11px; color:var(--gold2); font-weight:800; letter-spacing:.08em; border:1px solid var(--gold3); border-radius:20px; padding:7px 14px; margin-left:8px; background:rgba(200,170,110,.07)}
+
+  /* ================= plan / windows / never ================= */
+  .plan-wrap{padding:20px 22px}
+  .plan{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+  .plan-row{background:linear-gradient(180deg, rgba(18,35,64,.5), rgba(12,22,42,.5)); border:1px solid var(--line); border-radius:12px; padding:14px 15px; transition:transform .15s, border-color .15s}
+  .plan-row:hover{transform:translateY(-3px); border-color:var(--line2)}
+  .lvl-d{width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; font-family:var(--ff-disp); font-weight:800; font-size:13px; color:var(--gold2); background:linear-gradient(180deg,var(--panel3),var(--panel2)); border:1px solid var(--gold3); transform:rotate(45deg); border-radius:7px; margin:2px 10px 6px 2px; float:left}
+  .lvl-d i{font-style:normal; transform:rotate(-45deg)}
+  .plan-row h3{font-size:12.5px; font-weight:800; letter-spacing:.02em; padding-top:4px}
+  .plan-row h3 em{font-style:normal; display:block; color:var(--teal); font-size:9px; font-weight:800; letter-spacing:.16em; margin-top:3px}
+  .plan-row p{font-size:11.5px; color:var(--dim); line-height:1.6; margin-top:9px; clear:both}
+  .plan-row p b{color:var(--gold2); font-weight:600}
+  .windows{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:12px}
+  .win{border-radius:12px; padding:12px; border:1px solid rgba(232,64,87,.32); background:linear-gradient(180deg, rgba(60,21,34,.5), rgba(26,11,18,.45)); transition:transform .15s, box-shadow .15s}
+  .win:hover{transform:translateY(-3px); box-shadow:0 10px 24px -12px rgba(232,64,87,.45)}
+  .win.opp{border-color:rgba(10,200,185,.4); background:linear-gradient(180deg, rgba(13,60,58,.48), rgba(7,26,26,.45))}
+  .win.opp:hover{box-shadow:0 10px 24px -12px rgba(10,200,185,.5)}
+  .win .w-ic{display:flex; align-items:center; gap:8px; margin-bottom:8px}
+  .win img,.win .icon-fallback{width:28px; height:28px; border-radius:6px; border:1px solid rgba(232,64,87,.4); box-shadow:0 0 12px rgba(232,64,87,.25)}
+  .win.opp img,.win.opp .icon-fallback{border-color:rgba(10,200,185,.45); box-shadow:0 0 12px rgba(10,200,185,.3)}
+  .win .w-k{font-size:8.5px; font-weight:800; letter-spacing:.16em; color:#ff8c9c}
+  .win.opp .w-k{color:var(--teal)}
+  .win h4{font-size:11.5px; font-weight:800; line-height:1.3}
+  .win p{font-size:10px; color:var(--dim); line-height:1.5; margin-top:4px}
+  @keyframes redpulse{0%,100%{box-shadow:inset 0 0 30px rgba(232,64,87,.08), 0 0 0 rgba(232,64,87,0)} 50%{box-shadow:inset 0 0 34px rgba(232,64,87,.14), 0 0 24px -6px rgba(232,64,87,.35)}}
+  .never{display:flex; gap:14px; align-items:center; border:1px solid rgba(232,64,87,.55); border-radius:13px; padding:15px 17px; margin-top:12px;
+    background:linear-gradient(90deg, rgba(232,64,87,.17), rgba(232,64,87,.04)); animation:redpulse 3s ease-in-out infinite}
+  .never .sk{flex:none; width:40px; height:40px; border-radius:10px; background:rgba(232,64,87,.16); border:1px solid rgba(232,64,87,.5); display:flex; align-items:center; justify-content:center; font-size:18px}
+  .never h4{font-size:10px; font-weight:800; letter-spacing:.28em; color:#ff7286}
+  .never p{font-size:13px; line-height:1.55; margin-top:4px; color:var(--gold2)}
+  .never p b{color:#ff9daa}
+
+  /* ================= quiz ================= */
+  .quiz{padding:24px 26px; position:relative; overflow:hidden; border:1px solid var(--line2); box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  .quiz::before{content:""; position:absolute; inset:0; background:
+    radial-gradient(560px 200px at 85% 0%, rgba(232,64,87,.08), transparent 70%),
+    radial-gradient(560px 200px at 10% 100%, rgba(10,200,185,.06), transparent 70%); pointer-events:none}
+  .q-head{display:flex; align-items:center; gap:14px; flex-wrap:wrap; position:relative}
+  .q-head h2{font-family:var(--ff-disp); font-size:20px; letter-spacing:.12em; color:var(--gold2); font-weight:700}
+  .q-head .q-sub{font-size:11px; color:var(--dim2); line-height:1.5}
+  .q-score{margin-left:auto; font-size:11px; font-weight:800; letter-spacing:.12em; color:var(--gold); border:1px solid var(--gold3); border-radius:20px; padding:6px 13px; background:rgba(200,170,110,.06)}
+  .q-meta{display:flex; align-items:center; gap:14px; margin-top:16px; position:relative}
+  .q-dots{display:flex; gap:7px}
+  .q-dot{width:30px; height:6px; border-radius:3px; background:var(--panel3); border:1px solid var(--line); transition:all .25s}
+  .q-dot.done-y{background:var(--teal); border-color:var(--teal); box-shadow:0 0 10px rgba(10,200,185,.5)}
+  .q-dot.done-n{background:var(--red); border-color:var(--red); box-shadow:0 0 10px rgba(232,64,87,.45)}
+  .q-dot.cur{background:var(--gold); border-color:var(--gold); box-shadow:0 0 10px rgba(200,170,110,.55)}
+  .q-timewrap{margin-left:auto; display:flex; align-items:center; gap:9px}
+  .q-timer{width:150px; height:5px; border-radius:3px; background:var(--panel3); overflow:hidden}
+  .q-timer div{height:100%; width:100%; background:linear-gradient(90deg, var(--teal), var(--gold)); transition:width .1s linear}
+  .q-timer.low div{background:linear-gradient(90deg, #ff8c9c, var(--red))}
+  .q-timer-num{font-family:var(--ff-disp); font-size:15px; font-weight:800; color:var(--gold); min-width:30px; text-align:right}
+  .q-timer-num.low{color:#ff7286}
+
+  @keyframes qin{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+  .q-body{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.12fr); gap:20px; margin-top:18px; align-items:stretch; position:relative}
+  .q-body.in > *{animation:qin .35s cubic-bezier(.2,.7,.2,1) both}
+  .q-body.in > *:nth-child(2){animation-delay:.06s}
+  .q-vis{border:1px solid var(--line2); border-radius:14px; background:
+      radial-gradient(400px 160px at 50% 0%, rgba(42,66,112,.35), transparent 75%), rgba(5,10,20,.72);
+    padding:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; min-height:210px; text-align:center; box-shadow:inset 0 0 40px rgba(0,0,0,.35)}
+  .q-vis .cap{font-size:9px; font-weight:800; letter-spacing:.2em; color:var(--dim2); text-transform:uppercase}
+  .q-right{display:flex; flex-direction:column; gap:12px}
+  .q-q{font-size:16.5px; font-weight:800; line-height:1.45}
+  .q-tag{font-size:9px; font-weight:800; letter-spacing:.2em; color:#ff8c9c; text-transform:uppercase}
+  .ans{appearance:none; text-align:left; font-family:var(--ff-body); border:1px solid var(--line2); background:rgba(18,35,64,.5); color:var(--txt); border-radius:12px; padding:14px 16px; font-size:13.5px; font-weight:600; cursor:pointer; display:flex; gap:12px; align-items:center; transition:all .16s; line-height:1.45; position:relative}
+  .ans .k{flex:none; width:26px; height:26px; border-radius:7px; border:1px solid var(--line2); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--dim); background:rgba(5,10,20,.5); transition:all .16s}
+  .ans .mk{margin-left:auto; font-size:15px; font-weight:800; opacity:0; transition:opacity .2s}
+  .ans:hover:not(:disabled){border-color:var(--gold3); background:rgba(22,41,74,.7); transform:translateX(4px)}
+  .ans:hover:not(:disabled) .k{border-color:var(--gold3); color:var(--gold)}
+  .ans:disabled{cursor:default}
+  .ans.correct{border-color:var(--teal); background:rgba(10,200,185,.1); box-shadow:0 0 24px -8px rgba(10,200,185,.5)}
+  .ans.correct .k{border-color:var(--teal); color:var(--teal)}
+  .ans.correct .mk{opacity:1; color:var(--teal)}
+  @keyframes shake{0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 60%{transform:translateX(4px)}}
+  .ans.wrong{border-color:var(--red); background:rgba(232,64,87,.1); animation:shake .3s ease}
+  .ans.wrong .k{border-color:var(--red); color:#ff7286}
+  .ans.wrong .mk{opacity:1; color:#ff7286}
+  .ans.faded{opacity:.4}
+  .q-why{border-left:3px solid var(--teal); background:rgba(10,200,185,.06); border-radius:0 10px 10px 0; padding:11px 14px; font-size:12px; color:var(--dim); line-height:1.65; display:none}
+  .q-why.bad{border-left-color:var(--red); background:rgba(232,64,87,.06)}
+  .q-why b{color:var(--gold2)}
+  .q-actions{display:flex; align-items:center; gap:12px; margin-top:2px}
+  .q-next{appearance:none; border:1px solid var(--gold3); border-radius:10px; font-family:var(--ff-body); font-weight:800; font-size:12px; letter-spacing:.12em; padding:12px 22px; cursor:pointer; color:#141b2a; background:linear-gradient(180deg, #ecd7a4, var(--gold) 60%, #a8894f); display:none; box-shadow:0 6px 20px -6px rgba(200,170,110,.5); transition:transform .15s, filter .15s}
+  .q-next:hover{filter:brightness(1.08); transform:translateX(3px)}
+
+  .q-end{display:none; text-align:center; padding:30px 10px 14px; position:relative}
+  .q-end .donut{position:relative; width:150px; height:150px; margin:0 auto}
+  .q-end svg{transform:rotate(-90deg)}
+  .q-end .dnum{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center}
+  .q-end .dnum b{font-family:var(--ff-disp); font-size:34px; font-weight:800; color:var(--gold2); line-height:1}
+  .q-end .dnum span{font-size:9px; font-weight:800; letter-spacing:.2em; color:var(--dim2); margin-top:4px}
+  .q-end .tier{font-family:var(--ff-disp); font-size:17px; letter-spacing:.22em; color:var(--gold); margin-top:16px; font-weight:800}
+  .q-end .msg{font-size:12.5px; color:var(--dim); margin-top:8px; line-height:1.7; max-width:52ch; margin-left:auto; margin-right:auto}
+  .q-end .msg b{color:var(--gold2)}
+  .q-end .q-next{display:inline-block; margin-top:18px}
+
+  /* quiz visuals */
+  .v-patch{width:100%}
+  .v-patch .ph{display:flex; align-items:center; gap:12px; justify-content:center}
+  .v-patch .ph img,.v-patch .ph .icon-fallback{width:46px; height:46px; border-radius:10px; border:1px solid var(--line2); box-shadow:0 0 16px rgba(232,64,87,.25)}
+  .v-patch .ph .t{text-align:left}
+  .v-patch .ph .t b{font-size:13.5px; display:block}
+  .v-patch .ph .t span{font-size:9.5px; color:var(--warn); font-weight:800; letter-spacing:.12em}
+  .v-patch table{margin:14px auto 0; border-collapse:collapse; font-size:13px}
+  .v-patch td{padding:7px 11px; border-top:1px solid var(--line)}
+  .v-patch td.lbl{color:var(--dim); text-align:right; font-size:11.5px}
+  .v-patch td.old{color:var(--dim); text-decoration:line-through; text-decoration-color:rgba(232,64,87,.75)}
+  .v-patch td.arr{color:var(--dim2)}
+  .v-patch td.new{color:var(--gold2); font-weight:800; font-size:15px}
+  .v-items{display:flex; gap:12px; align-items:center; justify-content:center}
+  .v-items img,.v-items .icon-fallback{width:62px; height:62px; border-radius:12px; border:1px solid var(--gold3); box-shadow:0 0 24px rgba(200,170,110,.3)}
+  .v-note{font-size:11.5px; color:var(--dim); line-height:1.55; max-width:30ch}
+  .hpduel{display:flex; gap:20px; align-items:center; justify-content:center}
+  .hpduel .hc{display:flex; flex-direction:column; align-items:center; gap:6px}
+  .hpduel img,.hpduel .icon-fallback{width:50px; height:50px; border-radius:11px; border:1px solid var(--line2)}
+  .hpduel .hc.you img{box-shadow:0 0 0 1px rgba(10,200,185,.6), 0 0 16px rgba(10,200,185,.3)}
+  .hpduel .hc.him img{box-shadow:0 0 0 1px rgba(232,64,87,.6), 0 0 16px rgba(232,64,87,.3)}
+  .hpduel .bar{width:86px; height:8px; border-radius:4px; background:var(--panel3); overflow:hidden; border:1px solid var(--line)}
+  .hpduel .bar i{display:block; height:100%; background:linear-gradient(90deg,#3ee6d8,var(--teal))}
+  .hpduel .hc.him .bar i{background:linear-gradient(90deg,#ff8c9c,var(--red))}
+  .hpduel .lv{font-size:9px; font-weight:800; color:var(--dim); letter-spacing:.1em}
+  .hpduel .vs2{font-family:var(--ff-disp); color:var(--gold); font-weight:800; font-size:15px}
+
+  .foot{margin-top:34px; padding-top:18px; border-top:1px solid var(--line); font-size:11px; color:var(--dim2); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; line-height:1.6}
+
+  @media (max-width:880px){
+    .loadout{grid-template-columns:1fr}
+    .plan{grid-template-columns:1fr}
+    .windows{grid-template-columns:repeat(2,1fr)}
+    .q-body{grid-template-columns:1fr}
+    .hero-art{height:170px}
+    .idplate .nm{font-size:22px}
+    .runes{grid-template-columns:1fr}
+    .rcol + .rcol{border-left:0; padding-left:0; border-top:1px solid var(--line); margin-top:14px; padding-top:14px}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top rise">
+    <span class="mark">MATCH<b>UP</b></span>
+    <span class="ep">Matchup page · Prototype v2 · Jul 9</span>
+  </div>
+
+  <!-- ================= HERO ================= -->
+  <div class="panel hero rise" style="--d:.04s">
+    <div class="hero-art">
+      <div class="half you">
+        <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Irelia_0.jpg" alt="Irelia" onerror="this.remove()">
+        <div class="idplate"><div class="side">YOU · TOP</div><div class="nm">IRELIA</div><div class="rl">The Blade Dancer</div></div>
+      </div>
+      <div class="half him">
+        <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg" alt="Aatrox" onerror="this.remove()">
+        <div class="idplate"><div class="side">ENEMY · TOP</div><div class="nm">AATROX</div><div class="rl">The Darkin Blade</div></div>
+      </div>
+      <div class="vs-medal"><span>VS</span></div>
+      <div class="patch-chip">PATCH 16.13 · RANKED SOLO</div>
+    </div>
+    <div class="statline">
+      <div class="wrbar">
+        <div class="lbls"><span class="y">IRELIA 52.4%</span><span class="g">12,410 games · Emerald+</span><span class="h">47.6% AATROX</span></div>
+        <div class="wrtrack"><div class="wy" style="width:52.4%"></div><div class="wh"></div><div class="tick"></div></div>
+      </div>
+      <div class="hero-tags">
+        <span class="htag good">Counterpick — yours</span>
+        <span class="htag warn">Skill matchup</span>
+        <span class="htag">Decided by 3:00</span>
+      </div>
+    </div>
+    <div class="import-note"><span class="tagc">CONCEPT</span> In the real product this page opens itself from champion select — pick detected, runes &amp; build pushed to your client in one click.</div>
+  </div>
+
+  <!-- ================= LOADOUT ================= -->
+  <div class="sect rise" style="--d:.09s">
+    <div class="sect-hd"><span class="no"><i>1</i></span><h2>LOADOUT</h2><span class="sub">tuned to this matchup, not the average game</span></div>
+    <div class="loadout">
+      <div class="panel">
+        <div class="runes">
+          <div class="rcol">
+            <div class="rt"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7201_Precision.png" alt="" onerror="this.remove()">PRECISION</div>
+            <div class="rune key">
+              <img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/Conqueror/Conqueror.png" alt="C" onerror="this.outerHTML='<span class=icon-fallback style=width:48px;height:48px;border-radius:50%>C</span>'">
+              <div><div class="rn">Conqueror</div><div class="rw">Your resets stack it fast — wins the long trade after his Q3</div></div>
+            </div>
+            <div class="rune"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/Triumph.png" alt="T" onerror="this.outerHTML='<span class=icon-fallback style=width:32px;height:32px;border-radius:50%>T</span>'"><div class="rn">Triumph</div></div>
+            <div class="rune"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/LegendAlacrity/LegendAlacrity.png" alt="A" onerror="this.outerHTML='<span class=icon-fallback style=width:32px;height:32px;border-radius:50%>A</span>'"><div class="rn">Legend: Alacrity</div></div>
+            <div class="rune"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/LastStand/LastStand.png" alt="L" onerror="this.outerHTML='<span class=icon-fallback style=width:32px;height:32px;border-radius:50%>L</span>'"><div class="rn">Last Stand</div></div>
+          </div>
+          <div class="rcol">
+            <div class="rt res"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7204_Resolve.png" alt="" onerror="this.remove()">RESOLVE</div>
+            <div class="rune"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Resolve/SecondWind/SecondWind.png" alt="S" onerror="this.outerHTML='<span class=icon-fallback style=width:32px;height:32px;border-radius:50%>S</span>'"><div><div class="rn">Second Wind</div><div class="rw">Heals back his Q chip damage</div></div></div>
+            <div class="rune"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/Unflinching/Unflinching.png" alt="U" onerror="this.outerHTML='<span class=icon-fallback style=width:32px;height:32px;border-radius:50%>U</span>'"><div><div class="rn">Unflinching</div><div class="rw">Tenacity vs his W pull</div></div></div>
+            <div class="shards">
+              <span><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsAttackSpeedIcon.png" alt="" onerror="this.remove()">Attack Speed</span>
+              <span><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsAdaptiveForceIcon.png" alt="" onerror="this.remove()">Adaptive</span>
+              <span><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsHealthScalingIcon.png" alt="" onerror="this.remove()">Health</span>
+            </div>
+          </div>
+        </div>
+        <div class="whyline"><b>Why not Bone Plating:</b> his Q1 pops it from range for free — Second Wind heals the poke back instead.</div>
+      </div>
+
+      <div class="panel">
+        <div class="bpath">
+          <div class="bgroup">
+            <div class="gl">Start · <b>500g</b></div>
+            <div class="bits">
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/1055.png" alt="" onerror="this.remove()"></div><span class="g">450</span></div>
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/2003.png" alt="" onerror="this.remove()"></div><span class="g">50</span></div>
+            </div>
+          </div>
+          <span class="bconn">›</span>
+          <div class="bgroup">
+            <div class="gl">First back · <b>~1,200g</b></div>
+            <div class="bits">
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/1053.png" alt="" onerror="this.remove()"></div><span class="g">900</span></div>
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/1001.png" alt="" onerror="this.remove()"></div><span class="g">300</span></div>
+            </div>
+          </div>
+          <span class="bconn">›</span>
+          <div class="bgroup">
+            <div class="gl">Core — <b>in this order</b></div>
+            <div class="bits">
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/3153.png" alt="" onerror="this.remove()"></div><span class="g">3200</span></div>
+              <span class="arrow">→</span>
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/3047.png" alt="" onerror="this.remove()"></div><span class="g">1200</span></div>
+              <span class="arrow">→</span>
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/6333.png" alt="" onerror="this.remove()"></div><span class="g">3300</span></div>
+            </div>
+          </div>
+          <span class="bconn">›</span>
+          <div class="bgroup">
+            <div class="gl">Situational</div>
+            <div class="bits">
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/3091.png" alt="" onerror="this.remove()"></div><span class="g">2800</span></div>
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/3053.png" alt="" onerror="this.remove()"></div><span class="g">3200</span></div>
+              <div class="bi"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/item/3026.png" alt="" onerror="this.remove()"></div><span class="g">3200</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="skillrow">
+          <div class="sq"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/IreliaQ.png" alt="Q" onerror="this.remove()"></div><em>LVL 1 · Q</em></div>
+          <span class="gt">→</span>
+          <div class="sq"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/IreliaE.png" alt="E" onerror="this.remove()"></div><em>LVL 2 · E</em></div>
+          <span class="gt">→</span>
+          <div class="sq"><div class="im"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/IreliaW.png" alt="W" onerror="this.remove()"></div><em>LVL 3 · W</em></div>
+          <span class="prio">MAX Q → E → W</span>
+        </div>
+        <div class="whyline"><b>Q first every game</b> — resets are the whole matchup. E at 2 wins the level-2 race; W at 3 eats his empowered auto.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PLAN ================= -->
+  <div class="sect rise" style="--d:.14s">
+    <div class="sect-hd"><span class="no"><i>2</i></span><h2>HOW TO PLAY IT</h2><span class="sub">levels 1–3 decide this lane · «3 minutes of mistakes = 25 minutes of suffering»</span></div>
+    <div class="panel plan-wrap">
+      <div class="plan">
+        <div class="plan-row"><span class="lvl-d"><i>1</i></span><h3>Play off your wave <em>NO BUSH CONTEST</em></h3><p>He wins level-1 bush fights. If he wards your bush at 1:20 he's fishing for <b>Q1 on your facecheck</b>. Stack Q resets, poke through minions only.</p></div>
+        <div class="plan-row"><span class="lvl-d"><i>2</i></span><h3>Race to the 7th minion <em>YOUR WINDOW</em></h3><p>Your E gets you to level 2 <b>first</b>. Force one short trade: <b>E-stun → Q → out</b> before his next chain starts.</p></div>
+        <div class="plan-row"><span class="lvl-d"><i>3</i></span><h3>Dodge Q2 · punish after Q3 <em>SKILL CHECK</em></h3><p>Hold your dash for his <b>second Q</b>, eat the empowered auto with W. After Q3: <b>~7s of nothing</b> — full trade with resets.</p></div>
+      </div>
+      <div class="windows">
+        <div class="win"><div class="w-ic"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/AatroxQ.png" alt="Q" onerror="this.outerHTML='<span class=icon-fallback style=width:28px;height:28px;border-radius:6px>Q</span>'"><span class="w-k">THREAT</span></div><h4>Q1 → Q2 → Q3 chain</h4><p>Rim sweetspots knock up. Q1 is bait — Q2 kills.</p></div>
+        <div class="win"><div class="w-ic"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/passive/Aatrox_Passive.png" alt="P" onerror="this.outerHTML='<span class=icon-fallback style=width:28px;height:28px;border-radius:6px>P</span>'"><span class="w-k">THREAT</span></div><h4>Empowered auto</h4><p>Heals him — answer with W or step out.</p></div>
+        <div class="win"><div class="w-ic"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/AatroxR.png" alt="R" onerror="this.outerHTML='<span class=icon-fallback style=width:28px;height:28px;border-radius:6px>R</span>'"><span class="w-k">LVL 6 SPIKE</span></div><h4>World Ender</h4><p>Out-heals your all-in — even from ahead.</p></div>
+        <div class="win opp"><div class="w-ic"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/IreliaQ.png" alt="Q" onerror="this.outerHTML='<span class=icon-fallback style=width:28px;height:28px;border-radius:6px>⚔</span>'"><span class="w-k">YOUR OPENING</span></div><h4>After his Q3</h4><p>~7s with no pattern. Go in with Q resets.</p></div>
+      </div>
+      <div class="never">
+        <div class="sk">⛔</div>
+        <div><h4>NEVER DO THIS</h4><p>Never burn your dash on his <b>first Q</b> — he casts it to bait you. <b>Dash after Q2, or don't dash at all.</b></p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= QUIZ ================= -->
+  <div class="sect rise" style="--d:.19s">
+    <div class="sect-hd"><span class="no"><i>3</i></span><h2>KNOW YOUR ENEMY</h2><span class="sub">5 quick calls · one look, two options · 12s each</span></div>
+    <div class="panel quiz">
+      <div class="q-head">
+        <span class="q-sub">Everything below is about <b style="color:#ff8c9c">Aatrox</b> — what changed this patch, what his items do, where his windows are.</span>
+        <span class="q-score" id="q-score">SCORE 0 / 5</span>
+      </div>
+      <div class="q-meta">
+        <div class="q-dots" id="q-dots"></div>
+        <div class="q-timewrap">
+          <div class="q-timer" id="q-timer"><div id="q-timer-fill"></div></div>
+          <span class="q-timer-num" id="q-timer-num">12</span>
+        </div>
+      </div>
+
+      <div class="q-body in" id="q-body">
+        <div class="q-vis" id="q-vis"></div>
+        <div class="q-right">
+          <div class="q-tag" id="q-tag">—</div>
+          <div class="q-q" id="q-q">—</div>
+          <button class="ans" id="ans0"><span class="k">A</span><span id="ans0t"></span><span class="mk" id="ans0m"></span></button>
+          <button class="ans" id="ans1"><span class="k">B</span><span id="ans1t"></span><span class="mk" id="ans1m"></span></button>
+          <div class="q-why" id="q-why"></div>
+          <div class="q-actions"><button class="q-next" id="q-next">NEXT →</button></div>
+        </div>
+      </div>
+
+      <div class="q-end" id="q-end">
+        <div class="donut">
+          <svg width="150" height="150" viewBox="0 0 150 150">
+            <circle cx="75" cy="75" r="64" fill="none" stroke="#16294a" stroke-width="9"/>
+            <circle id="q-arc" cx="75" cy="75" r="64" fill="none" stroke="url(#ggr)" stroke-width="9" stroke-linecap="round"
+              stroke-dasharray="402" stroke-dashoffset="402" style="transition:stroke-dashoffset 1s cubic-bezier(.2,.7,.2,1)"/>
+            <defs><linearGradient id="ggr" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#0ac8b9"/><stop offset="1" stop-color="#c8aa6e"/>
+            </linearGradient></defs>
+          </svg>
+          <div class="dnum"><b id="q-final">—</b><span>SCOUT SCORE</span></div>
+        </div>
+        <div class="tier" id="q-tier">—</div>
+        <div class="msg" id="q-msg">—</div>
+        <button class="q-next" id="q-replay">↻ RUN IT AGAIN</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>Concept prototype — matchup workshop, Jul 9. Stats &amp; patch values are sample data; in production they're generated per patch.</span>
+    <span>League of Legends assets © Riot Games (Data Dragon).</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+const DD = "https://ddragon.leagueoflegends.com/cdn/16.13.1";
+const $ = id => document.getElementById(id);
+
+/* ---------- quiz data (all about the OPPONENT) ---------- */
+const QS = [
+  { tag:"PATCH 16.13 · CHANGE", q:"This patch touched his Q. Which way did it go?",
+    vis:{type:"patch", icon:DD+"/img/spell/AatroxQ.png", t:"Q — The Darkin Blade", patch:"16.12 → 16.13",
+         rows:[["Cooldown (rank 1)","14s","?"]]},
+    a:["Buffed — CD down to 12s","Nerfed — CD up to 16s"], c:0,
+    why:"<b>Buffed.</b> 16.13 cut 2s off his Q. The chain comes back sooner than you remember — your after-Q3 window is tighter this patch." },
+  { tag:"PATCH 16.13 · CHANGE", q:"His healing got adjusted too. What happened to World Ender?",
+    vis:{type:"patch", icon:DD+"/img/spell/AatroxR.png", t:"R — World Ender", patch:"16.12 → 16.13",
+         rows:[["Self-heal increase","25 / 40 / 55%","?"]]},
+    a:["Nerfed — 20 / 32 / 45%","Buffed — 30 / 45 / 60%"], c:0,
+    why:"<b>Nerfed.</b> His 6 is a little less scary this patch — but the extended all-in is still his, not yours. The rule doesn't change." },
+  { tag:"ITEMS · HIS SPIKE", q:"He just finished this. What does it add to his short trades?",
+    vis:{type:"items", ids:[6692], note:"Completed at ~11:00 in an average game"},
+    a:["Shield + sustain every 2 hits","Only ability haste — nothing to respect"], c:0,
+    why:"<b>Eclipse procs on two hits</b> — shield plus heavy sustain. From this item until your BotRK: stop answering his short trades." },
+  { tag:"HIS PATTERN · WINDOWS", q:"His Q3 just hit the ground. How long is your window?",
+    vis:{type:"patch", icon:DD+"/img/spell/AatroxQ.png", t:"Q chain — fully spent", patch:"RIGHT NOW",
+         rows:[["Time until next Q chain","?","?"]]},
+    a:["~7 seconds — full trade now","~2 seconds — stay back"], c:0,
+    why:"<b>~7 seconds of nothing.</b> This is the only moment you fight on your terms. Every good trade in this lane starts here." },
+  { tag:"DUEL CHECK · LEVEL 6", q:"Both level 6, both full HP. Do you take the extended all-in?",
+    vis:{type:"duel"},
+    a:["No — his R out-heals your combo","Yes — your DPS is higher"], c:0,
+    why:"<b>Never at 6.</b> World Ender heals him through everything you have — even from ahead. Short trades, out, ping your jungler." }
+];
+
+/* ---------- visual renderers ---------- */
+function fb(el, letter, size, round){
+  el.onerror = () => {
+    const s = document.createElement("span");
+    s.className = "icon-fallback";
+    s.style.cssText = `width:${size}px;height:${size}px;border-radius:${round||"8px"}`;
+    s.textContent = letter;
+    el.replaceWith(s);
+  };
+}
+function renderVis(v){
+  const box = $("q-vis"); box.innerHTML = "";
+  if(v.type === "patch"){
+    const w = document.createElement("div"); w.className = "v-patch";
+    const h = document.createElement("div"); h.className = "ph";
+    const im = document.createElement("img"); im.src = v.icon; fb(im, "Q", 46, "10px"); h.appendChild(im);
+    const t = document.createElement("div"); t.className = "t";
+    t.innerHTML = "<b></b><span></span>";
+    t.querySelector("b").textContent = v.t; t.querySelector("span").textContent = v.patch;
+    h.appendChild(t); w.appendChild(h);
+    const tb = document.createElement("table");
+    v.rows.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td class="lbl"></td><td class="old"></td><td class="arr">→</td><td class="new"></td>`;
+      tr.children[0].textContent = r[0]; tr.children[1].textContent = r[1]; tr.children[3].textContent = r[2];
+      tb.appendChild(tr);
+    });
+    w.appendChild(tb); box.appendChild(w);
+    const cap = document.createElement("div"); cap.className = "cap"; cap.textContent = "PATCH DIFF — AATROX"; box.appendChild(cap);
+  }
+  if(v.type === "items"){
+    const w = document.createElement("div"); w.className = "v-items";
+    v.ids.forEach(id => { const im = document.createElement("img"); im.src = `${DD}/img/item/${id}.png`; fb(im, "E", 62, "12px"); w.appendChild(im); });
+    box.appendChild(w);
+    const n = document.createElement("div"); n.className = "v-note"; n.textContent = v.note; box.appendChild(n);
+    const cap = document.createElement("div"); cap.className = "cap"; cap.textContent = "ENEMY BUILD — LIVE SLOT"; box.appendChild(cap);
+  }
+  if(v.type === "duel"){
+    const w = document.createElement("div"); w.className = "hpduel";
+    [["Irelia","you"],["Aatrox","him"]].forEach(([nm, side], ix) => {
+      const c = document.createElement("div"); c.className = "hc " + side;
+      const im = document.createElement("img"); im.src = `${DD}/img/champion/${nm}.png`; fb(im, nm[0], 50, "11px");
+      c.appendChild(im);
+      const lv = document.createElement("div"); lv.className = "lv"; lv.textContent = "LVL 6"; c.appendChild(lv);
+      const bar = document.createElement("div"); bar.className = "bar"; bar.innerHTML = "<i style='width:100%'></i>"; c.appendChild(bar);
+      w.appendChild(c);
+      if(ix === 0){ const v2 = document.createElement("div"); v2.className = "vs2"; v2.textContent = "VS"; w.appendChild(v2); }
+    });
+    box.appendChild(w);
+    const cap = document.createElement("div"); cap.className = "cap"; cap.textContent = "SIDE LANE · NO JUNGLERS VISIBLE"; box.appendChild(cap);
+  }
+}
+
+/* ---------- quiz engine ---------- */
+const T_LIMIT = 12;
+let qi = 0, score = 0, locked = false, results = [], tHandle = null, tLeft = T_LIMIT;
+
+const dots = $("q-dots");
+QS.forEach(() => { const d = document.createElement("div"); d.className = "q-dot"; dots.appendChild(d); });
+
+function paintDots(){
+  [...dots.children].forEach((d, i) => {
+    d.className = "q-dot" + (i === qi && i >= results.length ? " cur" : results[i] === true ? " done-y" : results[i] === false ? " done-n" : "");
+  });
+}
+function setTimerUI(){
+  const frac = Math.max(0, tLeft / T_LIMIT);
+  $("q-timer-fill").style.width = frac * 100 + "%";
+  $("q-timer-num").textContent = Math.ceil(Math.max(0, tLeft));
+  $("q-timer").classList.toggle("low", tLeft <= 4);
+  $("q-timer-num").classList.toggle("low", tLeft <= 4);
+}
+function startTimer(){
+  clearInterval(tHandle); tLeft = T_LIMIT; setTimerUI();
+  tHandle = setInterval(() => {
+    tLeft -= 0.1; setTimerUI();
+    if(tLeft <= 0){ clearInterval(tHandle); reveal(-1); }
+  }, 100);
+}
+function show(i){
+  locked = false;
+  const q = QS[i];
+  renderVis(q.vis);
+  $("q-tag").textContent = q.tag;
+  $("q-q").textContent = q.q;
+  [0,1].forEach(n => {
+    const b = $("ans" + n);
+    b.disabled = false; b.className = "ans";
+    $("ans" + n + "t").textContent = q.a[n];
+    $("ans" + n + "m").textContent = "";
+  });
+  $("q-why").style.display = "none";
+  $("q-next").style.display = "none";
+  const body = $("q-body");
+  body.classList.remove("in"); void body.offsetWidth; body.classList.add("in");
+  paintDots();
+  startTimer();
+}
+function reveal(pick){
+  if(locked) return; locked = true;
+  clearInterval(tHandle);
+  const q = QS[qi], ok = pick === q.c;
+  results.push(ok); if(ok) score++;
+  $("q-score").textContent = "SCORE " + score + " / " + QS.length;
+  [0,1].forEach(n => {
+    const b = $("ans" + n); b.disabled = true;
+    if(n === q.c){ b.classList.add("correct"); $("ans" + n + "m").textContent = "✓"; }
+    else if(n === pick){ b.classList.add("wrong"); $("ans" + n + "m").textContent = "✗"; }
+    else b.classList.add("faded");
+  });
+  const why = $("q-why");
+  why.className = "q-why" + (ok ? "" : " bad");
+  why.innerHTML = (pick === -1 ? "<b>Time's up — in game you'd already be hit.</b> " : "") + q.why;
+  why.style.display = "block";
+  $("q-next").style.display = "inline-block";
+  $("q-next").textContent = qi === QS.length - 1 ? "SEE RESULT →" : "NEXT →";
+  paintDots();
+}
+$("ans0").addEventListener("click", () => reveal(0));
+$("ans1").addEventListener("click", () => reveal(1));
+$("q-next").addEventListener("click", () => {
+  qi++;
+  if(qi < QS.length){ show(qi); }
+  else {
+    $("q-body").style.display = "none";
+    document.querySelector(".q-meta").style.display = "none";
+    $("q-end").style.display = "block";
+    $("q-final").textContent = score + "/" + QS.length;
+    const C = 402;
+    requestAnimationFrame(() => { $("q-arc").style.strokeDashoffset = C * (1 - score / QS.length); });
+    $("q-tier").textContent = score === QS.length ? "PERFECT SCOUT" : score >= 3 ? "SOLID READ" : "REWATCH THE TAPE";
+    $("q-msg").innerHTML = score === QS.length
+      ? "Aatrox has no secrets from you. Lock in — and remember: <b>dash after Q2, or not at all.</b>"
+      : score >= 3
+      ? "Solid. Skim the card above for what you missed — <b>the lane is decided in the first 3 minutes.</b>"
+      : "He'd win this one. One more pass over the card above, then run it again — <b>60 seconds well spent.</b>";
+  }
+});
+$("q-replay").addEventListener("click", () => {
+  qi = 0; score = 0; results = [];
+  $("q-score").textContent = "SCORE 0 / " + QS.length;
+  $("q-end").style.display = "none";
+  $("q-arc").style.strokeDashoffset = 402;
+  $("q-body").style.display = "grid";
+  document.querySelector(".q-meta").style.display = "flex";
+  show(0);
+});
+show(0);
+</script>
+</body>
+</html>
