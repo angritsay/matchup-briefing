@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2-Minute Matchup Briefing — Irelia vs Aatrox</title>
+<meta property="og:title" content="2-Minute Matchup Briefing — Irelia vs Aatrox">
+<meta property="og:description" content="Everything you need to win this lane, in the time it takes the game to load. Audio briefing + transcript.">
+<meta property="og:image" content="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Irelia_0.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg0:#060b16; --panel:#0e1b30; --panel2:#122340; --panel3:#16294a;
+    --line:#1e3251; --line2:#2a4270;
+    --gold:#c8aa6e; --gold2:#f0e6d2; --gold3:#785a28;
+    --teal:#0ac8b9; --red:#e84057;
+    --txt:#e8eef7; --dim:#93a5c2; --dim2:#5b6f92;
+    --ff-disp:"Cinzel", Georgia, serif;
+    --ff-body:"Inter", -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{background:
+      radial-gradient(900px 420px at 50% -8%, #12264d 0%, transparent 60%),
+      radial-gradient(700px 340px at 100% 110%, #0d2033 0%, transparent 55%),
+      var(--bg0);
+    color:var(--txt); font-family:var(--ff-body); font-size:15px; min-height:100vh; padding:40px 20px 70px}
+  .page{max-width:760px; margin:0 auto}
+
+  .top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:26px}
+  .mark{font-family:var(--ff-disp); font-weight:800; font-size:17px; letter-spacing:.22em; color:var(--gold2)}
+  .mark b{color:var(--teal)}
+  .ep{font-size:10px; letter-spacing:.2em; color:var(--dim2); font-weight:700; text-transform:uppercase}
+
+  .hero{position:relative; border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    background:linear-gradient(180deg, rgba(18,35,64,.6), rgba(10,20,40,.9))}
+  .hero-art{display:grid; grid-template-columns:1fr 1fr; height:190px; position:relative}
+  .hero-art .half{overflow:hidden; position:relative}
+  .hero-art img{width:100%; height:100%; object-fit:cover; object-position:50% 12%; display:block; filter:saturate(.95)}
+  .hero-art .half.you::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(6,11,22,.15), rgba(6,11,22,.75)); }
+  .hero-art .half.him::after{content:""; position:absolute; inset:0; background:linear-gradient(270deg, rgba(6,11,22,.15), rgba(6,11,22,.75)); }
+  .hero-art .vs{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:var(--ff-disp); font-weight:800; font-size:15px; letter-spacing:.3em; color:var(--gold); background:var(--bg0); border:1px solid var(--gold3); border-radius:30px; padding:9px 16px 8px 21px; z-index:2}
+  .hero-body{padding:22px 26px 24px; position:relative}
+  .kicker{font-size:10px; font-weight:800; letter-spacing:.26em; color:var(--gold); text-transform:uppercase}
+  .hero-body h1{font-family:var(--ff-disp); font-size:27px; font-weight:700; letter-spacing:.05em; color:var(--gold2); margin-top:8px; line-height:1.25}
+  .meta{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:11.5px; color:var(--dim); font-weight:600; letter-spacing:.05em}
+  .meta b{color:var(--teal)}
+  .meta .sep{color:var(--dim2)}
+
+  .player{margin-top:18px; border:1px solid var(--line2); background:linear-gradient(180deg, var(--panel3), var(--panel2)); border-radius:14px; padding:16px 18px; display:flex; align-items:center; gap:16px}
+  .pbtn{flex:none; width:54px; height:54px; border-radius:50%; border:1px solid var(--gold3); cursor:pointer;
+    background:radial-gradient(circle at 35% 30%, #e6cf9a, var(--gold) 60%, #9a7b45);
+    color:#141b2a; font-size:20px; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 24px rgba(200,170,110,.35); transition:transform .12s}
+  .pbtn:hover{transform:scale(1.06)}
+  .ptrack-wrap{flex:1; min-width:0}
+  .ptimes{display:flex; justify-content:space-between; font-size:10.5px; color:var(--dim2); font-weight:700; margin-bottom:7px; letter-spacing:.06em}
+  .ptimes .cur{color:var(--gold)}
+  .ptrack{position:relative; height:8px; border-radius:4px; background:rgba(6,11,22,.7); border:1px solid var(--line); cursor:pointer}
+  .pfill{position:absolute; left:0; top:0; bottom:0; width:0%; border-radius:4px; background:linear-gradient(90deg, var(--gold3), var(--gold)); box-shadow:0 0 10px rgba(200,170,110,.5); transition:width .4s}
+  .pdot{position:absolute; top:50%; width:5px; height:5px; border-radius:50%; background:var(--dim2); transform:translate(-50%,-50%)}
+  .pnote{font-size:10px; color:var(--dim2); margin-top:8px; line-height:1.5}
+
+  .tr-head{display:flex; align-items:center; gap:10px; margin:34px 0 6px}
+  .tr-head h2{font-size:10.5px; font-weight:800; letter-spacing:.26em; color:var(--gold); text-transform:uppercase}
+  .tr-head::after{content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--gold3), transparent)}
+
+  .ch{display:flex; gap:18px; padding:18px 18px 18px 16px; border-radius:12px; border:1px solid transparent; border-left:3px solid var(--line); margin-top:10px; cursor:pointer; transition:all .18s; background:rgba(14,27,48,.45)}
+  .ch:hover{border-color:var(--line); border-left-color:var(--gold3)}
+  .ch.on{background:linear-gradient(90deg, rgba(10,200,185,.08), rgba(14,27,48,.5)); border-left-color:var(--teal); border-color:rgba(10,200,185,.25)}
+  .ch .ts{flex:none; font-family:var(--ff-disp); font-weight:700; font-size:14px; color:var(--gold); width:44px; padding-top:2px}
+  .ch.on .ts{color:var(--teal)}
+  .ch h3{font-size:13px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--gold2)}
+  .ch p{font-size:14px; color:var(--dim); line-height:1.75; margin-top:7px}
+  .ch p b{color:var(--gold2); font-weight:600}
+  .ch .hint{font-size:9.5px; color:var(--dim2); letter-spacing:.12em; font-weight:800; margin-top:8px; opacity:0; transition:opacity .15s}
+  .ch:hover .hint{opacity:1}
+
+  .foot{margin-top:36px; padding-top:18px; border-top:1px solid var(--line); font-size:11px; color:var(--dim2); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; line-height:1.6}
+  @media (max-width:560px){ .hero-art{height:130px} .player{flex-wrap:wrap} }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top">
+    <span class="mark">MATCH<b>UP</b></span>
+    <span class="ep">Audio briefing · S1 E01 · Top lane · Patch 16.13</span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-art">
+      <div class="half you"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Irelia_0.jpg" alt="Irelia" onerror="this.remove()"></div>
+      <div class="half him"><img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg" alt="Aatrox" onerror="this.remove()"></div>
+      <div class="vs">VS</div>
+    </div>
+    <div class="hero-body">
+      <div class="kicker">2-Minute Matchup Briefing</div>
+      <h1>Irelia vs Aatrox — everything you need, before minions spawn</h1>
+      <div class="meta">
+        <span><b>YOU</b> Irelia</span><span class="sep">·</span>
+        <span style="color:#ff7286"><b style="color:#ff7286">ENEMY</b> Aatrox</span><span class="sep">·</span>
+        <span>⏱ 2:20</span><span class="sep">·</span>
+        <span>7 chapters</span>
+      </div>
+
+      <div class="player">
+        <button class="pbtn" id="pbtn" title="Play briefing">▶</button>
+        <div class="ptrack-wrap">
+          <div class="ptimes"><span class="cur" id="pcur">0:00</span><span>2:20</span></div>
+          <div class="ptrack" id="ptrack"><div class="pfill" id="pfill"></div></div>
+          <div class="pnote">Plays with your browser's built-in voice — a stand-in for the produced track. Click any chapter to start from there.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-head"><h2>Transcript</h2></div>
+  <div id="chapters"></div>
+
+  <div class="foot">
+    <span>Concept prototype — matchup workshop, Jul 8. Numbers are illustrative, not patch-accurate.</span>
+    <span>League of Legends assets © Riot Games (Data Dragon).</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+const SECTIONS = [
+  { ts:"0:00", h:"Cold open",
+    tx:"Loading screen's up. Two minutes. Here's everything you need to win this lane. You're Irelia, into Aatrox. On paper this is your counterpick — but only if you win one game inside the game: the dodge game. Your Q comes back way faster than his. Your trades are simpler. His entire kill threat is three swings of Q. Learn their rhythm, and he's got nothing." },
+  { ts:"0:25", h:"Level one — no bush fights",
+    tx:"Do not fight him in the bushes — he wins that against almost everyone. Check the river bush from range, and if he wards yours, he's fishing for a Q on your facecheck. Don't give it to him. Stay on the wave, stack your Q resets on minions, keep the passive loaded." },
+  { ts:"0:50", h:"Level two — your window",
+    tx:"Level two is yours. Your E unlocks on the seventh minion, and you get there first. The second you level: E-stun, Q in, walk away. He can't answer with one spell. That's a free chunk of his health — take it every game." },
+  { ts:"1:10", h:"Level three — the rule",
+    tx:"The whole matchup in one rule. His first Q is bait. He throws it to make you panic-dash — then the second Q lands on the sweetspot and the trade is lost. So: never dash on Q1. Save it for Q2, or don't dash at all. Eat his glowing empowered auto with W. And when his third Q is down — that's seven seconds of nothing. That's your full trade, every time." },
+  { ts:"1:40", h:"Level six — his spike",
+    tx:"Level six is his, not yours. World Ender heals him through your whole combo — never take the extended all-in, even from ahead. Short trades, out, ping your jungler." },
+  { ts:"1:55", h:"Shopping list",
+    tx:"First back around twelve hundred gold: Vampiric Scepter and Boots. Rush Blade of the Ruined King — that's your spike; you win chosen fights from there. And if Eclipse pops up on him, stop answering short trades until your Blade is done." },
+  { ts:"2:10", h:"Outro",
+    tx:"One last thing. Three minutes of mistakes in this lane costs you twenty-five minutes of suffering. Dodge the second Q. Punish the third. Good luck — you've got this." }
+];
+
+const $ = id => document.getElementById(id);
+const words = SECTIONS.map(s => s.tx.split(/\s+/).length);
+const total = words.reduce((a,b) => a + b, 0);
+const cum = words.reduce((a,w) => (a.push((a[a.length-1]||0) + w), a), []);
+
+/* render chapters + progress dots */
+const box = $("chapters");
+SECTIONS.forEach((s, i) => {
+  const d = document.createElement("div");
+  d.className = "ch"; d.id = "ch" + i;
+  d.innerHTML = `<div class="ts">${s.ts}</div><div><h3>${s.h}</h3><p></p><div class="hint">▶ PLAY FROM HERE</div></div>`;
+  d.querySelector("p").textContent = s.tx;
+  d.addEventListener("click", () => play(i));
+  box.appendChild(d);
+  if(i){ const dot = document.createElement("div"); dot.className = "pdot"; dot.style.left = (cum[i-1] / total * 100) + "%"; $("ptrack").appendChild(dot); }
+});
+
+/* playback via browser TTS */
+let playing = false, current = -1;
+const supported = "speechSynthesis" in window;
+
+function pickVoice(){
+  const vs = speechSynthesis.getVoices();
+  return vs.find(v => /en[-_]US/i.test(v.lang) && /female|samantha|aria|jenny/i.test(v.name))
+      || vs.find(v => /^en/i.test(v.lang)) || null;
+}
+function highlight(i){
+  current = i;
+  document.querySelectorAll(".ch").forEach((c, n) => c.classList.toggle("on", n === i));
+  if(i >= 0){
+    $("pfill").style.width = ((i ? cum[i-1] : 0) / total * 100) + "%";
+    $("pcur").textContent = SECTIONS[i].ts;
+    $("ch" + i).scrollIntoView({ behavior:"smooth", block:"nearest" });
+  } else {
+    $("pfill").style.width = playing ? "100%" : "0%";
+    $("pcur").textContent = playing ? "2:20" : "0:00";
+  }
+}
+function speakFrom(i){
+  if(i >= SECTIONS.length){ playing = false; highlight(-1); $("pbtn").textContent = "▶"; $("pfill").style.width = "100%"; $("pcur").textContent = "2:20"; return; }
+  highlight(i);
+  const u = new SpeechSynthesisUtterance(SECTIONS[i].tx);
+  const v = pickVoice(); if(v) u.voice = v;
+  u.rate = 1.02; u.pitch = 1;
+  u.onend = () => { if(playing) speakFrom(i + 1); };
+  speechSynthesis.speak(u);
+}
+function play(i){
+  if(!supported){ alert("This browser has no speech synthesis — read the transcript below."); return; }
+  speechSynthesis.cancel();
+  playing = true; $("pbtn").textContent = "■";
+  speakFrom(i);
+}
+function stop(){
+  speechSynthesis.cancel();
+  playing = false; $("pbtn").textContent = "▶";
+  highlight(-1); $("pfill").style.width = "0%"; $("pcur").textContent = "0:00";
+}
+$("pbtn").addEventListener("click", () => playing ? stop() : play(0));
+$("ptrack").addEventListener("click", e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  const frac = (e.clientX - r.left) / r.width;
+  let i = 0; while(i < SECTIONS.length - 1 && cum[i] / total < frac) i++;
+  play(i);
+});
+if(supported) speechSynthesis.onvoiceschanged = () => {};
+</script>
+</body>
+</html>

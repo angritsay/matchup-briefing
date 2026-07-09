@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matchup Card — Irelia vs Aatrox · Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg0:#060b16; --bg1:#0a1428; --panel:#0e1b30; --panel2:#122340; --panel3:#16294a;
+    --line:#1e3251; --line2:#2a4270;
+    --gold:#c8aa6e; --gold2:#f0e6d2; --gold3:#785a28;
+    --teal:#0ac8b9; --teal2:#0d3c40;
+    --red:#e84057; --red2:#3c1522;
+    --warn:#f5b04d;
+    --txt:#e8eef7; --dim:#93a5c2; --dim2:#5b6f92;
+    --ff-disp:"Cinzel", Georgia, serif;
+    --ff-body:"Inter", -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{background:var(--bg0); color:var(--txt); font-family:var(--ff-body); font-size:14px}
+  body{background:
+      radial-gradient(1200px 500px at 50% -10%, #12264d 0%, transparent 60%),
+      radial-gradient(900px 400px at 90% 110%, #0d2033 0%, transparent 55%),
+      var(--bg0);
+    min-height:100vh; padding-bottom:60px}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px}
+
+  /* ---------- header ---------- */
+  header{padding:26px 0 0}
+  .hd-row{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+  .logo{display:flex; align-items:baseline; gap:12px}
+  .logo .mark{font-family:var(--ff-disp); font-weight:800; font-size:22px; letter-spacing:.22em; color:var(--gold2)}
+  .logo .mark b{color:var(--teal); font-weight:800}
+  .logo .proto{font-size:10px; letter-spacing:.18em; color:var(--dim2); border:1px solid var(--line); padding:4px 8px; border-radius:4px; text-transform:uppercase}
+  .patch{font-size:11px; color:var(--dim); letter-spacing:.08em}
+  .patch b{color:var(--gold)}
+  .tabs{display:flex; gap:6px; margin-top:18px; border:1px solid var(--line); background:rgba(10,20,40,.7); padding:5px; border-radius:10px; width:max-content}
+  .tab{appearance:none; border:0; background:transparent; color:var(--dim); font-family:var(--ff-body); font-weight:600; font-size:12.5px; letter-spacing:.06em; padding:9px 18px; border-radius:7px; cursor:pointer; display:flex; gap:8px; align-items:center; transition:all .18s}
+  .tab .n{font-size:10px; color:var(--dim2); border:1px solid var(--line); border-radius:4px; padding:1px 5px}
+  .tab:hover{color:var(--txt)}
+  .tab.on{background:linear-gradient(180deg, var(--panel3), var(--panel2)); color:var(--gold2); box-shadow:inset 0 0 0 1px var(--line2)}
+  .tab.on .n{color:var(--gold); border-color:var(--gold3)}
+  .ctx{margin-top:10px; font-size:11.5px; color:var(--dim2)}
+
+  /* ---------- shared ---------- */
+  .screen{display:none; margin-top:22px}
+  .screen.on{display:block; animation:fadein .25s ease}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+  .kicker{font-size:10.5px; font-weight:700; letter-spacing:.24em; color:var(--gold); text-transform:uppercase}
+  .panel{background:linear-gradient(180deg, rgba(18,35,64,.55), rgba(10,20,40,.85)); border:1px solid var(--line); border-radius:14px}
+  .chip{display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:700; letter-spacing:.08em; padding:6px 12px; border-radius:6px; text-transform:uppercase}
+  .v-yes{background:rgba(10,200,185,.12); color:var(--teal); border:1px solid rgba(10,200,185,.4)}
+  .v-no{background:rgba(232,64,87,.12); color:#ff7286; border:1px solid rgba(232,64,87,.45)}
+  .v-cond{background:rgba(200,170,110,.1); color:var(--gold); border:1px solid rgba(200,170,110,.4)}
+  .icon-fallback{display:inline-flex; align-items:center; justify-content:center; background:var(--panel3); color:var(--gold); font-weight:800}
+
+  /* power bar */
+  .pwr{margin-top:4px}
+  .pwr-lbl{display:flex; justify-content:space-between; font-size:11px; font-weight:700; letter-spacing:.1em; margin-bottom:7px}
+  .pwr-lbl .you{color:var(--teal)} .pwr-lbl .him{color:#ff7286}
+  .pwr-bar{height:14px; border-radius:7px; overflow:hidden; display:flex; border:1px solid var(--line2); background:var(--red2)}
+  .pwr-you{background:linear-gradient(90deg,#067d74,var(--teal)); transition:width .6s cubic-bezier(.2,.8,.2,1); box-shadow:2px 0 8px rgba(10,200,185,.5)}
+  .pwr-him{background:linear-gradient(90deg,#a02a3d,var(--red)); flex:1}
+
+  /* ============ SCREEN 1 · LOADING ============ */
+  .load-stage{position:relative; padding:30px 30px 26px; overflow:hidden}
+  .load-stage::before{content:""; position:absolute; inset:0; background:radial-gradient(800px 300px at 50% 0%, rgba(60,137,208,.10), transparent 70%); pointer-events:none}
+  .load-grid{display:grid; grid-template-columns:225px minmax(0,1fr) 225px; gap:26px; position:relative}
+  .champ-card{position:relative; border-radius:10px; overflow:hidden; border:1px solid var(--line2); aspect-ratio:308/560; background:var(--panel2)}
+  .champ-card img{width:100%; height:100%; object-fit:cover; display:block}
+  .champ-card.you{box-shadow:0 0 0 1px rgba(10,200,185,.55), 0 0 34px rgba(10,200,185,.18)}
+  .champ-card.him{box-shadow:0 0 0 1px rgba(232,64,87,.55), 0 0 34px rgba(232,64,87,.15)}
+  .champ-card .plate{position:absolute; left:0; right:0; bottom:0; padding:34px 12px 12px; background:linear-gradient(180deg, transparent, rgba(4,8,16,.94) 55%)}
+  .champ-card .side{font-size:9.5px; font-weight:800; letter-spacing:.24em}
+  .champ-card.you .side{color:var(--teal)} .champ-card.him .side{color:#ff7286}
+  .champ-card .nm{font-family:var(--ff-disp); font-size:19px; font-weight:700; letter-spacing:.12em; color:var(--gold2); margin-top:2px}
+  .champ-card .rl{font-size:10.5px; color:var(--dim); letter-spacing:.1em; margin-top:2px}
+  .vs-tag{position:absolute; top:-13px; left:50%; transform:translateX(-50%); font-family:var(--ff-disp); font-weight:800; letter-spacing:.3em; font-size:12px; color:var(--gold); background:var(--bg1); border:1px solid var(--gold3); padding:5px 14px 4px 18px; border-radius:20px; z-index:2}
+
+  .brief{display:flex; flex-direction:column; gap:14px; min-width:0}
+  .brief-hd{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
+  .brief-hd h1{font-family:var(--ff-disp); font-size:21px; font-weight:700; letter-spacing:.14em; color:var(--gold2)}
+  .readtime{display:flex; align-items:center; gap:7px; font-size:11px; color:var(--dim); font-weight:600; letter-spacing:.06em}
+  .readtime .dot{width:7px; height:7px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal)}
+  .matchtag{font-size:11px; color:var(--dim); line-height:1.5}
+  .matchtag b{color:var(--teal); font-weight:700}
+
+  .sec-t{font-size:10px; font-weight:800; letter-spacing:.22em; color:var(--gold); text-transform:uppercase; display:flex; align-items:center; gap:10px}
+  .sec-t::after{content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--gold3), transparent)}
+
+  .plan{display:flex; flex-direction:column; gap:8px}
+  .plan-row{display:flex; gap:13px; background:rgba(18,35,64,.5); border:1px solid var(--line); border-radius:10px; padding:11px 14px; align-items:flex-start}
+  .lvl-badge{flex:none; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-family:var(--ff-disp); font-weight:800; font-size:15px; color:var(--gold2); background:linear-gradient(180deg,var(--panel3),var(--panel2)); border:1px solid var(--gold3); transform:rotate(45deg); border-radius:6px; margin:2px 4px 0 2px}
+  .lvl-badge span{transform:rotate(-45deg)}
+  .plan-row h3{font-size:12.5px; font-weight:700; letter-spacing:.04em; color:var(--txt)}
+  .plan-row h3 em{font-style:normal; color:var(--teal); font-size:10.5px; font-weight:800; letter-spacing:.12em; margin-left:8px}
+  .plan-row p{font-size:12px; color:var(--dim); line-height:1.55; margin-top:3px}
+  .plan-row p b{color:var(--gold2); font-weight:600}
+
+  .windows{display:grid; grid-template-columns:repeat(4, 1fr); gap:8px}
+  .win{border-radius:10px; padding:10px 11px; border:1px solid rgba(232,64,87,.35); background:linear-gradient(180deg, rgba(60,21,34,.55), rgba(30,12,20,.4))}
+  .win.opp{border-color:rgba(10,200,185,.4); background:linear-gradient(180deg, rgba(13,60,58,.5), rgba(8,30,30,.4))}
+  .win .w-ic{display:flex; align-items:center; gap:8px; margin-bottom:7px}
+  .win img, .win .icon-fallback{width:26px; height:26px; border-radius:5px; border:1px solid var(--line2); font-size:12px}
+  .win .w-k{font-size:9px; font-weight:800; letter-spacing:.14em; color:#ff8c9c}
+  .win.opp .w-k{color:var(--teal)}
+  .win h4{font-size:11.5px; font-weight:700; line-height:1.3}
+  .win p{font-size:10.5px; color:var(--dim); line-height:1.45; margin-top:4px}
+
+  .never{display:flex; gap:14px; align-items:flex-start; border:1px solid rgba(232,64,87,.55); border-radius:12px; padding:14px 16px;
+    background:linear-gradient(90deg, rgba(232,64,87,.16), rgba(232,64,87,.05));
+    box-shadow:inset 0 0 30px rgba(232,64,87,.07)}
+  .never .sk{flex:none; width:38px; height:38px; border-radius:9px; background:rgba(232,64,87,.15); border:1px solid rgba(232,64,87,.5); display:flex; align-items:center; justify-content:center; font-size:18px}
+  .never h4{font-size:11px; font-weight:800; letter-spacing:.24em; color:#ff7286}
+  .never p{font-size:13px; line-height:1.55; margin-top:4px; color:var(--gold2)}
+  .never p b{color:#ff9daa}
+
+  .loadbar{margin-top:20px; position:relative}
+  .loadbar .lb-row{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px}
+  .loadbar .lb-t{font-size:11px; letter-spacing:.14em; color:var(--dim); font-weight:600; text-transform:uppercase}
+  .loadbar .lb-p{font-family:var(--ff-disp); font-size:15px; color:var(--gold); font-weight:700}
+  .lb-track{height:6px; border-radius:3px; background:var(--panel2); border:1px solid var(--line); overflow:hidden}
+  .lb-fill{height:100%; width:0%; background:linear-gradient(90deg, var(--gold3), var(--gold), var(--gold2)); box-shadow:0 0 12px rgba(200,170,110,.6); transition:width .25s linear}
+  .lb-note{margin-top:9px; font-size:11px; color:var(--dim2); display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap}
+  .lb-note .quote{font-style:italic}
+  .lb-note button{appearance:none; background:none; border:1px solid var(--line2); color:var(--dim); font-size:10.5px; padding:3px 10px; border-radius:5px; cursor:pointer; letter-spacing:.06em}
+  .lb-note button:hover{color:var(--gold2); border-color:var(--gold3)}
+
+  @media (max-width:980px){
+    .load-grid{grid-template-columns:1fr; }
+    .champ-card{aspect-ratio:auto; height:120px}
+    .champ-card img{object-position:0 18%}
+    .windows{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* ============ SCREEN 2 · LIVE ============ */
+  .live-top{display:flex; align-items:center; gap:18px; padding:14px 18px; flex-wrap:wrap}
+  .live-badge{display:flex; align-items:center; gap:8px; font-size:11px; font-weight:800; letter-spacing:.18em; color:#ff7286}
+  .live-badge .ld{width:9px; height:9px; border-radius:50%; background:var(--red); box-shadow:0 0 10px var(--red); animation:pulse 1.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1} 50%{opacity:.35}}
+  .live-src{font-size:11px; color:var(--dim2)}
+  .live-src b{color:var(--dim); font-weight:600}
+  .clock{font-family:var(--ff-disp); font-size:26px; font-weight:700; color:var(--gold2); letter-spacing:.1em; min-width:92px; text-align:center; margin-left:auto}
+  .sim-ctl{display:flex; align-items:center; gap:6px}
+  .sim-ctl button{appearance:none; border:1px solid var(--line2); background:var(--panel2); color:var(--dim); font-family:var(--ff-body); font-weight:700; font-size:11px; padding:7px 12px; border-radius:7px; cursor:pointer; letter-spacing:.05em}
+  .sim-ctl button:hover{color:var(--gold2)}
+  .sim-ctl button.on{color:var(--teal); border-color:rgba(10,200,185,.5); background:rgba(10,200,185,.08)}
+  .sim-ctl .play{font-size:13px; width:38px}
+  .scrub-row{padding:0 18px 14px; display:flex; align-items:center; gap:12px}
+  .scrub-row input[type=range]{flex:1; accent-color:var(--gold); height:4px; cursor:pointer}
+  .scrub-row .t0,.scrub-row .t1{font-size:10px; color:var(--dim2); font-weight:600}
+
+  .live-grid{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:16px; margin-top:16px}
+  .now-card{padding:22px 24px; display:flex; flex-direction:column; gap:14px; position:relative; overflow:hidden}
+  .now-card::before{content:""; position:absolute; inset:0; background:radial-gradient(500px 180px at 20% 0%, rgba(10,200,185,.06), transparent 70%); pointer-events:none}
+  .now-hd{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .now-phase{font-size:10px; font-weight:800; letter-spacing:.22em; color:var(--gold)}
+  .now-lvls{display:flex; gap:14px; font-size:11px; font-weight:700}
+  .now-lvls .yl{color:var(--teal)} .now-lvls .hl{color:#ff7286}
+  .now-title{font-family:var(--ff-disp); font-size:22px; font-weight:700; color:var(--gold2); letter-spacing:.04em; line-height:1.25}
+  .now-text{font-size:13.5px; color:var(--dim); line-height:1.65; max-width:60ch}
+  .now-text b{color:var(--gold2); font-weight:600}
+  .now-verdict{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+  .now-verdict .vk{font-size:10px; font-weight:800; letter-spacing:.2em; color:var(--dim2)}
+
+  .rail{display:flex; flex-direction:column; gap:16px; min-width:0}
+  .rail .panel{padding:16px}
+  .rail-hd{display:flex; align-items:center; gap:10px; margin-bottom:12px}
+  .rail-hd img{width:34px; height:34px; border-radius:7px; border:1px solid var(--line2)}
+  .rail-hd .rn{font-size:13px; font-weight:800; letter-spacing:.08em}
+  .rail-hd .rs{font-size:10.5px; color:var(--dim2); margin-top:1px}
+  .rail-hd .gold-est{margin-left:auto; font-size:11.5px; font-weight:700; color:var(--gold)}
+  .slots{display:grid; grid-template-columns:repeat(6,1fr); gap:6px}
+  .slot{aspect-ratio:1; border-radius:7px; border:1px solid var(--line); background:rgba(10,20,40,.6); overflow:hidden; position:relative}
+  .slot img{width:100%; height:100%; object-fit:cover; display:block}
+  .slot.new::after{content:"NEW"; position:absolute; bottom:0; left:0; right:0; font-size:7px; font-weight:800; text-align:center; color:#0b1220; background:var(--warn); letter-spacing:.08em; padding:1px 0}
+  .skill-rows{display:flex; flex-direction:column; gap:7px; margin-top:13px}
+  .skill-row{display:flex; align-items:center; gap:9px}
+  .skill-row img,.skill-row .icon-fallback{width:24px; height:24px; border-radius:5px; border:1px solid var(--line2); font-size:11px; flex:none}
+  .skill-row .sk-k{font-size:10px; font-weight:800; color:var(--dim); width:12px}
+  .pips{display:flex; gap:3px; flex:1}
+  .pip{height:7px; flex:1; border-radius:2px; background:var(--panel3); border:1px solid var(--line)}
+  .pip.f{background:linear-gradient(180deg,#ff8c9c,var(--red)); border-color:rgba(232,64,87,.6)}
+  .pip.fy{background:linear-gradient(180deg,#3ee6d8,var(--teal)); border-color:rgba(10,200,185,.6)}
+  .buy-list{display:flex; flex-direction:column; gap:8px}
+  .buy-item{display:flex; align-items:center; gap:10px; background:rgba(18,35,64,.5); border:1px solid var(--line); border-radius:9px; padding:8px 10px}
+  .buy-item img,.buy-item .icon-fallback{width:32px; height:32px; border-radius:6px; border:1px solid var(--gold3); font-size:13px; flex:none}
+  .buy-item .bn{font-size:12px; font-weight:700}
+  .buy-item .bg{font-size:10.5px; color:var(--gold); font-weight:700; margin-left:auto}
+  .buy-note{font-size:11px; color:var(--dim2); line-height:1.5; margin-top:9px}
+
+  .feed{margin-top:16px; padding:16px 18px}
+  .feed-t{font-size:10px; font-weight:800; letter-spacing:.22em; color:var(--gold); margin-bottom:11px}
+  .feed-list{display:flex; flex-direction:column; gap:6px; max-height:230px; overflow:auto}
+  .fe{display:flex; gap:12px; align-items:baseline; font-size:12.5px; padding:8px 12px; border-radius:8px; background:rgba(14,27,48,.6); border:1px solid var(--line); border-left:3px solid var(--line2); animation:fadein .3s}
+  .fe .ft{font-family:var(--ff-disp); font-size:11.5px; color:var(--gold); font-weight:700; min-width:44px}
+  .fe.warn{border-left-color:var(--red)} .fe.warn .fx{color:#ffb9c3}
+  .fe.good{border-left-color:var(--teal)} .fe.good .fx{color:#9ff0e8}
+  .fe .fx{color:var(--dim); line-height:1.5}
+  .dream-note{margin-top:12px; font-size:11px; color:var(--dim2); display:flex; gap:8px; align-items:center}
+  .dream-note .tag{border:1px dashed var(--line2); color:var(--dim); border-radius:5px; padding:2px 8px; font-size:9.5px; letter-spacing:.14em; font-weight:800}
+
+  @media (max-width:980px){ .live-grid{grid-template-columns:1fr} .clock{margin-left:0} }
+
+  /* ============ SCREEN 3 · TIMELINE ============ */
+  .tl-stage{padding:26px 28px}
+  .tl-hd h2{font-family:var(--ff-disp); font-size:20px; letter-spacing:.1em; color:var(--gold2); font-weight:700}
+  .tl-hd p{font-size:12px; color:var(--dim); margin-top:5px}
+  .curve-box{margin:20px 0 6px; position:relative}
+  .curve-box svg{width:100%; height:130px; display:block; overflow:visible}
+  .stops{display:grid; grid-template-columns:repeat(6,1fr); margin-top:6px}
+  .stop{text-align:center; cursor:pointer; padding:7px 2px 4px; border-radius:8px; transition:background .15s}
+  .stop:hover{background:rgba(18,35,64,.55)}
+  .stop .sk{font-family:var(--ff-disp); font-size:13px; font-weight:700; color:var(--dim); letter-spacing:.06em}
+  .stop .ss{font-size:9.5px; color:var(--dim2); margin-top:2px}
+  .stop.on .sk{color:var(--gold2)} .stop.on .ss{color:var(--gold)}
+  .tl-slider{width:100%; accent-color:var(--gold); height:5px; cursor:pointer; margin-top:10px}
+
+  .tl-card{margin-top:20px; border:1px solid var(--line2); border-radius:13px; background:linear-gradient(180deg, rgba(22,41,74,.5), rgba(10,20,40,.7)); padding:20px 22px}
+  .tug{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:16px; align-items:center}
+  .tug .tc{display:flex; flex-direction:column; align-items:center; gap:6px; width:76px}
+  .tug .tc img{width:52px; height:52px; border-radius:10px; border:1px solid var(--line2)}
+  .tug .tc.you img{box-shadow:0 0 0 1px rgba(10,200,185,.6)}
+  .tug .tc.him img{box-shadow:0 0 0 1px rgba(232,64,87,.6)}
+  .tug .tc span{font-size:10px; font-weight:800; letter-spacing:.1em}
+  .tug .tc.you span{color:var(--teal)} .tug .tc.him span{color:#ff7286}
+  .tug-mid .nums{display:flex; justify-content:space-between; font-family:var(--ff-disp); font-weight:800; font-size:20px; margin-bottom:7px}
+  .tug-mid .nums .ny{color:var(--teal)} .tug-mid .nums .nh{color:#ff7286}
+  .tl-meta{display:flex; align-items:center; gap:14px; margin-top:18px; flex-wrap:wrap}
+  .tl-meta .chip{font-size:12px; padding:8px 14px}
+  .tl-why{font-size:13.5px; color:var(--dim); line-height:1.7; margin-top:14px; max-width:72ch}
+  .tl-why b{color:var(--gold2); font-weight:600}
+  .tl-buy{margin-top:16px; padding-top:16px; border-top:1px solid var(--line)}
+  .tl-buy .sec-t{margin-bottom:10px}
+  .tl-buy-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .tl-buy-row .buy-item{padding:7px 12px 7px 8px}
+  .tl-buy-row .empty{font-size:12px; color:var(--dim2); font-style:italic}
+  .tl-nav{display:flex; gap:8px; margin-left:auto}
+  .tl-nav button{appearance:none; border:1px solid var(--line2); background:var(--panel2); color:var(--dim); width:34px; height:34px; border-radius:8px; cursor:pointer; font-size:15px}
+  .tl-nav button:hover{color:var(--gold2); border-color:var(--gold3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="hd-row">
+      <div class="logo">
+        <span class="mark">MATCH<b>UP</b></span>
+        <span class="proto">Prototype · Crazy 8s · Jul 8</span>
+      </div>
+      <div class="patch">Patch <b>16.13</b> · Ranked Solo · <b>TOP LANE</b></div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab on" data-s="s1"><span class="n">1</span> Loading-screen card</button>
+      <button class="tab" data-s="s2"><span class="n">2</span> Live game card</button>
+      <button class="tab" data-s="s3"><span class="n">3</span> Power timeline</button>
+    </nav>
+    <div class="ctx" id="ctxline">One matchup, three moments: 60 seconds before the game · live during the game · explored on a timeline.</div>
+  </header>
+
+  <!-- ============ SCREEN 1 · LOADING-SCREEN CARD ============ -->
+  <section class="screen on" id="s1">
+    <div class="panel load-stage">
+      <div class="vs-tag">VS</div>
+      <div class="load-grid">
+        <div class="champ-card you">
+          <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Irelia_0.jpg" alt="Irelia" onerror="this.remove()">
+          <div class="plate">
+            <div class="side">YOU</div>
+            <div class="nm">IRELIA</div>
+            <div class="rl">Top · The Blade Dancer</div>
+          </div>
+        </div>
+
+        <div class="brief">
+          <div class="brief-hd">
+            <h1>MATCHUP BRIEF</h1>
+            <div class="readtime"><span class="dot"></span> FITS ONE LOADING SCREEN · ~60 SEC</div>
+          </div>
+          <div class="matchtag"><b>Counterpick in your favor</b> at high elo — but only if you win the dodge game. Your Q cooldown is far shorter than his; your trade pattern is simpler. Lose the pattern and you donate the lane.</div>
+
+          <div>
+            <div class="sec-t">Your plan · Levels 1–3</div>
+            <div class="plan" style="margin-top:9px">
+              <div class="plan-row">
+                <div class="lvl-badge"><span>1</span></div>
+                <div>
+                  <h3>Play off your wave <em>NO BUSH CONTEST</em></h3>
+                  <p>He wins a level-1 bush fight against most of the roster. If he wards your bush at 1:20 he is fishing for a <b>Q1 on your facecheck</b> — don't give it. Stack Q resets on minions, poke only through the wave.</p>
+                </div>
+              </div>
+              <div class="plan-row">
+                <div class="lvl-badge"><span>2</span></div>
+                <div>
+                  <h3>Race to the 7th minion <em>YOUR WINDOW</em></h3>
+                  <p>Your E gets you to level 2 <b>first</b>. Force one short trade the second you level: <b>E-stun → Q in → walk out</b> before his next Q chain starts.</p>
+                </div>
+              </div>
+              <div class="plan-row">
+                <div class="lvl-badge"><span>3</span></div>
+                <div>
+                  <h3>Dodge Q2, punish after Q3 <em>THE SKILL CHECK</em></h3>
+                  <p>Hold your dash for his <b>second Q</b>; eat the empowered auto with W. After his third Q he has <b>~7 seconds of nothing</b> — that's your full trade with resets.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="sec-t">His power windows</div>
+            <div class="windows" style="margin-top:9px">
+              <div class="win">
+                <div class="w-ic"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/AatroxQ.png" alt="Q" onerror="this.outerHTML='&lt;span class=icon-fallback style=width:26px;height:26px;border-radius:5px&gt;Q&lt;/span&gt;'"><span class="w-k">THREAT</span></div>
+                <h4>Q1 → Q2 → Q3 chain</h4>
+                <p>Sweetspots on the blade rim knock up. Q1 is the bait — Q2 is the kill threat.</p>
+              </div>
+              <div class="win">
+                <div class="w-ic"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/passive/Aatrox_Passive.png" alt="P" onerror="this.outerHTML='&lt;span class=icon-fallback style=width:26px;height:26px;border-radius:5px&gt;P&lt;/span&gt;'"><span class="w-k">THREAT</span></div>
+                <h4>Empowered auto</h4>
+                <p>Passive auto heals him. Answer it with W or step out of range — never tank it for free.</p>
+              </div>
+              <div class="win">
+                <div class="w-ic"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/AatroxR.png" alt="R" onerror="this.outerHTML='&lt;span class=icon-fallback style=width:26px;height:26px;border-radius:5px&gt;R&lt;/span&gt;'"><span class="w-k">LVL 6 SPIKE</span></div>
+                <h4>World Ender</h4>
+                <p>Heals him through your whole combo. Extended all-ins at 6 are lost — even from ahead.</p>
+              </div>
+              <div class="win opp">
+                <div class="w-ic"><span class="icon-fallback" style="width:26px;height:26px;border-radius:5px">⚔</span><span class="w-k">YOUR OPENING</span></div>
+                <h4>After his Q3</h4>
+                <p>~7s with no damage pattern. Every good trade you make starts here.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="never">
+            <div class="sk">⛔</div>
+            <div>
+              <h4>NEVER DO THIS</h4>
+              <p>Never burn your dash on his <b>first Q</b>. He casts Q1 to make you panic-dash — then Q2 lands on the sweetspot and the trade is lost before it started. <b>Dash after Q2, or don't dash at all.</b></p>
+            </div>
+          </div>
+
+          <div class="loadbar">
+            <div class="lb-row">
+              <span class="lb-t">Loading Summoner's Rift…</span>
+              <span class="lb-p" id="lb-pct">0%</span>
+            </div>
+            <div class="lb-track"><div class="lb-fill" id="lb-fill"></div></div>
+            <div class="lb-note">
+              <span class="quote" id="lb-msg">"3 minutes of mistakes = 25 minutes of suffering." — matchup workshop, Jul 8</span>
+              <button id="lb-replay">↻ replay 60s</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="champ-card him">
+          <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg" alt="Aatrox" onerror="this.remove()">
+          <div class="plate">
+            <div class="side">ENEMY</div>
+            <div class="nm">AATROX</div>
+            <div class="rl">Top · The Darkin Blade</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 2 · LIVE GAME CARD ============ -->
+  <section class="screen" id="s2">
+    <div class="panel">
+      <div class="live-top">
+        <div class="live-badge"><span class="ld"></span> LIVE</div>
+        <div class="live-src"><b>Connected to game client</b> — reading enemy purchases &amp; skill points <span style="opacity:.7">(simulated)</span></div>
+        <div class="clock" id="clock">00:00</div>
+        <div class="sim-ctl">
+          <button class="play" id="btn-play" title="play / pause">⏸</button>
+          <button data-spd="1">×1</button>
+          <button data-spd="8" class="on">×8</button>
+          <button data-spd="32">×32</button>
+        </div>
+      </div>
+      <div class="scrub-row">
+        <span class="t0">00:00</span>
+        <input type="range" id="scrub" min="0" max="900" value="0" step="1">
+        <span class="t1">15:00</span>
+      </div>
+    </div>
+
+    <div class="live-grid">
+      <div class="panel now-card">
+        <div class="now-hd">
+          <div class="now-phase" id="now-phase">PRE-MINIONS</div>
+          <div class="now-lvls"><span class="yl" id="you-lvl">IRELIA · LVL 1</span><span class="hl" id="him-lvl">AATROX · LVL 1</span></div>
+        </div>
+        <div class="now-title" id="now-title">—</div>
+        <div class="now-text" id="now-text">—</div>
+        <div class="now-verdict">
+          <span class="vk">ALL-IN RIGHT NOW:</span>
+          <span class="chip v-no" id="now-chip">—</span>
+        </div>
+        <div class="pwr">
+          <div class="pwr-lbl"><span class="you" id="pwr-you-l">YOU 50%</span><span class="him" id="pwr-him-l">AATROX 50%</span></div>
+          <div class="pwr-bar"><div class="pwr-you" id="pwr-you" style="width:50%"></div><div class="pwr-him"></div></div>
+        </div>
+        <div class="dream-note"><span class="tag">CONCEPT</span> the card re-writes itself as levels, buys and cooldown windows change in the live game.</div>
+      </div>
+
+      <div class="rail">
+        <div class="panel">
+          <div class="rail-hd">
+            <img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/champion/Aatrox.png" alt="Aatrox" onerror="this.outerHTML='<span class=icon-fallback style=width:34px;height:34px;border-radius:7px>A</span>'">
+            <div><div class="rn" style="color:#ff7286">AATROX <span id="rail-lvl" style="color:var(--dim)">· LVL 1</span></div><div class="rs">enemy build — live</div></div>
+            <div class="gold-est" id="rail-gold">~500g</div>
+          </div>
+          <div class="slots" id="enemy-slots"></div>
+          <div class="skill-rows" id="enemy-skills"></div>
+        </div>
+        <div class="panel">
+          <div class="rail-hd" style="margin-bottom:10px">
+            <img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/champion/Irelia.png" alt="Irelia" onerror="this.outerHTML='<span class=icon-fallback style=width:34px;height:34px;border-radius:7px>I</span>'">
+            <div><div class="rn" style="color:var(--teal)">YOUR NEXT BUY</div><div class="rs">tailored to this matchup</div></div>
+          </div>
+          <div class="buy-list" id="buy-list"></div>
+          <div class="buy-note" id="buy-note"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel feed">
+      <div class="feed-t">MATCH FEED — WHAT CHANGED &amp; WHY IT MATTERS</div>
+      <div class="feed-list" id="feed-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 3 · POWER TIMELINE ============ -->
+  <section class="screen" id="s3">
+    <div class="panel tl-stage">
+      <div class="tl-hd" style="display:flex; align-items:flex-start; gap:14px">
+        <div>
+          <h2>WHO'S STRONGER, WHEN</h2>
+          <p>Drag the slider (or press ← →). Power balance, the all-in verdict and your shopping list — per level.</p>
+        </div>
+        <div class="tl-nav"><button id="tl-prev">←</button><button id="tl-next">→</button></div>
+      </div>
+
+      <div class="curve-box">
+        <svg id="curve" viewBox="0 0 1000 130" preserveAspectRatio="none" aria-hidden="true"></svg>
+      </div>
+      <input type="range" class="tl-slider" id="tl-slider" min="0" max="5" step="1" value="0">
+      <div class="stops" id="stops"></div>
+
+      <div class="tl-card">
+        <div class="tug">
+          <div class="tc you">
+            <img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/champion/Irelia.png" alt="Irelia" onerror="this.outerHTML='<span class=icon-fallback style=width:52px;height:52px;border-radius:10px>I</span>'">
+            <span>IRELIA</span>
+          </div>
+          <div class="tug-mid">
+            <div class="nums"><span class="ny" id="tug-ny">50%</span><span class="nh" id="tug-nh">50%</span></div>
+            <div class="pwr-bar" style="height:18px; border-radius:9px"><div class="pwr-you" id="tug-you" style="width:50%"></div><div class="pwr-him"></div></div>
+          </div>
+          <div class="tc him">
+            <img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/champion/Aatrox.png" alt="Aatrox" onerror="this.outerHTML='<span class=icon-fallback style=width:52px;height:52px;border-radius:10px>A</span>'">
+            <span>AATROX</span>
+          </div>
+        </div>
+
+        <div class="tl-meta">
+          <span class="vk" style="font-size:10px; font-weight:800; letter-spacing:.2em; color:var(--dim2)">ALL-IN:</span>
+          <span class="chip v-cond" id="tl-chip">—</span>
+          <span style="font-size:11px; color:var(--dim2)" id="tl-when">—</span>
+        </div>
+        <div class="tl-why" id="tl-why">—</div>
+
+        <div class="tl-buy">
+          <div class="sec-t">What to buy by this point</div>
+          <div class="tl-buy-row" id="tl-buy"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<style>.slot .icon-fallback{width:100%;height:100%;font-size:12px}</style>
+<script>
+"use strict";
+/* ================= shared ================= */
+const DD = "https://ddragon.leagueoflegends.com/cdn/16.13.1";
+const ITEMS = {
+  1055:["Doran's Blade","450g"], 2003:["Health Potion","50g"], 1054:["Doran's Shield","450g"],
+  1036:["Long Sword","350g"], 2031:["Refillable Potion","150g"], 3134:["Serrated Dirk","1,000g"],
+  6692:["Eclipse","2,900g"], 3047:["Plated Steelcaps","1,200g"], 1053:["Vampiric Scepter","900g"],
+  1001:["Boots","300g"], 1043:["Recurve Bow","1,000g"], 3153:["Blade of the Ruined King","3,200g"],
+  3091:["Wit's End","2,800g"], 6333:["Death's Dance","3,300g"]
+};
+const SPELL = k => `${DD}/img/spell/Aatrox${k}.png`;
+
+function mkImg(src, letter, fill){
+  const i = document.createElement("img");
+  i.src = src; i.alt = letter;
+  i.onerror = () => {
+    const s = document.createElement("span");
+    s.className = "icon-fallback";
+    if(!fill){ s.style.width = i.style.width || "32px"; s.style.height = i.style.height || "32px"; s.style.borderRadius = "6px"; }
+    s.textContent = letter;
+    i.replaceWith(s);
+  };
+  return i;
+}
+const $ = id => document.getElementById(id);
+const fmt = s => `${String(Math.floor(s/60)).padStart(2,"0")}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+const CHIP = { yes:"chip v-yes", no:"chip v-no", cond:"chip v-cond" };
+
+/* ================= tabs ================= */
+let simStarted = false;
+document.querySelectorAll("#tabs .tab").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("#tabs .tab").forEach(x => x.classList.toggle("on", x === b));
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === b.dataset.s));
+  if(b.dataset.s === "s2" && !simStarted){ simStarted = true; playing = true; updPlay(); }
+}));
+
+/* ================= screen 1 · loading bar ================= */
+const LB_DUR = 60;
+let lbStart = performance.now();
+const lbMsg0 = $("lb-msg").textContent;
+function lbTick(){
+  const p = Math.min(100, (performance.now() - lbStart) / (LB_DUR * 1000) * 100);
+  $("lb-fill").style.width = p + "%";
+  $("lb-pct").textContent = Math.round(p) + "%";
+  if(p >= 100){ $("lb-msg").textContent = "Locked in — you know the plan. Good luck."; }
+}
+setInterval(lbTick, 250);
+$("lb-replay").addEventListener("click", () => { lbStart = performance.now(); $("lb-msg").textContent = lbMsg0; });
+
+/* ================= screen 2 · live sim ================= */
+/* full-state snapshots: last snapshot with t <= clock wins */
+const SNAPS = [
+ { t:0,   you:{lvl:1}, him:{lvl:1, gold:"~500g", items:[1054,2003], sk:{Q:1,W:0,E:0,R:0}},
+   ph:{k:"PRE-MINIONS", ti:"Walk to lane — don't facecheck", tx:"Aatrox wins a level-1 bush contest against most of the roster. Check the river bush from range; if he's not on the map, hug your side of the lane until the wave meets.", chip:["no","DON'T FIGHT"], p:50},
+   buy:{items:[1055,2003], note:"Starting buy — standard for an AD skill matchup where you plan to trade."} },
+ { t:95,  you:{lvl:1}, him:{lvl:1, gold:"~500g", items:[1054,2003], sk:{Q:1,W:0,E:0,R:0}},
+   ph:{k:"LANING · LEVEL 1", ti:"Play off the wave, respect the Q chain", tx:"Stack Q resets on minions and keep your passive charged. Do not trade while he holds all three casts of Q — poke only through the wave.", chip:["cond","ONLY AFTER HIS Q3"], p:50},
+   buy:{items:[1055,2003], note:"Nothing to buy — win the minion race instead."} },
+ { t:155, you:{lvl:2}, him:{lvl:1, gold:"~620g", items:[1054,2003], sk:{Q:1,W:0,E:0,R:0}},
+   ph:{k:"LEVEL 2 — YOU FIRST", ti:"Your window — force the trade now", tx:"E unlocked off the 7th minion and he's still level 1. E-stun → Q in → walk out. He cannot answer with a single spell. You have ~20 seconds before he catches up.", chip:["yes","SHORT TRADE — GO"], p:62},
+   buy:{items:[1055,2003], note:"Hold gold. First back target: ~1,200g."} },
+ { t:175, you:{lvl:2}, him:{lvl:2, gold:"~700g", items:[1054,2003], sk:{Q:1,W:1,E:0,R:0}},
+   ph:{k:"LANING · LEVEL 2", ti:"Window closed — back to neutral", tx:"He picked up W (Infernal Chains). If you took the free trade you're ~20% HP ahead; convert it into wave control and set up the level-3 dance.", chip:["cond","ONLY AFTER HIS Q3"], p:55},
+   buy:{items:[1055,2003], note:"Hold gold. First back target: ~1,200g."} },
+ { t:245, you:{lvl:3}, him:{lvl:3, gold:"~900g", items:[1054,2003], sk:{Q:2,W:1,E:1,R:0}},
+   ph:{k:"LEVEL 3 — THE SKILL CHECK", ti:"Hold dash for Q2 · punish after Q3", tx:"His full chain is online. Q1 is the bait — save your dash for Q2, eat the empowered auto with W. The moment Q3 lands or whiffs: ~7 seconds of nothing. That's your full trade with resets.", chip:["cond","FULL TRADE AFTER Q3"], p:55},
+   buy:{items:[1055,2003], note:"Hold gold. First back target: ~1,200g."} },
+ { t:318, you:{lvl:4}, him:{lvl:4, gold:"~1,250g", items:[1054,1036,2031], sk:{Q:2,W:1,E:1,R:0}},
+   ph:{k:"LEVEL 3–5 · TRADING STANCE", ti:"He reset with Long Sword — respect the next trade", tx:"His first back bought damage. Same rules, higher stakes: nothing aggressive while his Q chain is up, full punish after Q3.", chip:["cond","FULL TRADE AFTER Q3"], p:52},
+   buy:{items:[1055,2003], note:"Shove and reset when this wave crashes."} },
+ { t:335, you:{lvl:4}, him:{lvl:4, gold:"~1,250g", items:[1054,1036,2031], sk:{Q:2,W:1,E:1,R:0}},
+   ph:{k:"YOUR RESET", ti:"Crash the wave, back, re-arm", tx:"Buy Vampiric Scepter + Boots (~1,200g) to stay even with his Long Sword. You lose almost nothing: the wave bounces back to you.", chip:["cond","AFTER YOUR BACK"], p:52},
+   buy:{items:[1053,1001], note:"Vampiric Scepter + Boots — sustain to survive his 6, movement to dodge Q2."} },
+ { t:392, you:{lvl:5}, him:{lvl:6, gold:"~1,900g", items:[1054,1036,2031,1001], sk:{Q:3,W:1,E:1,R:1}},
+   ph:{k:"LEVEL 6 — HIS SPIKE", ti:"World Ender online — no extended fights", tx:"His R heals him through your entire combo; the long all-in is lost even from ahead. Short trades only, then out. Him shoved under your tower is a ping-your-jungler timer, not a fight timer.", chip:["no","NEVER EXTENDED ALL-IN"], p:40},
+   buy:{items:[1043], note:"Start Recurve Bow — BotRK is the item that flips this lane back."} },
+ { t:410, you:{lvl:6}, him:{lvl:6, gold:"~1,950g", items:[1054,1036,2031,1001], sk:{Q:3,W:1,E:1,R:1}},
+   ph:{k:"LEVEL 6 · BOTH", ti:"Your R is not a duel button here", tx:"Keep it for disengage or the jungler's gank. The 1v1 math at 6 still favors him — survive to nine, farm with Q, dodge on cooldown.", chip:["no","NEVER EXTENDED ALL-IN"], p:42},
+   buy:{items:[1043], note:"Recurve Bow next back (1,000g)."} },
+ { t:522, you:{lvl:7}, him:{lvl:8, gold:"~2,600g", items:[1054,3134,2031,1001], sk:{Q:4,W:2,E:1,R:1}},
+   ph:{k:"TRADING STANCE", ti:"Serrated Dirk spotted — his burst went up", tx:"Short trades sting more now. Keep the wave closer to your side; his lethality is wasted if he can't start the trade.", chip:["no","DON'T VOLUNTEER"], p:44},
+   buy:{items:[1043,1053], note:"You should be holding BotRK components — complete on next reset."} },
+ { t:660, you:{lvl:9}, him:{lvl:9, gold:"~3,400g", items:[1054,6692,3047], sk:{Q:5,W:2,E:1,R:1}},
+   ph:{k:"ITEM SPIKE — HIM", ti:"Eclipse completed — trade policy changes", tx:"His two-hit trades now proc a shield plus heavy sustain. Stop answering short trades until your BotRK: farm with Q, hold the wave near your tower, dodge on cooldown.", chip:["no","DON'T TAKE TRADES"], p:42},
+   buy:{items:[3153], note:"BotRK ASAP — you're ~600g away. Everything else waits."} },
+ { t:755, you:{lvl:10}, him:{lvl:10, gold:"~3,900g", items:[1054,6692,3047], sk:{Q:5,W:3,E:1,R:1}},
+   ph:{k:"ITEM SPIKE — YOU", ti:"BotRK online — you win chosen fights", tx:"You now win full trades started on his Q cooldown. Look for E through the wave; W still answers the empowered auto. Take the fights he doesn't choose — this is where the lane gets decided.", chip:["yes","ALL-IN ON HIS Q COOLDOWN"], p:60},
+   buy:{items:[3091,6333], note:"Next: Wit's End into AP mix, Death's Dance into full AD."} },
+ { t:845, you:{lvl:11}, him:{lvl:11, gold:"~4,300g", items:[1054,6692,3047], sk:{Q:5,W:3,E:2,R:2}},
+   ph:{k:"MID GAME", ti:"Even again — don't coinflip", tx:"Both spiked. The duel comes down to one dodge: his Q2 against your dash, and now it's lethal both ways. If the lane is even, don't flip it — split, match his roams, finish your second item first.", chip:["cond","ONLY WITH AN EDGE"], p:52},
+   buy:{items:[3091,6333], note:"Second item decides the next duel — buy before he does."} }
+];
+const FEED = [
+ { t:2,   cls:"",     tx:"Connected to game client. Enemy start detected: Doran's Shield + Health Potion." },
+ { t:80,  cls:"",     tx:"He walked to lane through river — no ward on your bush yet." },
+ { t:95,  cls:"",     tx:"First wave meets. Watch his feet during Q — the sweetspot is the rim." },
+ { t:155, cls:"good", tx:"LEVEL 2 — you hit it first (E unlocked). Trade window open ~20s." },
+ { t:175, cls:"warn", tx:"Aatrox hit level 2 — W (Infernal Chains). Window closed." },
+ { t:245, cls:"",     tx:"Both level 3. Full kits online — the dodge game starts now." },
+ { t:318, cls:"warn", tx:"Aatrox recalled: Long Sword + Refillable Potion (est. 750g)." },
+ { t:335, cls:"good", tx:"Your reset window — crash the wave, back for Vampiric Scepter + Boots." },
+ { t:392, cls:"warn", tx:"AATROX LEVEL 6 — World Ender online. All-in rules just changed." },
+ { t:410, cls:"",     tx:"You hit 6. Your R is a disengage / gank tool here — not a duel button." },
+ { t:522, cls:"warn", tx:"Aatrox bought Serrated Dirk — short-trade burst up." },
+ { t:660, cls:"warn", tx:"ECLIPSE + Plated Steelcaps completed. Trade policy changes — stop answering short trades." },
+ { t:755, cls:"good", tx:"You completed Blade of the Ruined King — your spike. Fight on his Q cooldown." },
+ { t:845, cls:"",     tx:"Aatrox building Death's Dance (Chain Vest spotted). Even state — don't coinflip." }
+];
+
+let t = 0, playing = false, speed = 8, last = performance.now();
+let renderedSnap = -1, renderedFeed = -1, prevItems = "";
+
+function updPlay(){ $("btn-play").textContent = playing ? "⏸" : "▶"; }
+$("btn-play").addEventListener("click", () => { if(t >= 900) t = 0; playing = !playing; updPlay(); });
+document.querySelectorAll(".sim-ctl [data-spd]").forEach(b => b.addEventListener("click", () => {
+  speed = +b.dataset.spd;
+  document.querySelectorAll(".sim-ctl [data-spd]").forEach(x => x.classList.toggle("on", x === b));
+}));
+$("scrub").addEventListener("input", e => { t = +e.target.value; });
+
+function snapIdx(){ let i = 0; for(let k = 0; k < SNAPS.length; k++){ if(SNAPS[k].t <= t) i = k; } return i; }
+
+function renderSim(){
+  $("clock").textContent = fmt(t);
+  $("scrub").value = t;
+  const i = snapIdx();
+  if(i !== renderedSnap){
+    renderedSnap = i;
+    const s = SNAPS[i], ph = s.ph;
+    $("now-phase").textContent = ph.k;
+    $("now-title").textContent = ph.ti;
+    $("now-text").textContent  = ph.tx;
+    $("now-chip").className = CHIP[ph.chip[0]];
+    $("now-chip").textContent = ph.chip[1];
+    $("you-lvl").textContent = "IRELIA · LVL " + s.you.lvl;
+    $("him-lvl").textContent = "AATROX · LVL " + s.him.lvl;
+    $("pwr-you").style.width = ph.p + "%";
+    $("pwr-you-l").textContent = "YOU " + ph.p + "%";
+    $("pwr-him-l").textContent = "AATROX " + (100 - ph.p) + "%";
+    $("rail-lvl").textContent = "· LVL " + s.him.lvl;
+    $("rail-gold").textContent = s.him.gold;
+    /* enemy item slots */
+    const slots = $("enemy-slots"); slots.innerHTML = "";
+    const key = s.him.items.join(",");
+    for(let n = 0; n < 6; n++){
+      const d = document.createElement("div"); d.className = "slot";
+      const id = s.him.items[n];
+      if(id){
+        d.appendChild(mkImg(`${DD}/img/item/${id}.png`, (ITEMS[id]||["?"])[0][0], true));
+        d.title = (ITEMS[id]||["?"])[0];
+        if(prevItems && !prevItems.split(",").includes(String(id))) d.classList.add("new");
+      }
+      slots.appendChild(d);
+    }
+    prevItems = key;
+    /* enemy skills */
+    const sk = $("enemy-skills"); sk.innerHTML = "";
+    [["Q",5],["W",5],["E",5],["R",3]].forEach(([k,max]) => {
+      const row = document.createElement("div"); row.className = "skill-row";
+      const im = mkImg(SPELL(k), k); im.style.width = "24px"; im.style.height = "24px";
+      row.appendChild(im);
+      const lab = document.createElement("span"); lab.className = "sk-k"; lab.textContent = k; row.appendChild(lab);
+      const pips = document.createElement("div"); pips.className = "pips";
+      for(let p = 0; p < max; p++){ const pip = document.createElement("div"); pip.className = "pip" + (p < s.him.sk[k] ? " f" : ""); pips.appendChild(pip); }
+      row.appendChild(pips);
+      sk.appendChild(row);
+    });
+    /* your buy */
+    const bl = $("buy-list"); bl.innerHTML = "";
+    s.buy.items.forEach(id => {
+      const [nm, g] = ITEMS[id];
+      const d = document.createElement("div"); d.className = "buy-item";
+      const im = mkImg(`${DD}/img/item/${id}.png`, nm[0]); im.style.width = "32px"; im.style.height = "32px";
+      d.appendChild(im);
+      const n = document.createElement("span"); n.className = "bn"; n.textContent = nm; d.appendChild(n);
+      const gg = document.createElement("span"); gg.className = "bg"; gg.textContent = g; d.appendChild(gg);
+      bl.appendChild(d);
+    });
+    $("buy-note").textContent = s.buy.note;
+  }
+  /* feed */
+  let fc = 0; FEED.forEach(f => { if(f.t <= t) fc++; });
+  if(fc !== renderedFeed){
+    renderedFeed = fc;
+    const fl = $("feed-list"); fl.innerHTML = "";
+    FEED.slice(0, fc).reverse().forEach(f => {
+      const d = document.createElement("div"); d.className = "fe " + f.cls;
+      d.innerHTML = `<span class="ft">${fmt(f.t)}</span><span class="fx"></span>`;
+      d.querySelector(".fx").textContent = f.tx;
+      fl.appendChild(d);
+    });
+  }
+}
+function loop(now){
+  if(playing){ t = Math.min(900, t + (now - last) / 1000 * speed); if(t >= 900 && playing){ playing = false; updPlay(); } }
+  last = now;
+  renderSim();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* ================= screen 3 · timeline slider ================= */
+const STOPS = [
+ { k:"LVL 1", s:"first wave", p:50, chip:["cond","DON'T VOLUNTEER"], when:"trade only through minions",
+   why:"Even — two different level-1 monsters. His three-cast Q chain (rim sweetspots knock up) against your Q resets on the wave. Whoever lands their pattern first wins the level, so don't volunteer: no bush contest, poke through minions only.",
+   buy:[1055,2003], note:"Doran's Blade + Potion." },
+ { k:"LVL 2", s:"~2:35 · 7th minion", p:62, chip:["yes","SHORT TRADE — YES"], when:"window lasts ~20 seconds",
+   why:"Your window. E unlocks on the 7th minion and you hit level 2 first. E-stun → Q → out; he can't answer with one spell. Taken cleanly, this is a free quarter of his HP — and the lane's first psychological point.",
+   buy:[], note:"Hold gold — first back at ~1,200g." },
+ { k:"LVL 3", s:"~4:00", p:55, chip:["cond","FULL TRADE AFTER HIS Q3"], when:"his gap: ~7s after Q3",
+   why:"The skill check. Hold your dash for Q2 — Q1 is the bait, Q2 is the kill threat. Eat the empowered auto with W. Once Q3 lands or whiffs he has ~7 seconds of nothing: full trade with resets, then reset the wave.",
+   buy:[1053,1001], note:"First back: Vampiric Scepter + Boots (~1,200g)." },
+ { k:"LVL 6", s:"~6:30", p:38, chip:["no","NEVER ALL-IN"], when:"his strongest window of the lane",
+   why:"His spike. World Ender out-heals your full combo — the extended fight is lost even from slightly ahead. Short trades and out; play for the jungler while he's shoved in. Surviving 6–9 even in CS is winning this phase.",
+   buy:[1043], note:"Recurve Bow — rushing BotRK." },
+ { k:"LVL 9 · BotRK", s:"~12:30", p:60, chip:["yes","ALL-IN — ON HIS Q COOLDOWN"], when:"your best window of the game",
+   why:"Q maxed + Blade of the Ruined King: you out-duel him through mid game. Start fights when his Q chain is down, never into a fresh one. This is where the lane gets decided — spend the lead before his second item arrives.",
+   buy:[3153], note:"Blade of the Ruined King — your spike item." },
+ { k:"LVL 11 · his Eclipse+", s:"~15:00", p:52, chip:["cond","ONLY WITH AN EDGE"], when:"first mistake loses",
+   why:"Both spiked — the duel is one dodge again: his Q2 against your dash, lethal both ways. If the lane is even, don't coinflip: split, match his roams, and get to your second item first.",
+   buy:[3091,6333], note:"Wit's End vs AP mix · Death's Dance vs full AD." }
+];
+
+const svg = $("curve");
+const XS = STOPS.map((_, i) => 50 + i * 180);
+const YS = STOPS.map(st => 118 - (st.p - 30) * 2.4);
+function drawCurve(active){
+  let d = "";
+  XS.forEach((x, i) => { d += (i ? " L" : "M") + x + " " + YS[i]; });
+  svg.innerHTML = `
+    <line x1="30" y1="70" x2="970" y2="70" stroke="#2a4270" stroke-dasharray="4 5" stroke-width="1"/>
+    <text x="974" y="74" fill="#5b6f92" font-size="10">50%</text>
+    <text x="30" y="16" fill="#0ac8b9" font-size="10" font-weight="700">IRELIA STRONGER ↑</text>
+    <text x="30" y="126" fill="#ff7286" font-size="10" font-weight="700">AATROX STRONGER ↓</text>
+    <path d="${d}" fill="none" stroke="url(#gr)" stroke-width="2.5" stroke-linejoin="round"/>
+    <defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0ac8b9"/><stop offset="1" stop-color="#c8aa6e"/>
+    </linearGradient></defs>
+    ${XS.map((x, i) => `
+      <circle cx="${x}" cy="${YS[i]}" r="${i === active ? 8 : 4.5}" fill="${STOPS[i].p >= 50 ? "#0ac8b9" : "#e84057"}"
+        stroke="${i === active ? "#f0e6d2" : "#0a1428"}" stroke-width="${i === active ? 2.5 : 1.5}"/>`).join("")}
+  `;
+}
+
+const stopsEl = $("stops");
+STOPS.forEach((st, i) => {
+  const d = document.createElement("div"); d.className = "stop";
+  d.innerHTML = `<div class="sk">${st.k}</div><div class="ss">${st.s}</div>`;
+  d.addEventListener("click", () => setStop(i));
+  stopsEl.appendChild(d);
+});
+
+function setStop(i){
+  i = Math.max(0, Math.min(STOPS.length - 1, i));
+  $("tl-slider").value = i;
+  const st = STOPS[i];
+  document.querySelectorAll(".stop").forEach((x, n) => x.classList.toggle("on", n === i));
+  drawCurve(i);
+  $("tug-you").style.width = st.p + "%";
+  $("tug-ny").textContent = st.p + "%";
+  $("tug-nh").textContent = (100 - st.p) + "%";
+  $("tl-chip").className = CHIP[st.chip[0]];
+  $("tl-chip").textContent = st.chip[1];
+  $("tl-when").textContent = st.when;
+  $("tl-why").textContent = st.why;
+  const row = $("tl-buy"); row.innerHTML = "";
+  if(!st.buy.length){
+    const e = document.createElement("span"); e.className = "empty"; e.textContent = st.note; row.appendChild(e);
+  } else {
+    st.buy.forEach(id => {
+      const [nm, g] = ITEMS[id];
+      const d = document.createElement("div"); d.className = "buy-item";
+      const im = mkImg(`${DD}/img/item/${id}.png`, nm[0]); im.style.width = "32px"; im.style.height = "32px";
+      d.appendChild(im);
+      const n = document.createElement("span"); n.className = "bn"; n.textContent = nm; d.appendChild(n);
+      const gg = document.createElement("span"); gg.className = "bg"; gg.textContent = g; d.appendChild(gg);
+      row.appendChild(d);
+    });
+    const note = document.createElement("span"); note.className = "empty"; note.textContent = st.note; row.appendChild(note);
+  }
+}
+$("tl-slider").addEventListener("input", e => setStop(+e.target.value));
+$("tl-prev").addEventListener("click", () => setStop(+$("tl-slider").value - 1));
+$("tl-next").addEventListener("click", () => setStop(+$("tl-slider").value + 1));
+document.addEventListener("keydown", e => {
+  if(!document.querySelector("#s3.on")) return;
+  if(e.key === "ArrowLeft") setStop(+$("tl-slider").value - 1);
+  if(e.key === "ArrowRight") setStop(+$("tl-slider").value + 1);
+});
+setStop(0);
+</script>
+</body>
+</html>
