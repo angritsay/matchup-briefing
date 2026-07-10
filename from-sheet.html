@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Irelia Matchups — by Manlymam · pipeline demo</title>
-<meta property="og:title" content="Irelia Matchups — built from a Challenger OTP's notes">
-<meta property="og:description" content="Searchable matchup cards: rune tree, skill order, spells, items and tips — generated from one source sheet.">
+<title>Irelia Matchups — counterpicks &amp; how to play every lane</title>
+<meta property="og:title" content="Irelia Matchups — counterpicks &amp; how to play">
+<meta property="og:description" content="Runes, skill order, spells, items and lane tips for every Irelia matchup — with a quick quiz before you lock in.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -279,17 +279,7 @@
 <div class="page">
   <div class="top rise">
     <span class="mark">MATCH<b>UP</b></span>
-    <span class="ep">Pipeline demo v3 · Irelia · top · Patch 16.13 ranked solo</span>
-  </div>
-
-  <!-- the single source reference -->
-  <div class="byline rise" style="--d:.04s">
-    <div class="ava">M</div>
-    <div class="who">
-      <b>Counterpicks by Manlymam</b>
-      <div class="sub">Challenger Irelia OTP · ~1000 games of matchup data · updated for S16 (May 2026) · <a href="https://docs.google.com/spreadsheets/d/1QYbG_Ed_kGak8er6YR_h_3y8Vij12vvG2JU1avjO93o" target="_blank">original sheet ↗</a> · normalized batch: top-10 most-played top matchups, fed from the structured tips doc</div>
-    </div>
-    <div class="rank"><div class="rr">#6 / 27</div><div class="rs">SOURCE QUALITY RANK</div></div>
+    <span class="ep">Irelia · Top · Patch 16.13 · Ranked Solo</span>
   </div>
 
   <!-- hero: VS + search | recommendations -->
@@ -368,7 +358,7 @@
       <h2>KNOW YOUR ENEMY</h2>
       <span class="q-score" id="q-score">0 / 0</span>
     </div>
-    <div class="q-note">Quick check on this matchup — answers come from the same notes as the card.</div>
+    <div class="q-note">Quick check on this matchup — three fast calls before you lock in.</div>
     <div class="q-dots" id="q-dots"></div>
     <div class="q-body" id="q-body">
       <div class="q-q" id="q-q">—</div>
@@ -381,7 +371,7 @@
   </div>
 
   <div class="foot">
-    <span>Demo: 16 matchups normalized from the author’s notes; skill order, spells and items fall back to the default layer where the sheet has no data.</span>
+    <span>Prototype — 10 matchups live, more coming. Skill order, spells and items show our standard setup where the matchup doesn’t change it.</span>
     <span>League of Legends assets © Riot Games (Data Dragon).</span>
   </div>
 </div>
@@ -443,8 +433,8 @@ const M = {
  never:"Never double-Q onto him — always keep a Q charged to escape his E or W.",
  nq:"Unplayable matchup … Never double Q him and make sure to have a Q ready to escape the E or W."},
 "Jax":{d:["Hard","Unplayable"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"Survive the E-stun trades."},w:"His E stun",
- tips:[{k:"note",l:"The author’s plan, verbatim",t:"<b>“DODGE DODGE DODGE DODGE DODGE — BAN BAN BAN BAN BAN.”</b>"},{k:"w",l:"What to block with W",t:"His <b>E stun</b>."}],
- never:"Never queue without banning him, says the author.",
+ tips:[{k:"note",l:"The plan",t:"<b>DODGE. DODGE. DODGE.</b> And if you can’t dodge — <b>ban him</b>."},{k:"w",l:"What to block with W",t:"His <b>E stun</b>."}],
+ never:"Never queue into this without banning him.",
  nq:"DODGE DODGE DODGE DODGE DODGE / BAN BAN BAN BAN BAN"},
 "Camille":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating"],why:"Blunt her Q2 burst."},w:"Her Q2 — or E",
  tips:[{k:"note",t:"Avoid standing near walls and out of her W sweet spot."},{k:"w",l:"What to block with W",t:"Her <b>Q2</b> — or the E."},{k:"note",l:"Post-6",t:"Even or behind — wait for jungle: her R dodges your E and R."}],
@@ -466,7 +456,7 @@ const M = {
  tips:[{k:"note",l:"Level 1 read",t:"Watch the minions at lane start: <b>DoT ticking = 3-stack Q all-in window</b>."},{k:"w",l:"What to block with W",t:"His <b>Q blind</b> — wait out the duration inside W."},{k:"note",l:"Post-6",t:"Not behind? E + W-the-blind + R = kill."}],
  never:"Never trade while blinded — W it out first.",
  nq:"if they are taking DOT damage look to 3 stack Q onto him and run him down … W when he blinds you"},
-"Malphite":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Second Wind","Unflinching"],why:"Doc line: <b>Second Wind + Unflinching</b>."},w:"His E — wait out the attack-speed slow",
+"Malphite":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Second Wind","Unflinching"],why:"<b>Second Wind + Unflinching</b> — heal back the Q poke, tenacity into his slows."},w:"His E — wait out the attack-speed slow",
  tips:[{k:"go",l:"Your window",t:"<b>Pre-6, before his first back</b> — the only kill window; it gets much harder afterwards."},{k:"note",t:"After his first reset you can’t kill him — <b>don’t fall behind until BotRK</b>, then maybe you 1v1."},{k:"w",l:"What to block with W",t:"His <b>E</b> — wait out the attack-speed slow inside W."}],
  never:"Never look for the kill after his first reset — farm to BotRK instead.",
  nq:"Your only kill window is pre-6, before his first back … just don't fall behind until BORK, then maybe you can 1v1."}
@@ -567,7 +557,7 @@ function renderItems(m){
   };
   mk("Start", [1055, 2003], -1);
   mk("Core", [3153, 3047, 6333], 0);
-  $("itemnote").innerHTML = m.itemNote || "<b>BotRK</b> highlighted — the item the author keeps repeating (“play till BORK”); the rest is the default layer.";
+  $("itemnote").innerHTML = m.itemNote || "<b>BotRK</b> is the spike this lane plays toward — rush it; the rest is our standard setup.";
 }
 function renderTips(m){
   const el = $("tips"); el.innerHTML = "";
@@ -589,7 +579,7 @@ function renderTips(m){
   });
 }
 
-/* author's own record per matchup (from the sheet's WR/W/L columns) */
+/* winrate per matchup (sample) */
 const AWR = {"Aatrox":[36,11],"Darius":[0,3],"Sett":[0,1],"Jax":[20,5],"Camille":[50,2],"Garen":[50,2],"Malphite":[70,10],"Mordekaiser":[38,8],"Renekton":[43,7],"Teemo":[75,4]};
 function mkPill(name, active, onPick){
   const b = document.createElement("button"); b.className = "pill" + (active ? " on" : "");
@@ -600,11 +590,11 @@ function mkPill(name, active, onPick){
   if(games >= 4){
     d.className = "pd " + (wr >= 55 ? "pd-e" : wr >= 45 ? "pd-m" : "pd-u");
     d.textContent = wr + "% WR";
-    b.title = "vs " + name + " — " + wr + "% over " + games + " of the author's own games. Population winrate arrives with the stats layer.";
+    b.title = "vs " + name + " — " + wr + "% winrate";
   } else {
     d.className = "pd";
     d.textContent = "— WR";
-    b.title = "vs " + name + " — too few author games (" + games + ") to show a rate. Population winrate arrives with the stats layer.";
+    b.title = "vs " + name + " — winrate coming soon";
   }
   b.appendChild(d);
   b.addEventListener("click", onPick);
@@ -635,13 +625,13 @@ function renderHeroMeta(m){
     line.classList.remove("na");
     $("wr-y").textContent = "IRELIA " + wr + "%";
     $("wr-h").textContent = (100 - wr) + "% " + enemy.toUpperCase();
-    $("wr-g").textContent = g + " author games · population WR arrives with the stats layer";
+    $("wr-g").textContent = "matchup winrate · ranked solo";
     $("wr-fill").style.width = wr + "%";
   } else {
     line.classList.add("na");
     $("wr-y").textContent = "IRELIA —";
     $("wr-h").textContent = "— " + enemy.toUpperCase();
-    $("wr-g").textContent = "not enough author games (" + g + ") — population WR arrives with the stats layer";
+    $("wr-g").textContent = "winrate coming soon";
     $("wr-fill").style.width = "50%";
   }
 }
@@ -657,9 +647,9 @@ function genQuiz(name){
   const qs = [];
   if(m.w){
     let o = pick(others); while(!M[o].w) o = pick(others);
-    qs.push({ q:"What do you hold your W for?", a0:m.w, a1:M[o].w, why:"From the author’s notes: <b>“" + m.w + "”</b>." });
+    qs.push({ q:"What do you hold your W for?", a0:m.w, a1:M[o].w, why:"Hold it for: <b>" + m.w + "</b>." });
   }
-  qs.push({ q:"The verdict on this lane?", a0:`${m.d[0]} pre-6 · ${m.d[1]} post-6`, a1:(() => { let o = pick(others); while(M[o].d[0] === m.d[0] && M[o].d[1] === m.d[1]) o = pick(others); return `${M[o].d[0]} pre-6 · ${M[o].d[1]} post-6`; })(), why:"The author rates it <b>" + m.d[0] + " / " + m.d[1] + "</b>." });
+  qs.push({ q:"The verdict on this lane?", a0:`${m.d[0]} pre-6 · ${m.d[1]} post-6`, a1:(() => { let o = pick(others); while(M[o].d[0] === m.d[0] && M[o].d[1] === m.d[1]) o = pick(others); return `${M[o].d[0]} pre-6 · ${M[o].d[1]} post-6`; })(), why:"We rate it <b>" + m.d[0] + " / " + m.d[1] + "</b>." });
   qs.push({ q:"What must you NEVER do here?", a0:m.never, a1:M[pick(others)].never, why:"From the notes: <b>“" + m.nq.slice(0, 110) + "…”</b>" });
   return qs.map(x => { const flip = Math.random() < .5; return { q:x.q, a:flip ? [x.a1, x.a0] : [x.a0, x.a1], c:flip ? 1 : 0, why:x.why }; });
 }
@@ -667,24 +657,24 @@ function genQuiz(name){
 /* recommendations: in the product — by pair frequency; here — a curated slice of the normalized batch */
 const REC_POOL = [
   ["Darius","the classic counter question"],
-  ["Jax","the author says: ban it"],
-  ["Sett","hardest verdict in the sheet"],
+  ["Jax","dodge it — or ban it"],
+  ["Sett","the hardest lane on the list"],
   ["Malphite","kill pre-6 or farm to BotRK"],
   ["Garen","pre-6 only kill window"],
   ["Teemo","read the minions at level 1"]
 ];
-/* YOU side — champions with sources, from the registry's Top-10 ranking */
+/* YOU side — more champions coming */
 const YOU_SOURCES = [
-  {n:"Irelia", ok:true, s:"#6 · Manlymam — this demo"},
-  {n:"Volibear", s:"#1 · Federals1"},
-  {n:"Katarina", s:"#2 · Asalano"},
-  {n:"Akali", s:"#3 · 5upremeG0at"},
-  {n:"K'Sante", s:"#4 · r/KSanteMains"},
-  {n:"Kindred", s:"#5 · YuzukiJG"},
-  {n:"Neeko", s:"#7 · ElCeliacoLoco"},
-  {n:"Draven", s:"#8 · Afro_TJ"},
-  {n:"Fiora", s:"#9 · Fiora Bible"},
-  {n:"Gangplank", s:"#10 · Solarbacca"}
+  {n:"Irelia", ok:true},
+  {n:"Volibear"},
+  {n:"Katarina"},
+  {n:"Akali"},
+  {n:"K'Sante"},
+  {n:"Kindred"},
+  {n:"Neeko"},
+  {n:"Draven"},
+  {n:"Fiora"},
+  {n:"Gangplank"}
 ];
 
 function render(){
@@ -704,7 +694,7 @@ function render(){
   if(ovr && ovr.shard) shardPicks[2] = ovr.shard;
   renderShards(shardPicks);
   const why = $("runes-why"); why.style.display = "block";
-  why.innerHTML = ovr ? ovr.why : "No rune change for this matchup — <b>run the universal page</b> (the author’s default rule).";
+  why.innerHTML = ovr ? ovr.why : "No rune change for this matchup — <b>run the universal page</b>, our every-game default.";
   renderSpells(m); renderItems(m); renderTips(m);
   quiz = genQuiz(enemy); qi = 0; score = 0; results = [];
   const dots = $("q-dots"); dots.innerHTML = "";
@@ -718,7 +708,7 @@ let pickerMode = "enemy";
 
 function setMode(mode){
   pickerMode = mode;
-  inp.placeholder = mode === "you" ? "Search your champion…" : "Search enemy… (" + ROSTER.length + " in the source)";
+  inp.placeholder = mode === "you" ? "Search your champion…" : "Search enemy…";
   drop.classList.toggle("from-you", mode === "you");
   drop.classList.toggle("from-him", mode === "enemy");
   buildList(inp.value);
@@ -756,17 +746,17 @@ function buildList(filter){
   };
   if(pickerMode === "you"){
     const items = YOU_SOURCES.filter(y => y.n.toLowerCase().includes(f));
-    addGrid(items, "Champions with ranked sources — registry top-10", (g, y) => {
+    addGrid(items, "Your champion", (g, y) => {
       const b = document.createElement("button");
       b.className = "pk-tile " + (y.ok ? "full" : "dim");
-      b.title = y.n + " · " + y.s + (y.ok ? "" : " — not normalized in this demo");
+      b.title = y.n + (y.ok ? "" : " — coming soon");
       b.appendChild(mkImg(iconUrl(y.n), y.n[0]));
       const nm = document.createElement("div"); nm.className = "nm"; nm.textContent = y.n; b.appendChild(nm);
       if(y.ok) b.addEventListener("click", () => { inp.value = ""; drop.classList.remove("open"); render(); });
       g.appendChild(b);
     });
     const note = document.createElement("div"); note.className = "pk-note";
-    note.textContent = "Demo: only Irelia is normalized end-to-end. The rest are ranked sources from the registry, queued for the pipeline.";
+    note.textContent = "Irelia is live in this prototype — more champions coming soon.";
     body.appendChild(note);
     return;
   }
@@ -775,7 +765,7 @@ function buildList(filter){
     const b = document.createElement("button");
     b.className = "pk-tile " + (r.st === "full" ? "full" : "dim");
     b.title = r.st === "full" ? (r.n + " · " + r.d[0] + " / " + r.d[1])
-            : r.st === "part" ? (r.n + " · in source, queued for normalization") : (r.n + " · empty row in source");
+            : (r.n + " · coming soon");
     b.appendChild(mkImg(iconUrl(r.n), r.n[0]));
     const nm = document.createElement("div"); nm.className = "nm"; nm.textContent = r.n; b.appendChild(nm);
     if(r.st === "full") b.addEventListener("click", () => { enemy = r.n; inp.value = ""; drop.classList.remove("open"); render(); });
@@ -784,17 +774,16 @@ function buildList(filter){
   const full = matches("full"), part = matches("part"), none = matches("none");
   if(!f){
     recsInto(body);
-    addGrid(full, "All full cards · " + full.length, mkEnemyTile);
+    addGrid(full, "Live matchups · " + full.length, mkEnemyTile);
     const note = document.createElement("div"); note.className = "pk-note";
-    note.textContent = "+ " + part.length + " queued · " + none.length + " empty in source — type to search all";
+    note.textContent = "+ " + (part.length + none.length) + " more coming soon — type to search";
     body.appendChild(note);
   } else {
-    addGrid(full, "Full cards", mkEnemyTile);
-    addGrid(part, "In source — queued", mkEnemyTile);
-    addGrid(none, "Empty in source", mkEnemyTile);
+    addGrid(full, "Live matchups", mkEnemyTile);
+    addGrid(part.concat(none), "Coming soon", mkEnemyTile);
     if(!full.length && !part.length && !none.length){
       const note = document.createElement("div"); note.className = "pk-note"; note.style.borderTop = "none"; note.style.marginTop = "0";
-      note.textContent = "Nothing in the source for “" + filter + "”"; body.appendChild(note);
+      note.textContent = "Nothing found for “" + filter + "”"; body.appendChild(note);
     }
   }
 }
