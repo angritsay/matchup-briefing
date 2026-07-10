@@ -75,27 +75,32 @@
   .sel-input:focus{border-color:var(--gold3)}
   .sel-box .mag{position:absolute; left:13px; top:19px; transform:translateY(-50%); color:var(--dim2); font-size:14px}
   .sel-hint{font-size:10px; color:var(--dim2); margin-top:8px}
-  .droplist{position:absolute; z-index:40; left:0; right:0; top:calc(100% + 6px); max-height:300px; overflow:auto; overscroll-behavior:contain;
-    background:#0d1830; border:1px solid var(--line2); border-radius:12px; box-shadow:0 18px 50px rgba(0,0,0,.75), 0 0 0 1px rgba(0,0,0,.4); display:none}
+  .droplist{position:absolute; z-index:40; left:0; right:0; top:calc(100% + 8px); max-height:290px; overflow:auto; overscroll-behavior:contain;
+    background:#0e1a2f; border:1px solid var(--line2); border-radius:14px; padding:13px 14px 11px;
+    box-shadow:0 30px 70px rgba(0,0,0,.85), 0 4px 16px rgba(0,0,0,.5); display:none}
   .droplist.open{display:block}
   .droplist::-webkit-scrollbar{width:8px} .droplist::-webkit-scrollbar-thumb{background:var(--panel3); border-radius:4px}
-  .dl-item{display:flex; align-items:center; gap:10px; padding:8px 14px; cursor:pointer; border-left:3px solid transparent; background:#0d1830}
-  .dl-item:hover{background:#16294a; border-left-color:var(--gold3)}
-  .dl-item img,.dl-item .icon-fallback{width:26px; height:26px; border-radius:6px; flex:none}
-  .dl-item .n{font-size:12.5px; font-weight:700}
-  .dl-item .st{margin-left:auto; font-size:9px; font-weight:800; letter-spacing:.06em; color:var(--teal)}
-  .dl-item.part{cursor:default} .dl-item.part:hover{border-left-color:var(--dim2)}
-  .dl-item.part .st{color:var(--warn)} .dl-item.part .n{color:var(--dim)}
-  .dl-item.none{cursor:default; opacity:.55} .dl-item.none .st{color:var(--dim2)} .dl-item.none .n{color:var(--dim2)}
-  .dl-note{padding:9px 14px; font-size:10px; color:var(--dim2); background:#0b1526; border-top:1px solid var(--line); position:sticky; bottom:0}
+  .pk-t{font-size:8.5px; font-weight:800; letter-spacing:.18em; color:var(--dim2); text-transform:uppercase; margin:2px 0 9px}
+  .pk-t + .pk-grid ~ .pk-t{margin-top:14px}
+  .pk-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(46px, 1fr)); gap:9px 7px}
+  .pk-tile{cursor:pointer; text-align:center; position:relative; background:none; border:none; padding:0; font-family:var(--ff-body)}
+  .pk-tile img,.pk-tile .icon-fallback{width:100%; aspect-ratio:1; border-radius:9px; border:1px solid var(--line2); display:block; transition:transform .12s, border-color .12s}
+  .pk-tile.full img,.pk-tile.full .icon-fallback{box-shadow:0 0 0 1px rgba(10,200,185,.45)}
+  .pk-tile.full:hover img{transform:scale(1.08); border-color:var(--gold)}
+  .pk-tile .nm{font-size:8.5px; color:var(--dim); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600}
+  .pk-tile.dim{cursor:default}
+  .pk-tile.dim img,.pk-tile.dim .icon-fallback{filter:grayscale(1) brightness(.55)}
+  .pk-tile.dim .nm{color:var(--dim2)}
+  .pk-note{margin-top:11px; padding-top:9px; border-top:1px solid var(--line); font-size:10px; color:var(--dim2)}
 
-  .recs{display:flex; flex-direction:column; gap:7px}
-  .rec{display:flex; align-items:center; gap:10px; border:1px solid var(--line); background:rgba(10,20,40,.55); border-radius:10px; padding:7px 12px 7px 8px; cursor:pointer; transition:all .15s; font-family:var(--ff-body); color:var(--txt); text-align:left}
-  .rec:hover{border-color:var(--gold3); transform:translateX(3px)}
-  .rec img,.rec .icon-fallback{width:28px; height:28px; border-radius:7px; flex:none}
-  .rec .n{font-size:12.5px; font-weight:700}
-  .rec .why{font-size:9.5px; color:var(--dim2); margin-top:1px}
-  .rec .d{margin-left:auto; font-size:8.5px; font-weight:800; letter-spacing:.06em; padding:3px 7px; border-radius:5px; border:1px solid var(--line2); color:var(--dim); flex:none}
+  .recs{display:flex; flex-direction:column; gap:6px}
+  .rec{display:flex; align-items:center; gap:10px; border:1px solid var(--line); background:rgba(10,20,40,.4); border-radius:10px; padding:6px 11px 6px 7px; cursor:pointer; transition:border-color .15s, background .15s; font-family:var(--ff-body); color:var(--txt); text-align:left; min-height:44px}
+  .rec:hover{border-color:var(--gold3); background:rgba(22,41,74,.55)}
+  .rec img,.rec .icon-fallback{width:30px; height:30px; border-radius:7px; flex:none}
+  .rec .rw{min-width:0}
+  .rec .n{font-size:12px; font-weight:800; line-height:1.2}
+  .rec .why{font-size:9.5px; color:var(--dim2); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .rec .d{margin-left:auto; font-size:8px; font-weight:800; letter-spacing:.04em; padding:3px 7px; border-radius:5px; border:1px solid var(--line); color:var(--dim2); flex:none; white-space:nowrap}
 
   /* ===== sections ===== */
   .grid{display:grid; grid-template-columns:1.06fr 1fr; gap:16px; margin-top:16px}
@@ -578,7 +583,7 @@ function renderRecs(){
   REC_POOL.filter(([n]) => n !== enemy).slice(0, 4).forEach(([n, why]) => {
     const b = document.createElement("button"); b.className = "rec";
     b.appendChild(mkImg(iconUrl(n), n[0]));
-    const w = document.createElement("div");
+    const w = document.createElement("div"); w.className = "rw";
     w.innerHTML = `<div class="n">vs ${n}</div><div class="why">${why}</div>`;
     b.appendChild(w);
     const d = document.createElement("span"); d.className = "d"; d.textContent = M[n].d[0] + " / " + M[n].d[1]; b.appendChild(d);
@@ -622,27 +627,35 @@ function buildList(filter){
   const f = (filter || "").trim().toLowerCase();
   drop.innerHTML = "";
   const matches = st => ROSTER.filter(r => r.st === st && r.n.toLowerCase().includes(f));
-  const addItems = (items, st) => items.forEach(r => {
-    const d = document.createElement("div"); d.className = "dl-item " + r.st;
-    d.appendChild(mkImg(iconUrl(r.n), r.n[0]));
-    const n = document.createElement("span"); n.className = "n"; n.textContent = r.n; d.appendChild(n);
-    const s = document.createElement("span"); s.className = "st";
-    s.textContent = r.st === "full" ? (r.d[0] + " / " + r.d[1]) : r.st === "part" ? "queued · " + r.d[0] + " / " + r.d[1] : "no data in source";
-    d.appendChild(s);
-    if(r.st === "full") d.addEventListener("click", () => { enemy = r.n; inp.value = ""; drop.classList.remove("open"); render(); });
-    drop.appendChild(d);
-  });
+  const addGrid = (items, label) => {
+    if(!items.length) return;
+    const t = document.createElement("div"); t.className = "pk-t"; t.textContent = label; drop.appendChild(t);
+    const g = document.createElement("div"); g.className = "pk-grid";
+    items.forEach(r => {
+      const b = document.createElement("button");
+      b.className = "pk-tile " + (r.st === "full" ? "full" : "dim");
+      b.title = r.st === "full" ? (r.n + " · " + r.d[0] + " / " + r.d[1])
+              : r.st === "part" ? (r.n + " · in source, queued for normalization") : (r.n + " · empty row in source");
+      b.appendChild(mkImg(iconUrl(r.n), r.n[0]));
+      const nm = document.createElement("div"); nm.className = "nm"; nm.textContent = r.n; b.appendChild(nm);
+      if(r.st === "full") b.addEventListener("click", () => { enemy = r.n; inp.value = ""; drop.classList.remove("open"); render(); });
+      g.appendChild(b);
+    });
+    drop.appendChild(g);
+  };
   const full = matches("full"), part = matches("part"), none = matches("none");
   if(!f){
-    addItems(full, "full");
-    const note = document.createElement("div"); note.className = "dl-note";
-    note.textContent = "+ " + part.length + " queued and " + none.length + " empty rows — type to search them";
+    addGrid(full, "Full cards · " + full.length);
+    const note = document.createElement("div"); note.className = "pk-note";
+    note.textContent = "+ " + part.length + " queued · " + none.length + " empty in source — type to search all";
     drop.appendChild(note);
   } else {
-    addItems(full); addItems(part); addItems(none);
+    addGrid(full, "Full cards");
+    addGrid(part, "In source — queued");
+    addGrid(none, "Empty in source");
     if(!full.length && !part.length && !none.length){
-      const note = document.createElement("div"); note.className = "dl-note"; note.textContent = "Nothing in the source for “" + filter + "”";
-      drop.appendChild(note);
+      const note = document.createElement("div"); note.className = "pk-note"; note.style.borderTop = "none"; note.style.marginTop = "0";
+      note.textContent = "Nothing in the source for “" + filter + "”"; drop.appendChild(note);
     }
   }
 }
