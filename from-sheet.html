@@ -70,16 +70,54 @@
   .pk-modes{display:flex; gap:6px; margin-bottom:12px}
   .pm{font-size:9px; font-weight:800; letter-spacing:.12em; padding:5px 11px; border-radius:6px; border:1px solid var(--line2); color:var(--dim); cursor:pointer; background:none; font-family:var(--ff-body); text-transform:uppercase}
   .pm.on{color:var(--gold2); border-color:var(--gold3); background:rgba(200,170,110,.08)}
-  .vsc{cursor:pointer; border-radius:12px; padding:5px 8px; margin:-5px -8px; transition:background .15s}
-  .vsc:hover{background:rgba(22,41,74,.45)}
+  /* ===== splash hero ===== */
+  .hero-art{display:grid; grid-template-columns:1fr 1fr; height:236px; position:relative; border-radius:15px 15px 0 0; overflow:hidden}
+  .half{position:relative; overflow:hidden; border:none; padding:0; background:none; cursor:pointer; font-family:var(--ff-body); color:var(--txt); text-align:left}
+  .half img.splash{width:100%; height:100%; object-fit:cover; object-position:50% 15%; display:block; transition:transform .5s ease, filter .3s; filter:saturate(.95)}
+  .half.you::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(5,10,20,.2), rgba(5,10,20,.85) 97%), linear-gradient(0deg, rgba(5,10,20,.85), transparent 55%); box-shadow:inset 4px 0 30px -12px rgba(10,200,185,.6); pointer-events:none}
+  .half.him::after{content:""; position:absolute; inset:0; background:linear-gradient(270deg, rgba(5,10,20,.2), rgba(5,10,20,.85) 97%), linear-gradient(0deg, rgba(5,10,20,.85), transparent 55%); box-shadow:inset -4px 0 30px -12px rgba(232,64,87,.55); pointer-events:none}
+  .half:hover img.splash{transform:scale(1.06); filter:saturate(1.1) brightness(1.15)}
+  .half .swap{position:absolute; top:13px; z-index:3; opacity:0; transition:opacity .2s; font-size:9px; letter-spacing:.16em; font-weight:800; color:var(--gold2); background:rgba(5,10,20,.88); border:1px solid var(--gold3); border-radius:16px; padding:6px 12px; pointer-events:none}
+  .half.you .swap{left:16px} .half.him .swap{right:16px}
+  .half:hover .swap{opacity:1}
+  .idplate{position:absolute; bottom:14px; z-index:2; pointer-events:none}
+  .half.you .idplate{left:20px} .half.him .idplate{right:20px; text-align:right}
+  .idplate .side{font-size:9px; font-weight:800; letter-spacing:.3em}
+  .half.you .side{color:var(--teal); text-shadow:0 0 12px rgba(10,200,185,.8)}
+  .half.him .side{color:#ff7286; text-shadow:0 0 12px rgba(232,64,87,.8)}
+  .idplate .nm{font-family:var(--ff-disp); font-size:30px; font-weight:800; letter-spacing:.1em; color:var(--gold2); line-height:1.1; text-shadow:0 2px 18px rgba(0,0,0,.8)}
+  .idplate .rl{font-size:10.5px; color:var(--dim); letter-spacing:.08em}
+  .vs-medal{position:absolute; top:44%; left:50%; transform:translate(-50%,-50%); z-index:4; width:72px; height:72px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #1b2b4a, #0a1428 70%);
+    border:1px solid var(--gold3); box-shadow:0 0 0 4px rgba(5,10,20,.85), 0 0 0 5px var(--gold3), 0 0 34px rgba(200,170,110,.35);
+    display:flex; align-items:center; justify-content:center; pointer-events:none}
+  .vs-medal span{font-family:var(--ff-disp); font-weight:800; letter-spacing:.22em; font-size:15px; color:var(--gold); margin-right:-4px}
+  .patch-chip{position:absolute; top:calc(44% + 44px); left:50%; transform:translateX(-50%); z-index:4; font-size:9px; font-weight:800; letter-spacing:.18em; color:var(--dim); background:rgba(5,10,20,.9); border:1px solid var(--line2); border-radius:20px; padding:4px 11px; white-space:nowrap; pointer-events:none}
+  .tagsline{display:flex; gap:9px; padding:15px 22px 4px; flex-wrap:wrap}
+  .htag{font-size:9.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; padding:6px 13px; border-radius:7px; border:1px solid var(--line2); color:var(--dim); background:rgba(10,20,40,.6)}
+  .htag.good{color:var(--teal); border-color:rgba(10,200,185,.45)}
+  .htag.warn{color:var(--gold); border-color:rgba(200,170,110,.45)}
+  .htag.bad{color:#ff7286; border-color:rgba(232,64,87,.5); background:rgba(232,64,87,.07)}
+  .wrline{padding:10px 22px 18px}
+  .wr-lbls{display:flex; justify-content:space-between; font-size:10.5px; font-weight:800; letter-spacing:.1em; margin-bottom:6px}
+  .wr-lbls .y{color:var(--teal)} .wr-lbls .h{color:#ff7286} .wr-lbls .g{color:var(--dim2); font-weight:600; letter-spacing:.04em}
+  .wrtrack{height:15px; border-radius:8px; overflow:hidden; display:flex; border:1px solid var(--line2); position:relative; background:var(--red2, #3c1522)}
+  .wrtrack .wy{background:linear-gradient(90deg,#067d74,var(--teal)); box-shadow:2px 0 10px rgba(10,200,185,.5)}
+  .wrtrack .wh{background:linear-gradient(90deg,#a02a3d,var(--red)); flex:1}
+  .wrtrack .tick{position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(240,230,210,.35)}
+  .wrline.na .wrtrack{opacity:.4}
+  .picker-wrap{position:relative}
   .sel-box{position:relative}
   .sel-input{width:100%; background:rgba(6,11,22,.85); border:1px solid var(--line2); border-radius:10px; color:var(--txt); font-family:var(--ff-body); font-size:13px; padding:11px 14px 11px 38px; outline:none}
   .sel-input:focus{border-color:var(--gold3)}
   .sel-box .mag{position:absolute; left:13px; top:19px; transform:translateY(-50%); color:var(--dim2); font-size:14px}
   .sel-hint{font-size:10px; color:var(--dim2); margin-top:8px}
-  .droplist{position:absolute; z-index:40; left:0; right:0; top:calc(100% + 8px); max-height:290px; overflow:auto; overscroll-behavior:contain;
+  .droplist{position:absolute; z-index:45; left:20px; right:20px; top:8px; max-height:340px; overflow:auto; overscroll-behavior:contain;
     background:#0e1a2f; border:1px solid var(--line2); border-radius:14px; padding:13px 14px 11px;
     box-shadow:0 30px 70px rgba(0,0,0,.85), 0 4px 16px rgba(0,0,0,.5); display:none}
+  .droplist.from-you{right:auto; width:min(640px, calc(100% - 40px))}
+  .droplist.from-him{left:auto; width:min(640px, calc(100% - 40px))}
+  .droplist .sel-input{margin-bottom:12px; padding-left:14px}
   .droplist.open{display:block}
   .droplist::-webkit-scrollbar{width:8px} .droplist::-webkit-scrollbar-thumb{background:var(--panel3); border-radius:4px}
   .pk-t{font-size:8.5px; font-weight:800; letter-spacing:.18em; color:var(--dim2); text-transform:uppercase; margin:2px 0 9px}
@@ -95,14 +133,17 @@
   .pk-tile.dim .nm{color:var(--dim2)}
   .pk-note{margin-top:11px; padding-top:9px; border-top:1px solid var(--line); font-size:10px; color:var(--dim2)}
 
-  .recs{display:flex; flex-direction:column; gap:11px}
-  .rec{display:flex; align-items:center; gap:9px; border:1px solid var(--line); background:rgba(10,20,40,.4); border-radius:9px; padding:5px 10px 5px 6px; cursor:pointer; transition:border-color .15s, background .15s; font-family:var(--ff-body); color:var(--txt); text-align:left; min-height:38px}
-  .rec:hover{border-color:var(--gold3); background:rgba(22,41,74,.55)}
-  .rec img,.rec .icon-fallback{width:26px; height:26px; border-radius:6px; flex:none}
-  .rec .rw{min-width:0}
-  .rec .n{font-size:11.5px; font-weight:800; line-height:1.2}
-  .rec .why{font-size:9px; color:var(--dim2); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border-left:none; background:none; padding:0; border-radius:0}
-  .rec .d{margin-left:auto; font-size:7.5px; font-weight:800; letter-spacing:.04em; padding:2px 6px; border-radius:4px; border:1px solid var(--line); color:var(--dim2); flex:none; white-space:nowrap}
+  /* matchup pills (hero highlights + dropdown recommendations) */
+  .pillrow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .pillrow.hero-pills{padding:13px 22px 17px; border-top:1px solid var(--line)}
+  .pill{display:inline-flex; align-items:center; gap:9px; border:1px solid var(--line2); border-radius:24px; padding:5px 12px 5px 6px; background:rgba(10,20,40,.55); cursor:pointer; font-family:var(--ff-body); color:var(--txt); transition:border-color .15s, box-shadow .15s, background .15s}
+  .pill img,.pill .icon-fallback{width:26px; height:26px; border-radius:50%; flex:none}
+  .pill .pn{font-size:11.5px; font-weight:800; white-space:nowrap}
+  .pill .pd{font-size:8px; font-weight:800; letter-spacing:.04em; padding:2.5px 8px; border-radius:10px; border:1px solid var(--line2); color:var(--dim); white-space:nowrap}
+  .pill:hover:not(.on){border-color:var(--gold3); background:rgba(22,41,74,.6)}
+  .pill.on{border-color:var(--gold); background:rgba(200,170,110,.08); box-shadow:0 0 0 1px rgba(200,170,110,.35), 0 0 16px rgba(200,170,110,.22)}
+  .pill.on .pd{border-color:var(--gold3); color:var(--gold2)}
+  .pd.pd-e{color:var(--teal)} .pd.pd-m{color:var(--gold)} .pd.pd-h{color:var(--orange)} .pd.pd-u{color:#ff7286; border-color:rgba(232,64,87,.5)}
 
   /* ===== sections ===== */
   .grid{display:grid; grid-template-columns:1.06fr 1fr; gap:16px; margin-top:16px}
@@ -168,18 +209,24 @@
   .itemnote{font-size:10.5px; color:var(--dim); line-height:1.5; margin-top:9px}
   .itemnote b{color:var(--warn)}
 
-  /* ===== tips (flexible) ===== */
-  .tips{margin-top:14px; display:flex; flex-direction:column; gap:9px}
-  .tip{border:1px solid var(--line); border-left-width:3px; border-radius:11px; padding:12px 14px; background:rgba(18,35,64,.5)}
+  /* ===== tips (flexible, visual) ===== */
+  .tips{margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .tip{display:flex; gap:13px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:13px 15px; background:rgba(18,35,64,.5)}
+  .tip .ic{flex:none; width:38px; height:38px; border-radius:9px; border:1px solid var(--line2); overflow:hidden; display:flex; align-items:center; justify-content:center; background:#0a1428; font-size:16px}
+  .tip .ic img{width:100%; height:100%; display:block}
   .tip .tl{font-size:8.5px; font-weight:800; letter-spacing:.18em; margin-bottom:5px; text-transform:uppercase}
   .tip p{font-size:12.5px; color:var(--dim); line-height:1.6}
   .tip p b{color:var(--gold2)}
-  .tip.k-w{border-left-color:var(--red)} .tip.k-w .tl{color:#ff8c9c}
-  .tip.k-go{border-left-color:var(--teal); background:linear-gradient(90deg, rgba(10,200,185,.06), rgba(18,35,64,.5))} .tip.k-go .tl{color:var(--teal)}
-  .tip.k-note{border-left-color:var(--gold3)} .tip.k-note .tl{color:var(--gold)}
+  .tip.k-w{border-color:rgba(232,64,87,.35); background:linear-gradient(180deg, rgba(60,21,34,.4), rgba(18,35,64,.5))}
+  .tip.k-w .tl{color:#ff8c9c} .tip.k-w .ic{border-color:rgba(232,64,87,.5); box-shadow:0 0 12px rgba(232,64,87,.25)}
+  .tip.k-go{border-color:rgba(10,200,185,.4); background:linear-gradient(180deg, rgba(13,60,58,.35), rgba(18,35,64,.5))}
+  .tip.k-go .tl{color:var(--teal)} .tip.k-go .ic{border-color:rgba(10,200,185,.5); box-shadow:0 0 12px rgba(10,200,185,.25)}
+  .tip.k-note .tl{color:var(--gold)} .tip.k-note .ic{border-color:var(--gold3); color:var(--gold)}
   @keyframes redpulse{0%,100%{box-shadow:inset 0 0 26px rgba(232,64,87,.08)} 50%{box-shadow:inset 0 0 30px rgba(232,64,87,.15), 0 0 20px -6px rgba(232,64,87,.3)}}
-  .tip.k-never{border-color:rgba(232,64,87,.55); border-left-color:var(--red); background:linear-gradient(90deg, rgba(232,64,87,.14), rgba(232,64,87,.03)); animation:redpulse 3s ease-in-out infinite}
-  .tip.k-never .tl{color:#ff7286} .tip.k-never p{color:var(--gold2)}
+  .tip.k-never{grid-column:1 / -1; align-items:center; border-color:rgba(232,64,87,.55); background:linear-gradient(90deg, rgba(232,64,87,.14), rgba(232,64,87,.03)); animation:redpulse 3s ease-in-out infinite}
+  .tip.k-never .tl{color:#ff7286} .tip.k-never p{color:var(--gold2); font-size:13px}
+  .tip.k-never .ic{border-color:rgba(232,64,87,.5); background:rgba(232,64,87,.14)}
+  @media (max-width:840px){ .tips{grid-template-columns:1fr} }
 
   /* quiz */
   .quiz{margin-top:16px; padding:20px 22px}
@@ -235,32 +282,41 @@
 
   <!-- hero: VS + search | recommendations -->
   <div class="panel rise" style="--d:.08s; position:relative; z-index:30; background:#0c1729">
-    <div class="searchbar">
-      <div class="sel-box">
-        <span class="mag">⌕</span>
-        <input class="sel-input" id="sel-input" type="text" placeholder="Search enemy…" autocomplete="off">
-        <div class="droplist" id="droplist"></div>
-      </div>
-      <div class="sel-hint" id="sel-hint"></div>
+    <div class="hero-art">
+      <button class="half you" id="you-card" title="Change your champion">
+        <img class="splash" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Irelia_0.jpg" alt="Irelia" onerror="this.remove()">
+        <span class="swap">⌕ CHANGE CHAMPION</span>
+        <span class="idplate"><span class="side">YOU · TOP</span><span class="nm" style="display:block">IRELIA</span><span class="rl">The Blade Dancer</span></span>
+      </button>
+      <button class="half him" id="enemy-card" title="Change the enemy">
+        <img class="splash" id="enemy-splash" src="" alt="">
+        <span class="swap">⌕ CHANGE CHAMPION</span>
+        <span class="idplate"><span class="side">ENEMY · TOP</span><span class="nm" id="enemy-name" style="display:block">—</span><span class="rl" id="enemy-rl">—</span></span>
+      </button>
+      <div class="vs-medal"><span>VS</span></div>
+      <div class="patch-chip">PATCH 16.13 · RANKED SOLO</div>
     </div>
-    <div class="vs-head">
-      <div class="vsc you" id="you-card" title="Change your champion">
-        <img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/champion/Irelia.png" alt="Irelia" onerror="this.remove()">
-        <div><div class="side">YOU · TOP</div><div class="nm">IRELIA</div></div>
+    <div class="picker-wrap">
+      <div class="droplist" id="droplist">
+        <input class="sel-input" id="sel-input" type="text" placeholder="Search enemy…" autocomplete="off">
+        <div id="drop-body"></div>
       </div>
-      <div class="vs-mid">
-        <span class="v">VS</span>
-        <div class="diff-row" id="diff-row"></div>
-      </div>
-      <div class="vsc him" id="enemy-card" title="Change the enemy">
-        <img id="enemy-icon" src="" alt="">
-        <div><div class="side">ENEMY · TOP</div><div class="nm" id="enemy-name">—</div></div>
-      </div>
+    </div>
+    <div class="tagsline" id="hero-tags"></div>
+    <div class="wrline" id="wrline">
+      <div class="wr-lbls"><span class="y" id="wr-y">—</span><span class="g" id="wr-g">—</span><span class="h" id="wr-h">—</span></div>
+      <div class="wrtrack"><div class="wy" id="wr-fill" style="width:50%"></div><div class="wh"></div><div class="tick"></div></div>
     </div>
   </div>
 
-  <!-- runes -->
+  <!-- tips -->
   <div class="panel pad rise" style="--d:.12s">
+    <div class="sec-t">How to play it</div>
+    <div class="tips" id="tips"></div>
+  </div>
+
+  <!-- runes -->
+  <div class="panel pad rise" style="--d:.16s">
     <div class="sec-t">Runes</div>
     <div class="rtree">
       <div class="rcol">
@@ -294,12 +350,6 @@
       <div class="items" id="items"></div>
       <div class="itemnote" id="itemnote"></div>
     </div>
-  </div>
-
-  <!-- tips -->
-  <div class="panel pad rise" style="--d:.2s">
-    <div class="sec-t">How to play it</div>
-    <div class="tips" id="tips"></div>
   </div>
 
   <!-- quiz -->
@@ -541,9 +591,75 @@ function renderTips(m){
   if(m.never) list.push({k:"never", l:"Never do this", t:m.never});
   list.forEach(t => {
     const d = document.createElement("div"); d.className = "tip k-" + t.k;
-    d.innerHTML = (t.l ? `<div class="tl">${t.l}</div>` : "") + `<p>${t.t}</p>`;
+    const ic = document.createElement("div"); ic.className = "ic";
+    const WK = {"Aatrox":"AatroxQ","Darius":"DariusQ","Sett":"SettE","Jax":"JaxE","Camille":"CamilleQ","Fiora":"FioraW","Garen":"GarenQ","Gwen":"GwenQ","K'Sante":"KSanteQ","Kled":"KledQ","Mordekaiser":"MordekaiserE","Renekton":"RenektonW","Riven":"RivenQ","Teemo":"TeemoQ","Vayne":"VayneE","Yone":"YoneQ"};
+    if(t.k === "w" && WK[enemy]) ic.appendChild(mkImg(`${DD}/img/spell/${WK[enemy]}.png`, "W"));
+    else if(t.k === "go") ic.appendChild(mkImg(`${DD}/img/spell/IreliaE.png`, "E"));
+    else if(t.k === "never") ic.textContent = "⛔";
+    else ic.textContent = "◆";
+    d.appendChild(ic);
+    const body = document.createElement("div");
+    body.innerHTML = (t.l ? `<div class="tl">${t.l}</div>` : "") + `<p>${t.t}</p>`;
+    d.appendChild(body);
     el.appendChild(d);
   });
+}
+
+/* author's own record per matchup (from the sheet's WR/W/L columns) */
+const AWR = {"Aatrox":[36,11],"Darius":[0,3],"Sett":[0,1],"Jax":[20,5],"Camille":[50,2],"Fiora":[50,2],"Garen":[50,2],"Gwen":[50,6],"K'Sante":[100,2],"Kled":[0,2],"Mordekaiser":[38,8],"Renekton":[43,7],"Riven":[75,8],"Teemo":[75,4],"Vayne":[36,11],"Yone":[65,31]};
+function mkPill(name, active, onPick){
+  const b = document.createElement("button"); b.className = "pill" + (active ? " on" : "");
+  b.appendChild(mkImg(iconUrl(name), name[0]));
+  const n = document.createElement("span"); n.className = "pn"; n.textContent = "vs " + name; b.appendChild(n);
+  const [wr, games] = AWR[name] || [null, 0];
+  const d = document.createElement("span");
+  if(games >= 4){
+    d.className = "pd " + (wr >= 55 ? "pd-e" : wr >= 45 ? "pd-m" : "pd-u");
+    d.textContent = wr + "% WR";
+    b.title = "vs " + name + " — " + wr + "% over " + games + " of the author's own games. Population winrate arrives with the stats layer.";
+  } else {
+    d.className = "pd";
+    d.textContent = "— WR";
+    b.title = "vs " + name + " — too few author games (" + games + ") to show a rate. Population winrate arrives with the stats layer.";
+  }
+  b.appendChild(d);
+  b.addEventListener("click", onPick);
+  return b;
+}
+const TITLES = {"Aatrox":"The Darkin Blade","Darius":"The Hand of Noxus","Sett":"The Boss","Jax":"Grandmaster at Arms","Camille":"The Steel Shadow","Fiora":"The Grand Duelist","Garen":"The Might of Demacia","Gwen":"The Hallowed Seamstress","K'Sante":"The Pride of Nazumah","Kled":"The Cantankerous Cavalier","Mordekaiser":"The Iron Revenant","Renekton":"The Butcher of the Sands","Riven":"The Exile","Teemo":"The Swift Scout","Vayne":"The Night Hunter","Yone":"The Unforgotten"};
+const splashUrl = n => `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ICON_KEY[n] || n.replace(/[^A-Za-z]/g,"")}_0.jpg`;
+function heroTags(m){
+  const [a, b] = m.d, tags = [];
+  if(a === "Unplayable" || b === "Unplayable") tags.push(["Avoid — ban or dodge","bad"]);
+  else if(a === "Easy" && b === "Easy") tags.push(["Favors you","good"]);
+  else if(a === "Hard" && b === "Hard") tags.push(["Heavily unfavored","bad"]);
+  else if(a !== b) tags.push(["Swings with levels","warn"]);
+  else tags.push(["Skill matchup","warn"]);
+  tags.push(["Pre-6 " + a, a === "Easy" ? "good" : a === "Medium" ? "warn" : "bad"]);
+  tags.push(["Post-6 " + b, b === "Easy" ? "good" : b === "Medium" ? "warn" : "bad"]);
+  if(m.spells) tags.push(["Take Exhaust","warn"]);
+  return tags;
+}
+function renderHeroMeta(m){
+  const el = $("hero-tags"); el.innerHTML = "";
+  heroTags(m).forEach(([t, cls]) => {
+    const s = document.createElement("span"); s.className = "htag " + cls; s.textContent = t; el.appendChild(s);
+  });
+  const [wr, g] = AWR[enemy] || [null, 0];
+  const line = $("wrline");
+  if(g >= 4){
+    line.classList.remove("na");
+    $("wr-y").textContent = "IRELIA " + wr + "%";
+    $("wr-h").textContent = (100 - wr) + "% " + enemy.toUpperCase();
+    $("wr-g").textContent = g + " author games · population WR arrives with the stats layer";
+    $("wr-fill").style.width = wr + "%";
+  } else {
+    line.classList.add("na");
+    $("wr-y").textContent = "IRELIA —";
+    $("wr-h").textContent = "— " + enemy.toUpperCase();
+    $("wr-g").textContent = "not enough author games (" + g + ") — population WR arrives with the stats layer";
+    $("wr-fill").style.width = "50%";
+  }
 }
 
 const DCLS = {Easy:"d-e", Medium:"d-m", Hard:"d-h", Unplayable:"d-u"};
@@ -590,12 +706,10 @@ const YOU_SOURCES = [
 function render(){
   const m = M[enemy];
   $("enemy-name").textContent = enemy.toUpperCase();
-  $("enemy-icon").src = iconUrl(enemy);
-  const dr = $("diff-row"); dr.innerHTML = "";
-  [["PRE-6 ", m.d[0]], ["POST-6 ", m.d[1]]].forEach(([l, v]) => {
-    const s = document.createElement("span"); s.className = "dchip " + DCLS[v];
-    s.innerHTML = l + "<b>" + v.toUpperCase() + "</b>"; dr.appendChild(s);
-  });
+  $("enemy-rl").textContent = TITLES[enemy] || "";
+  const sp = $("enemy-splash");
+  if(sp){ sp.style.display = ""; sp.src = splashUrl(enemy); }
+  renderHeroMeta(m);
   const ovr = m.ovr;
   const primaryPicks = PAGE.primaryPicks.slice();
   if(ovr && ovr.keystone) primaryPicks[0] = ovr.keystone;
@@ -617,14 +731,15 @@ function render(){
 /* ---------- selector (search on top; recs inside; both sides switchable) ---------- */
 const drop = $("droplist"), inp = $("sel-input");
 let pickerMode = "enemy";
-const nFull = Object.keys(M).length;
-$("sel-hint").textContent = ROSTER.length + " champions in the source · " + nFull + " with full cards · click a portrait below to swap either side";
 
 function setMode(mode){
   pickerMode = mode;
-  inp.placeholder = mode === "you" ? "Search your champion…" : "Search enemy…";
-  buildList(inp.value); drop.classList.add("open");
+  inp.placeholder = mode === "you" ? "Search your champion…" : "Search enemy… (" + ROSTER.length + " in the source)";
+  drop.classList.toggle("from-you", mode === "you");
+  drop.classList.toggle("from-him", mode === "enemy");
+  buildList(inp.value);
 }
+function openPicker(mode){ setMode(mode); drop.classList.add("open"); inp.focus(); }
 function modeHeader(){
   const w = document.createElement("div"); w.className = "pk-modes";
   [["enemy","Change enemy"],["you","Change my champion"]].forEach(([m, label]) => {
@@ -637,29 +752,23 @@ function modeHeader(){
 }
 function recsInto(parent){
   const t = document.createElement("div"); t.className = "pk-t"; t.textContent = "Worth a look next"; parent.appendChild(t);
-  const wrap = document.createElement("div"); wrap.className = "recs"; wrap.style.marginBottom = "13px";
-  REC_POOL.filter(([n]) => n !== enemy).slice(0, 4).forEach(([n, why]) => {
-    const b = document.createElement("button"); b.className = "rec";
-    b.appendChild(mkImg(iconUrl(n), n[0]));
-    const w = document.createElement("div"); w.className = "rw";
-    w.innerHTML = `<div class="n">vs ${n}</div><div class="why">${why}</div>`;
-    b.appendChild(w);
-    const d = document.createElement("span"); d.className = "d"; d.textContent = M[n].d[0] + " / " + M[n].d[1]; b.appendChild(d);
-    b.addEventListener("click", () => { enemy = n; inp.value = ""; drop.classList.remove("open"); render(); });
-    wrap.appendChild(b);
+  const wrap = document.createElement("div"); wrap.className = "pillrow"; wrap.style.marginBottom = "14px";
+  REC_POOL.filter(([n]) => n !== enemy).slice(0, 4).forEach(([n]) => {
+    wrap.appendChild(mkPill(n, false, () => { enemy = n; inp.value = ""; drop.classList.remove("open"); render(); }));
   });
   parent.appendChild(wrap);
 }
 function buildList(filter){
   const f = (filter || "").trim().toLowerCase();
-  drop.innerHTML = "";
-  drop.appendChild(modeHeader());
+  const body = $("drop-body");
+  body.innerHTML = "";
+  body.appendChild(modeHeader());
   const addGrid = (items, label, mk) => {
     if(!items.length) return;
-    const t = document.createElement("div"); t.className = "pk-t"; t.textContent = label; drop.appendChild(t);
+    const t = document.createElement("div"); t.className = "pk-t"; t.textContent = label; body.appendChild(t);
     const g = document.createElement("div"); g.className = "pk-grid";
     items.forEach(mk.bind(null, g));
-    drop.appendChild(g);
+    body.appendChild(g);
   };
   if(pickerMode === "you"){
     const items = YOU_SOURCES.filter(y => y.n.toLowerCase().includes(f));
@@ -674,7 +783,7 @@ function buildList(filter){
     });
     const note = document.createElement("div"); note.className = "pk-note";
     note.textContent = "Demo: only Irelia is normalized end-to-end. The rest are ranked sources from the registry, queued for the pipeline.";
-    drop.appendChild(note);
+    body.appendChild(note);
     return;
   }
   const matches = st => ROSTER.filter(r => r.st === st && r.n.toLowerCase().includes(f));
@@ -690,26 +799,25 @@ function buildList(filter){
   };
   const full = matches("full"), part = matches("part"), none = matches("none");
   if(!f){
-    recsInto(drop);
+    recsInto(body);
     addGrid(full, "All full cards · " + full.length, mkEnemyTile);
     const note = document.createElement("div"); note.className = "pk-note";
     note.textContent = "+ " + part.length + " queued · " + none.length + " empty in source — type to search all";
-    drop.appendChild(note);
+    body.appendChild(note);
   } else {
     addGrid(full, "Full cards", mkEnemyTile);
     addGrid(part, "In source — queued", mkEnemyTile);
     addGrid(none, "Empty in source", mkEnemyTile);
     if(!full.length && !part.length && !none.length){
       const note = document.createElement("div"); note.className = "pk-note"; note.style.borderTop = "none"; note.style.marginTop = "0";
-      note.textContent = "Nothing in the source for “" + filter + "”"; drop.appendChild(note);
+      note.textContent = "Nothing in the source for “" + filter + "”"; body.appendChild(note);
     }
   }
 }
-inp.addEventListener("focus", () => { buildList(inp.value); drop.classList.add("open"); });
-inp.addEventListener("input", () => { buildList(inp.value); drop.classList.add("open"); });
-$("you-card").addEventListener("click", () => { setMode("you"); inp.focus(); });
-$("enemy-card").addEventListener("click", () => { setMode("enemy"); inp.focus(); });
-document.addEventListener("click", e => { if(!e.target.closest(".sel-box") && !e.target.closest(".vsc")) drop.classList.remove("open"); });
+inp.addEventListener("input", () => buildList(inp.value));
+$("you-card").addEventListener("click", e => { e.stopPropagation(); openPicker("you"); });
+$("enemy-card").addEventListener("click", e => { e.stopPropagation(); openPicker("enemy"); });
+document.addEventListener("click", e => { if(!e.target.closest(".droplist") && !e.target.closest(".half")) drop.classList.remove("open"); });
 document.addEventListener("keydown", e => { if(e.key === "Escape") drop.classList.remove("open"); });
 
 /* ---------- quiz engine ---------- */
