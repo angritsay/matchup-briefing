@@ -92,13 +92,13 @@
     border:1px solid var(--gold3); box-shadow:0 0 0 4px rgba(5,10,20,.85), 0 0 0 5px var(--gold3), 0 0 34px rgba(200,170,110,.35);
     display:flex; align-items:center; justify-content:center; pointer-events:none}
   .vs-medal span{font-family:var(--ff-disp); font-weight:800; letter-spacing:.22em; font-size:15px; color:var(--gold); margin-right:-4px}
-  .patch-chip{position:absolute; top:calc(44% + 44px); left:50%; transform:translateX(-50%); z-index:4; font-size:9px; font-weight:800; letter-spacing:.18em; color:var(--dim); background:rgba(5,10,20,.9); border:1px solid var(--line2); border-radius:20px; padding:4px 11px; white-space:nowrap; pointer-events:none}
-  .tagsline{display:flex; gap:9px; padding:15px 22px 4px; flex-wrap:wrap}
+  .vs-tags{position:absolute; top:calc(44% + 48px); left:50%; transform:translateX(-50%); z-index:4; display:flex; gap:8px; justify-content:center; flex-wrap:wrap; max-width:92%; pointer-events:none}
+  .vs-tags .htag{background:rgba(5,10,20,.88); white-space:nowrap}
   .htag{font-size:9.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; padding:6px 13px; border-radius:7px; border:1px solid var(--line2); color:var(--dim); background:rgba(10,20,40,.6)}
   .htag.good{color:var(--teal); border-color:rgba(10,200,185,.45)}
   .htag.warn{color:var(--gold); border-color:rgba(200,170,110,.45)}
   .htag.bad{color:#ff7286; border-color:rgba(232,64,87,.5); background:rgba(232,64,87,.07)}
-  .wrline{padding:10px 22px 18px}
+  .wrline{padding:17px 22px 18px}
   .wr-lbls{display:flex; justify-content:space-between; font-size:10.5px; font-weight:800; letter-spacing:.1em; margin-bottom:6px}
   .wr-lbls .y{color:var(--teal)} .wr-lbls .h{color:#ff7286} .wr-lbls .g{color:var(--dim2); font-weight:600; letter-spacing:.04em}
   .wrtrack{height:15px; border-radius:8px; overflow:hidden; display:flex; border:1px solid var(--line2); position:relative; background:var(--red2, #3c1522)}
@@ -267,7 +267,7 @@
 <div class="page">
   <div class="top rise">
     <span class="mark">MATCH<b>UP</b></span>
-    <span class="ep">Pipeline demo v3 · Irelia · top</span>
+    <span class="ep">Pipeline demo v3 · Irelia · top · Patch 16.13 ranked solo</span>
   </div>
 
   <!-- the single source reference -->
@@ -294,7 +294,7 @@
         <span class="idplate"><span class="side">ENEMY · TOP</span><span class="nm" id="enemy-name" style="display:block">—</span><span class="rl" id="enemy-rl">—</span></span>
       </button>
       <div class="vs-medal"><span>VS</span></div>
-      <div class="patch-chip">PATCH 16.13 · RANKED SOLO</div>
+      <div class="vs-tags" id="hero-tags"></div>
     </div>
     <div class="picker-wrap">
       <div class="droplist" id="droplist">
@@ -302,7 +302,6 @@
         <div id="drop-body"></div>
       </div>
     </div>
-    <div class="tagsline" id="hero-tags"></div>
     <div class="wrline" id="wrline">
       <div class="wr-lbls"><span class="y" id="wr-y">—</span><span class="g" id="wr-g">—</span><span class="h" id="wr-h">—</span></div>
       <div class="wrtrack"><div class="wy" id="wr-fill" style="width:50%"></div><div class="wh"></div><div class="tick"></div></div>
