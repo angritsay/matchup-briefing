@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matchup Page — generated from source · Irelia (Manlymam sheet)</title>
-<meta property="og:title" content="Matchup Page — generated 1:1 from a community source">
-<meta property="og:description" content="Every block on this page comes from a Challenger matchup sheet. Empty blocks = not present in source.">
+<meta property="og:title" content="Matchup Page — generated from source data">
+<meta property="og:description" content="Searchable across the whole source sheet. Rune tree, skill order, spells & items — each block labeled with its data layer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -13,7 +13,7 @@
     --bg0:#050a14; --panel:#0e1b30; --panel2:#122340; --panel3:#16294a;
     --line:#1e3251; --line2:#2a4270;
     --gold:#c8aa6e; --gold2:#f0e6d2; --gold3:#785a28;
-    --teal:#0ac8b9; --red:#e84057; --warn:#f5b04d; --orange:#ff9f43;
+    --teal:#0ac8b9; --red:#e84057; --warn:#f5b04d; --orange:#ff9f43; --purple:#9d7bff;
     --txt:#e8eef7; --dim:#93a5c2; --dim2:#5b6f92;
     --ff-disp:"Cinzel", Georgia, serif; --ff-body:"Inter", -apple-system, "Segoe UI", sans-serif;
   }
@@ -23,7 +23,7 @@
       radial-gradient(1000px 460px at 80% -10%, rgba(232,64,87,.08) 0%, transparent 55%),
       var(--bg0);
     color:var(--txt); font-family:var(--ff-body); font-size:14px; min-height:100vh; padding:34px 20px 90px}
-  .page{max-width:980px; margin:0 auto}
+  .page{max-width:1040px; margin:0 auto}
   @keyframes rise{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
   .rise{animation:rise .5s cubic-bezier(.2,.7,.2,1) both; animation-delay:var(--d,0s)}
   .top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px}
@@ -31,97 +31,156 @@
   .mark b{color:var(--teal)}
   .ep{font-size:10px; letter-spacing:.2em; color:var(--dim2); font-weight:700; text-transform:uppercase}
   .panel{background:linear-gradient(180deg, rgba(18,35,64,.55), rgba(9,17,32,.9)); border:1px solid var(--line); border-radius:16px}
+  .icon-fallback{display:inline-flex; align-items:center; justify-content:center; background:var(--panel3); color:var(--gold); font-weight:800; border:1px solid var(--line2); font-size:10px}
 
-  /* source banner */
-  .src-banner{display:flex; gap:14px; align-items:center; padding:13px 18px; border:1px solid rgba(10,200,185,.35); border-radius:14px;
+  .src-banner{display:flex; gap:14px; align-items:center; padding:12px 18px; border:1px solid rgba(10,200,185,.35); border-radius:14px;
     background:linear-gradient(90deg, rgba(10,200,185,.10), rgba(10,20,40,.6)); margin-bottom:16px; flex-wrap:wrap}
   .src-banner .tag{flex:none; font-size:9px; font-weight:800; letter-spacing:.18em; color:var(--teal); border:1px dashed rgba(10,200,185,.5); border-radius:5px; padding:3px 9px}
   .src-banner p{font-size:11.5px; color:var(--dim); line-height:1.55}
   .src-banner p b{color:var(--gold2)}
   .src-banner a{color:var(--teal); text-decoration:none}
 
-  /* vs head */
-  .vs-head{display:grid; grid-template-columns:1fr auto 1fr; gap:16px; padding:18px 22px; align-items:center}
+  /* layer chips */
+  .lchip{flex:none; font-size:8.5px; font-weight:800; letter-spacing:.1em; border-radius:4px; padding:2px 7px; text-transform:uppercase; cursor:help}
+  .l-sheet{color:var(--teal); border:1px dashed rgba(10,200,185,.5)}
+  .l-def{color:var(--dim2); border:1px dashed var(--line2)}
+  .l-mention{color:var(--warn); border:1px dashed rgba(245,176,77,.5)}
+
+  /* ===== hero + selector ===== */
+  .vs-head{display:grid; grid-template-columns:1fr auto 1fr; gap:16px; padding:18px 22px 12px; align-items:center}
   .vsc{display:flex; align-items:center; gap:12px; min-width:0}
   .vsc.him{flex-direction:row-reverse; text-align:right}
-  .vsc img{width:56px; height:56px; border-radius:12px; border:1px solid var(--line2)}
-  .vsc.you img{box-shadow:0 0 0 1px rgba(10,200,185,.6), 0 0 20px rgba(10,200,185,.18)}
-  .vsc.him img{box-shadow:0 0 0 1px rgba(232,64,87,.6), 0 0 20px rgba(232,64,87,.15)}
+  .vsc img{width:54px; height:54px; border-radius:12px; border:1px solid var(--line2)}
+  .vsc.you img{box-shadow:0 0 0 1px rgba(10,200,185,.6)}
+  .vsc.him img{box-shadow:0 0 0 1px rgba(232,64,87,.6)}
   .vsc .side{font-size:9px; font-weight:800; letter-spacing:.24em}
   .vsc.you .side{color:var(--teal)} .vsc.him .side{color:#ff7286}
-  .vsc .nm{font-family:var(--ff-disp); font-size:20px; font-weight:700; letter-spacing:.1em; color:var(--gold2)}
+  .vsc .nm{font-family:var(--ff-disp); font-size:19px; font-weight:700; letter-spacing:.1em; color:var(--gold2)}
   .vs-mid{text-align:center}
-  .vs-mid .v{font-family:var(--ff-disp); font-weight:800; letter-spacing:.3em; font-size:13px; color:var(--gold); border:1px solid var(--gold3); border-radius:20px; padding:6px 12px 5px 16px; display:inline-block}
-  .diff-row{display:flex; gap:8px; justify-content:center; margin-top:10px}
-  .dchip{font-size:9.5px; font-weight:800; letter-spacing:.1em; padding:5px 11px; border-radius:6px; border:1px solid var(--line2); color:var(--dim)}
-  .dchip b{margin-left:5px}
-  .d-easy{border-color:rgba(10,200,185,.5)} .d-easy b{color:var(--teal)}
-  .d-medium{border-color:rgba(200,170,110,.5)} .d-medium b{color:var(--gold)}
-  .d-hard{border-color:rgba(255,159,67,.5)} .d-hard b{color:var(--orange)}
-  .d-unplayable{border-color:rgba(232,64,87,.6); background:rgba(232,64,87,.08)} .d-unplayable b{color:#ff7286}
+  .vs-mid .v{font-family:var(--ff-disp); font-weight:800; letter-spacing:.3em; font-size:12px; color:var(--gold); border:1px solid var(--gold3); border-radius:20px; padding:5px 11px 4px 15px; display:inline-block}
+  .diff-row{display:flex; gap:8px; justify-content:center; margin-top:9px}
+  .dchip{font-size:9px; font-weight:800; letter-spacing:.1em; padding:4px 10px; border-radius:6px; border:1px solid var(--line2); color:var(--dim)}
+  .dchip b{margin-left:4px}
+  .d-e b{color:var(--teal)} .d-e{border-color:rgba(10,200,185,.5)}
+  .d-m b{color:var(--gold)} .d-m{border-color:rgba(200,170,110,.5)}
+  .d-h b{color:var(--orange)} .d-h{border-color:rgba(255,159,67,.5)}
+  .d-u b{color:#ff7286} .d-u{border-color:rgba(232,64,87,.6); background:rgba(232,64,87,.08)}
 
-  /* enemy switcher */
-  .switch{display:flex; gap:8px; padding:0 22px 16px; flex-wrap:wrap}
-  .sw{appearance:none; display:flex; align-items:center; gap:9px; border:1px solid var(--line); background:rgba(10,20,40,.6); color:var(--dim); border-radius:10px; padding:7px 14px 7px 8px; cursor:pointer; font-family:var(--ff-body); font-weight:700; font-size:12px; transition:all .15s}
-  .sw img{width:26px; height:26px; border-radius:6px}
-  .sw:hover{color:var(--txt); border-color:var(--line2)}
-  .sw.on{border-color:var(--gold3); color:var(--gold2); background:rgba(200,170,110,.08)}
-  .sw .d{font-size:8.5px; font-weight:800; letter-spacing:.08em; padding:2px 6px; border-radius:4px; border:1px solid var(--line2)}
+  .selector{padding:0 22px 18px; position:relative}
+  .sel-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .sel-box{flex:1; min-width:260px; position:relative}
+  .sel-input{width:100%; background:rgba(6,11,22,.8); border:1px solid var(--line2); border-radius:10px; color:var(--txt); font-family:var(--ff-body); font-size:13px; padding:11px 14px 11px 38px; outline:none}
+  .sel-input:focus{border-color:var(--gold3)}
+  .sel-box .mag{position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--dim2); font-size:14px}
+  .sel-count{font-size:10.5px; color:var(--dim2)}
+  .droplist{position:absolute; z-index:20; left:22px; right:22px; top:calc(100% - 8px); max-height:340px; overflow:auto; background:#0b1526; border:1px solid var(--line2); border-radius:12px; box-shadow:0 24px 60px rgba(0,0,0,.6); display:none}
+  .droplist.open{display:block}
+  .dl-group{font-size:9px; font-weight:800; letter-spacing:.18em; color:var(--dim2); padding:10px 14px 6px; text-transform:uppercase; position:sticky; top:0; background:#0b1526}
+  .dl-item{display:flex; align-items:center; gap:10px; padding:7px 14px; cursor:pointer; border-left:3px solid transparent}
+  .dl-item:hover{background:rgba(22,41,74,.6); border-left-color:var(--gold3)}
+  .dl-item img,.dl-item .icon-fallback{width:26px; height:26px; border-radius:6px; flex:none}
+  .dl-item .n{font-size:12.5px; font-weight:700}
+  .dl-item .st{margin-left:auto; font-size:9px; font-weight:800; letter-spacing:.06em}
+  .dl-item.full .st{color:var(--teal)}
+  .dl-item.part{opacity:.75; cursor:default} .dl-item.part:hover{border-left-color:var(--dim2)}
+  .dl-item.part .st{color:var(--warn)}
+  .dl-item.none{opacity:.4; cursor:default} .dl-item.none .st{color:var(--dim2)}
 
-  .grid{display:grid; grid-template-columns:1fr 1.15fr; gap:16px; margin-top:16px}
+  /* ===== grid ===== */
+  .grid{display:grid; grid-template-columns:1.06fr 1fr; gap:16px; margin-top:16px}
   .panel.pad{padding:18px 20px}
-  .sec-t{font-size:10px; font-weight:800; letter-spacing:.22em; color:var(--gold); text-transform:uppercase; display:flex; align-items:center; gap:10px}
+  .sec-t{font-size:10px; font-weight:800; letter-spacing:.22em; color:var(--gold); text-transform:uppercase; display:flex; align-items:center; gap:9px; flex-wrap:wrap}
   .sec-t::after{content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--gold3), transparent)}
-  .q-src{margin-left:auto; flex:none; font-size:9px; letter-spacing:.06em; color:var(--dim2); border:1px dashed var(--line2); border-radius:4px; padding:2px 7px; cursor:help; text-transform:none}
 
-  /* runes */
-  .runes-two{display:flex; flex-direction:column; gap:14px; margin-top:14px}
-  .rgroup .rgt{font-size:9px; font-weight:800; letter-spacing:.16em; color:var(--dim2); margin-bottom:8px; display:flex; gap:8px; align-items:center}
-  .rgroup .rgt img{width:16px; height:16px}
-  .rrow{display:flex; gap:8px; flex-wrap:wrap}
-  .rpill{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--gold3); background:rgba(200,170,110,.06); border-radius:22px; padding:5px 13px 5px 6px; font-size:11.5px; font-weight:700}
-  .rpill img,.rpill .icon-fallback{width:24px; height:24px; border-radius:50%; border:1px solid var(--gold3); background:#0a1428}
-  .rpill.ovr{border-color:rgba(10,200,185,.55); background:rgba(10,200,185,.07)}
-  .icon-fallback{display:inline-flex; align-items:center; justify-content:center; background:var(--panel3); color:var(--gold); font-weight:800; border:1px solid var(--line2); font-size:10px}
-  .why{font-size:11px; color:var(--dim); line-height:1.55; margin-top:9px; border-left:3px solid rgba(10,200,185,.5); background:rgba(10,200,185,.05); border-radius:0 8px 8px 0; padding:8px 12px}
+  /* ===== rune tree ===== */
+  .rtree{display:grid; grid-template-columns:1.2fr 1fr .55fr; gap:0; margin-top:14px}
+  .rcol{padding:0 14px}
+  .rcol + .rcol{border-left:1px solid var(--line)}
+  .rcol:first-child{padding-left:0} .rcol:last-child{padding-right:0}
+  .rt-hd{display:flex; align-items:center; gap:8px; font-size:9.5px; font-weight:800; letter-spacing:.14em; color:var(--dim); margin-bottom:12px; min-height:28px}
+  .rt-hd img{width:20px; height:20px}
+  .rt-hd .ovr-tag{margin-left:auto; font-size:8px; font-weight:800; letter-spacing:.08em; color:var(--teal); border:1px dashed rgba(10,200,185,.5); border-radius:4px; padding:2px 6px}
+  .trow{display:flex; gap:14px; justify-content:flex-start; align-items:center; padding:7px 0}
+  .trow.ks{padding-bottom:11px; margin-bottom:5px; border-bottom:1px solid var(--line)}
+  .rnode{position:relative; flex:none}
+  .rnode img,.rnode .icon-fallback{width:30px; height:30px; border-radius:50%; display:block; filter:grayscale(1) brightness(.5); border:1px solid var(--line); background:#0a1428; transition:filter .2s}
+  .trow.ks .rnode img,.trow.ks .rnode .icon-fallback{width:38px; height:38px}
+  .rnode.pick img,.rnode.pick .icon-fallback{filter:none; border-color:var(--gold)}
+  .rnode.pick::after{content:""; position:absolute; inset:-4px; border:2px solid var(--gold); border-radius:50%; box-shadow:0 0 12px rgba(200,170,110,.5)}
+  .rnode.pick.tealpick::after{border-color:var(--teal); box-shadow:0 0 12px rgba(10,200,185,.5)}
+  .rnode.pick.tealpick img{border-color:var(--teal)}
+  .shrow{display:flex; gap:12px; align-items:center; padding:8px 0}
+  .shnode{position:relative}
+  .shnode img,.shnode .icon-fallback{width:20px; height:20px; border-radius:50%; filter:grayscale(1) brightness(.5); border:1px solid var(--line); background:#0a1428; display:block}
+  .shnode.pick img,.shnode.pick .icon-fallback{filter:none; border-color:var(--gold)}
+  .shnode.pick::after{content:""; position:absolute; inset:-3px; border:1.5px solid var(--gold); border-radius:50%}
+  .why{font-size:11px; color:var(--dim); line-height:1.55; margin-top:12px; border-left:3px solid rgba(10,200,185,.5); background:rgba(10,200,185,.05); border-radius:0 8px 8px 0; padding:8px 12px}
   .why b{color:var(--gold2)}
-  .shards{margin-top:4px; font-size:10px; color:var(--dim); display:flex; gap:6px; flex-wrap:wrap}
-  .shards span{border:1px solid var(--line); border-radius:14px; padding:3px 9px; background:rgba(10,20,40,.5)}
 
-  /* empty block */
-  .empty-block{border:1.5px dashed var(--line2); border-radius:12px; padding:14px 16px; margin-top:14px; color:var(--dim2); font-size:11.5px; line-height:1.6; background:rgba(10,20,40,.3)}
-  .empty-block b{color:var(--dim); font-weight:800; letter-spacing:.14em; font-size:9px; text-transform:uppercase; display:block; margin-bottom:5px}
+  /* ===== loadout row: skills / spells / items ===== */
+  .loadrow{display:grid; grid-template-columns:1.35fr .65fr; gap:16px; margin-top:16px}
+  .skillgrid{margin-top:12px; overflow-x:auto}
+  .skillgrid table{border-collapse:separate; border-spacing:3px}
+  .skillgrid th{font-size:9px; color:var(--dim2); font-weight:800; padding:0 2px}
+  .skillgrid td{width:22px; height:22px; border-radius:5px; background:rgba(10,20,40,.6); border:1px solid var(--line); text-align:center; font-size:9px; font-weight:800; color:#0b1220}
+  .skillgrid .rowlab{width:auto; background:none; border:none}
+  .skillgrid .rowlab img{width:22px; height:22px; border-radius:5px; border:1px solid var(--line2); display:block}
+  td.f-q{background:linear-gradient(180deg,#3ee6d8,var(--teal)); border-color:var(--teal)}
+  td.f-w{background:linear-gradient(180deg,#ecd7a4,var(--gold)); border-color:var(--gold)}
+  td.f-e{background:linear-gradient(180deg,#b7a4ff,var(--purple)); border-color:var(--purple)}
+  td.f-r{background:linear-gradient(180deg,#ff8c9c,var(--red)); border-color:var(--red)}
+  .prio{display:flex; gap:8px; align-items:center; margin-top:10px; font-size:11px; color:var(--dim)}
+  .prio .pchip{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--gold3); border-radius:16px; padding:4px 10px 4px 5px; font-weight:800; color:var(--gold2); font-size:11px}
+  .prio .pchip img{width:20px; height:20px; border-radius:4px}
+  .prio .gt{color:var(--gold3); font-weight:800}
 
-  /* windows + plan */
+  .spellrow{display:flex; gap:10px; margin-top:12px; align-items:center; flex-wrap:wrap}
+  .spell{display:flex; flex-direction:column; align-items:center; gap:5px}
+  .spell img,.spell .icon-fallback{width:40px; height:40px; border-radius:9px; border:1px solid var(--gold3)}
+  .spell em{font-style:normal; font-size:9px; font-weight:800; color:var(--dim); letter-spacing:.06em}
+  .spell.ovr img{border-color:var(--teal); box-shadow:0 0 12px rgba(10,200,185,.35)}
+  .spell.ovr em{color:var(--teal)}
+  .items{display:flex; gap:14px; margin-top:12px; flex-wrap:wrap}
+  .igroup .gl{font-size:8.5px; font-weight:800; letter-spacing:.14em; color:var(--dim2); text-transform:uppercase; margin-bottom:7px; display:flex; gap:6px; align-items:center}
+  .irow{display:flex; gap:7px; align-items:center}
+  .bi{width:40px; text-align:center; flex:none}
+  .bi .im{width:40px; height:40px; border-radius:8px; overflow:hidden; border:1px solid var(--gold3); background:#0a1428}
+  .bi img{width:100%; height:100%; display:block}
+  .bi.mn .im{border-color:rgba(245,176,77,.6); box-shadow:0 0 10px rgba(245,176,77,.25)}
+  .arrow{color:var(--gold3); font-weight:800}
+  .itemnote{font-size:10.5px; color:var(--dim); line-height:1.5; margin-top:9px}
+  .itemnote b{color:var(--warn)}
+
+  /* ===== windows / plan / never ===== */
   .windows{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px}
   .win{border-radius:12px; padding:12px 13px; border:1px solid rgba(232,64,87,.32); background:linear-gradient(180deg, rgba(60,21,34,.5), rgba(26,11,18,.45))}
   .win.opp{border-color:rgba(10,200,185,.4); background:linear-gradient(180deg, rgba(13,60,58,.48), rgba(7,26,26,.45))}
   .win .w-k{font-size:8.5px; font-weight:800; letter-spacing:.16em; color:#ff8c9c; display:flex; align-items:center; gap:7px}
   .win.opp .w-k{color:var(--teal)}
   .win img{width:24px; height:24px; border-radius:5px; border:1px solid var(--line2)}
-  .win h4{font-size:12px; font-weight:800; margin-top:7px}
+  .win h4{font-size:12px; font-weight:800; margin-top:7px; line-height:1.35}
   .win p{font-size:10.5px; color:var(--dim); line-height:1.5; margin-top:4px}
-  .plan-notes{margin-top:14px; display:flex; flex-direction:column; gap:9px}
+  .plan-notes{margin-top:12px; display:flex; flex-direction:column; gap:9px}
   .pnote{background:rgba(18,35,64,.5); border:1px solid var(--line); border-radius:11px; padding:12px 14px}
   .pnote .pk{font-size:8.5px; font-weight:800; letter-spacing:.18em; color:var(--teal)}
-  .pnote p{font-size:12.5px; color:var(--dim); line-height:1.65; margin-top:5px}
+  .pnote p{font-size:12.5px; color:var(--dim); line-height:1.6; margin-top:5px}
   .pnote p b{color:var(--gold2)}
   @keyframes redpulse{0%,100%{box-shadow:inset 0 0 26px rgba(232,64,87,.08)} 50%{box-shadow:inset 0 0 30px rgba(232,64,87,.15), 0 0 20px -6px rgba(232,64,87,.3)}}
-  .never{display:flex; gap:13px; align-items:center; border:1px solid rgba(232,64,87,.55); border-radius:13px; padding:13px 16px; margin-top:12px;
+  .never{display:flex; gap:13px; align-items:center; border:1px solid rgba(232,64,87,.55); border-radius:13px; padding:12px 15px; margin-top:12px;
     background:linear-gradient(90deg, rgba(232,64,87,.16), rgba(232,64,87,.04)); animation:redpulse 3s ease-in-out infinite}
-  .never .sk{flex:none; width:36px; height:36px; border-radius:9px; background:rgba(232,64,87,.16); border:1px solid rgba(232,64,87,.5); display:flex; align-items:center; justify-content:center; font-size:16px}
-  .never h4{font-size:9.5px; font-weight:800; letter-spacing:.26em; color:#ff7286}
-  .never p{font-size:12.5px; line-height:1.5; margin-top:3px; color:var(--gold2)}
+  .never .sk{flex:none; width:34px; height:34px; border-radius:9px; background:rgba(232,64,87,.16); border:1px solid rgba(232,64,87,.5); display:flex; align-items:center; justify-content:center; font-size:15px}
+  .never h4{font-size:9px; font-weight:800; letter-spacing:.26em; color:#ff7286}
+  .never p{font-size:12px; line-height:1.5; margin-top:3px; color:var(--gold2)}
 
   /* quiz */
   .quiz{margin-top:16px; padding:20px 22px}
   .q-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
-  .q-head h2{font-family:var(--ff-disp); font-size:17px; letter-spacing:.12em; color:var(--gold2); font-weight:700}
+  .q-head h2{font-family:var(--ff-disp); font-size:16px; letter-spacing:.12em; color:var(--gold2); font-weight:700}
   .q-score{margin-left:auto; font-size:10.5px; font-weight:800; letter-spacing:.12em; color:var(--gold); border:1px solid var(--gold3); border-radius:18px; padding:5px 12px}
   .q-note{font-size:10.5px; color:var(--dim2); margin-top:4px}
-  .q-body{display:flex; flex-direction:column; gap:11px; margin-top:14px}
-  .q-q{font-size:15px; font-weight:800; line-height:1.45}
-  .ans{appearance:none; text-align:left; font-family:var(--ff-body); border:1px solid var(--line2); background:rgba(18,35,64,.5); color:var(--txt); border-radius:11px; padding:12px 15px; font-size:13px; font-weight:600; cursor:pointer; display:flex; gap:11px; align-items:center; transition:all .15s; line-height:1.4}
+  .q-body{display:flex; flex-direction:column; gap:10px; margin-top:14px}
+  .q-q{font-size:14.5px; font-weight:800; line-height:1.45}
+  .ans{appearance:none; text-align:left; font-family:var(--ff-body); border:1px solid var(--line2); background:rgba(18,35,64,.5); color:var(--txt); border-radius:11px; padding:12px 15px; font-size:12.5px; font-weight:600; cursor:pointer; display:flex; gap:11px; align-items:center; transition:all .15s; line-height:1.45}
   .ans .k{flex:none; width:24px; height:24px; border-radius:6px; border:1px solid var(--line2); display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:800; color:var(--dim)}
   .ans .mk{margin-left:auto; font-weight:800; opacity:0}
   .ans:hover:not(:disabled){border-color:var(--gold3); transform:translateX(3px)}
@@ -133,27 +192,34 @@
   .q-why{border-left:3px solid var(--teal); background:rgba(10,200,185,.06); border-radius:0 9px 9px 0; padding:10px 13px; font-size:11.5px; color:var(--dim); line-height:1.6; display:none}
   .q-why b{color:var(--gold2)}
   .q-next{appearance:none; align-self:flex-start; border:1px solid var(--gold3); border-radius:9px; font-weight:800; font-size:11px; letter-spacing:.12em; padding:10px 18px; cursor:pointer; color:#141b2a; background:linear-gradient(180deg,#ecd7a4,var(--gold) 60%,#a8894f); display:none; font-family:var(--ff-body)}
-  .q-dots{display:flex; gap:6px; margin-top:12px}
+  .q-dots{display:flex; gap:6px; margin-top:10px}
   .q-dot{width:26px; height:5px; border-radius:3px; background:var(--panel3); border:1px solid var(--line)}
   .q-dot.cur{background:var(--gold)} .q-dot.done-y{background:var(--teal)} .q-dot.done-n{background:var(--red)}
 
   .foot{margin-top:30px; padding-top:16px; border-top:1px solid var(--line); font-size:11px; color:var(--dim2); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; line-height:1.6}
-  @media (max-width:840px){ .grid{grid-template-columns:1fr} .windows{grid-template-columns:1fr} }
+  @media (max-width:900px){
+    .grid,.loadrow{grid-template-columns:1fr}
+    .rtree{grid-template-columns:1fr; gap:10px}
+    .rcol + .rcol{border-left:none; border-top:1px solid var(--line); padding-top:12px}
+    .rcol{padding:0}
+    .windows{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
 <div class="page">
   <div class="top rise">
     <span class="mark">MATCH<b>UP</b></span>
-    <span class="ep">Pipeline demo · page rendered from source data only</span>
+    <span class="ep">Pipeline demo v2 · layered data, source-first</span>
   </div>
 
   <div class="src-banner rise" style="--d:.04s">
     <span class="tag">SOURCE 1:1</span>
-    <p><b>Every content block below comes from one community source</b> — “The ULTIMATE Irelia matchups Guide” by <b>Manlymam</b> (Challenger claim, ~1000 games) · sheet verified <b>2026-05-28 · S16</b> · fetched via CSV export 2026-07-10 · <a href="https://docs.google.com/spreadsheets/d/1QYbG_Ed_kGak8er6YR_h_3y8Vij12vvG2JU1avjO93o" target="_blank">open source sheet ↗</a>. Dashed blocks = not present in the source. Hover “source” chips to see the verbatim quote.</p>
+    <p><b>Primary source:</b> “The ULTIMATE Irelia matchups Guide” by <b>Manlymam</b> (Challenger claim, ~1000 games) · verified <b>2026-05-28 · S16</b> · quality rank <b>#6 of 27</b> in the source ranking (mean score 75: freshness 80 · credibility 58 · depth 87) · <a href="https://docs.google.com/spreadsheets/d/1QYbG_Ed_kGak8er6YR_h_3y8Vij12vvG2JU1avjO93o" target="_blank">open sheet ↗</a>.
+    Blocks are labeled by layer: <span class="lchip l-sheet">sheet</span> normalized from the source · <span class="lchip l-mention">sheet mention</span> extracted from notes · <span class="lchip l-def">default layer</span> not in source, filled by pipeline defaults.</p>
   </div>
 
-  <!-- VS header + switcher -->
+  <!-- hero + selector -->
   <div class="panel rise" style="--d:.08s">
     <div class="vs-head">
       <div class="vsc you">
@@ -165,59 +231,84 @@
         <div class="diff-row" id="diff-row"></div>
       </div>
       <div class="vsc him">
-        <img id="enemy-icon" src="" alt="" onerror="">
+        <img id="enemy-icon" src="" alt="">
         <div><div class="side">ENEMY · TOP</div><div class="nm" id="enemy-name">—</div></div>
       </div>
     </div>
-    <div class="switch" id="switch"></div>
+    <div class="selector">
+      <div class="sel-row">
+        <div class="sel-box">
+          <span class="mag">⌕</span>
+          <input class="sel-input" id="sel-input" type="text" placeholder="Search enemy… (all champions from the source sheet)" autocomplete="off">
+        </div>
+        <span class="sel-count" id="sel-count"></span>
+      </div>
+      <div class="droplist" id="droplist"></div>
+    </div>
   </div>
 
-  <div class="grid rise" style="--d:.12s">
-    <!-- runes -->
-    <div class="panel pad">
-      <div class="sec-t">Runes <span class="q-src" id="src-runes" title="">source</span></div>
-      <div class="runes-two">
-        <div class="rgroup">
-          <div class="rgt"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7201_Precision.png" onerror="this.remove()" alt="">UNIVERSAL PAGE — EVERY GAME</div>
-          <div class="rrow" id="runes-base"></div>
-          <div class="shards" id="shards"></div>
-        </div>
-        <div class="rgroup">
-          <div class="rgt"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7204_Resolve.png" onerror="this.remove()" alt="">THIS MATCHUP — OVERRIDE</div>
-          <div class="rrow" id="runes-ovr"></div>
-          <div class="why" id="runes-why" style="display:none"></div>
-        </div>
+  <!-- runes -->
+  <div class="panel pad rise" style="--d:.12s">
+    <div class="sec-t">Runes <span class="lchip l-sheet" id="src-runes" title="">sheet</span></div>
+    <div class="rtree">
+      <div class="rcol">
+        <div class="rt-hd" id="tree1-hd"></div>
+        <div id="tree1"></div>
       </div>
-      <div class="empty-block"><b>Build &amp; skill order — not in source</b>Next pipeline layer fills this: other sheet tabs → ddragon enemytips → expert default. Nothing invented here.</div>
+      <div class="rcol">
+        <div class="rt-hd" id="tree2-hd"></div>
+        <div id="tree2"></div>
+      </div>
+      <div class="rcol">
+        <div class="rt-hd">SHARDS</div>
+        <div id="shards"></div>
+      </div>
     </div>
+    <div class="why" id="runes-why" style="display:none"></div>
+  </div>
 
-    <!-- windows + plan -->
+  <!-- skills / spells+items -->
+  <div class="loadrow rise" style="--d:.16s">
     <div class="panel pad">
-      <div class="sec-t">How to play it <span class="q-src" id="src-notes" title="">source</span></div>
-      <div class="windows">
-        <div class="win">
-          <div class="w-k"><img id="w-icon" src="" onerror="this.style.display='none'" alt="">HOLD YOUR W FOR</div>
-          <h4 id="w-trigger">—</h4>
-          <p>Column “WHAT TO W” in the source — a ready-made threat-window trigger.</p>
-        </div>
-        <div class="win opp">
-          <div class="w-k"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/IreliaE.png" onerror="this.style.display='none'" alt="">YOUR OPENING</div>
-          <h4 id="open-trigger">—</h4>
-          <p id="open-text">—</p>
-        </div>
-      </div>
-      <div class="plan-notes" id="plan-notes"></div>
-      <div class="never"><div class="sk">⛔</div><div><h4>NEVER DO THIS</h4><p id="never-text">—</p></div></div>
+      <div class="sec-t">Skill order <span class="lchip l-def" title="Not present in the source sheet — standard Irelia order from the default layer (ddragon/expert). Replaced automatically when a source provides it.">default layer</span></div>
+      <div class="skillgrid" id="skillgrid"></div>
+      <div class="prio" id="prio"></div>
     </div>
+    <div class="panel pad">
+      <div class="sec-t">Spells <span class="lchip" id="spells-src" title="">—</span></div>
+      <div class="spellrow" id="spellrow"></div>
+      <div class="sec-t" style="margin-top:16px">Items <span class="lchip l-mention" id="items-src" title="">sheet mention</span></div>
+      <div class="items" id="items"></div>
+      <div class="itemnote" id="itemnote"></div>
+    </div>
+  </div>
+
+  <!-- how to play -->
+  <div class="panel pad rise" style="--d:.2s">
+    <div class="sec-t">How to play it <span class="lchip l-sheet" id="src-notes" title="">sheet</span></div>
+    <div class="windows">
+      <div class="win">
+        <div class="w-k"><img id="w-icon" src="" onerror="this.style.display='none'" alt="">HOLD YOUR W FOR</div>
+        <h4 id="w-trigger">—</h4>
+        <p>Column “WHAT TO W” in the source — a ready-made threat-window trigger.</p>
+      </div>
+      <div class="win opp">
+        <div class="w-k"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/IreliaE.png" onerror="this.style.display='none'" alt="">YOUR OPENING</div>
+        <h4 id="open-trigger">—</h4>
+        <p id="open-text">—</p>
+      </div>
+    </div>
+    <div class="plan-notes" id="plan-notes"></div>
+    <div class="never"><div class="sk">⛔</div><div><h4>NEVER DO THIS</h4><p id="never-text">—</p></div></div>
   </div>
 
   <!-- quiz -->
-  <div class="panel quiz rise" style="--d:.16s">
+  <div class="panel quiz rise" style="--d:.24s">
     <div class="q-head">
       <h2>KNOW YOUR ENEMY</h2>
       <span class="q-score" id="q-score">0 / 0</span>
     </div>
-    <div class="q-note">Questions generated from the same sheet row — verdict, W-trigger, “never”. Answers quote the source.</div>
+    <div class="q-note">Questions are generated from this enemy’s sheet row; wrong answers are sampled from other rows.</div>
     <div class="q-dots" id="q-dots"></div>
     <div class="q-body" id="q-body">
       <div class="q-q" id="q-q">—</div>
@@ -229,7 +320,7 @@
   </div>
 
   <div class="foot">
-    <span>Pipeline demo — content 1:1 from Manlymam’s sheet (fetched 2026-07-10, source verified 2026-05-28). Personal author stats (W/L per matchup) intentionally not rendered.</span>
+    <span>Pipeline demo — normalized batch: 16 matchups; the rest of the sheet is queued (statuses in the search list). Author’s personal W/L intentionally not rendered.</span>
     <span>League of Legends assets © Riot Games (Data Dragon).</span>
   </div>
 </div>
@@ -237,135 +328,311 @@
 <script>
 "use strict";
 const DD = "https://ddragon.leagueoflegends.com/cdn/16.13.1";
-const PERK = "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/";
+const PERK = "https://ddragon.leagueoflegends.com/cdn/img/perk-images/";
 const $ = id => document.getElementById(id);
 
-const RUNE_ICONS = {
-  "Conqueror": PERK+"Precision/Conqueror/Conqueror.png",
-  "Triumph": PERK+"Precision/Triumph.png",
-  "Legend: Alacrity": PERK+"Precision/LegendAlacrity/LegendAlacrity.png",
-  "Cut Down": PERK+"Precision/CutDown/CutDown.png",
-  "Biscuit Delivery": PERK+"Inspiration/BiscuitDelivery/BiscuitDelivery.png",
-  "Jack of All Trades": PERK+"Inspiration/JackOfAllTrades/JackofAllTrades2.png",
-  "Bone Plating": PERK+"Resolve/BonePlating/BonePlating.png",
-  "Unflinching": PERK+"Sorcery/Unflinching/Unflinching.png",
-  "Second Wind": PERK+"Resolve/SecondWind/SecondWind.png",
-  "Lethal Tempo": PERK+"Precision/LethalTempo/LethalTempoTemp.png"
+/* ---------------- rune trees (layout from runesReforged.json, patch 16.13) ---------------- */
+const P = s => PERK + "Styles/" + s;
+const TREES = {
+  Precision:{ icon:P("7201_Precision.png"), name:"PRECISION", rows:[
+    [{n:"Press the Attack",i:P("Precision/PressTheAttack/PressTheAttack.png")},{n:"Lethal Tempo",i:P("Precision/LethalTempo/LethalTempoTemp.png")},{n:"Fleet Footwork",i:P("Precision/FleetFootwork/FleetFootwork.png")},{n:"Conqueror",i:P("Precision/Conqueror/Conqueror.png")}],
+    [{n:"Absorb Life",i:P("Precision/AbsorbLife/AbsorbLife.png")},{n:"Triumph",i:P("Precision/Triumph.png")},{n:"Presence of Mind",i:P("Precision/PresenceOfMind/PresenceOfMind.png")}],
+    [{n:"Legend: Alacrity",i:P("Precision/LegendAlacrity/LegendAlacrity.png")},{n:"Legend: Haste",i:P("Precision/LegendHaste/LegendHaste.png")},{n:"Legend: Bloodline",i:P("Precision/LegendBloodline/LegendBloodline.png")}],
+    [{n:"Coup de Grace",i:P("Precision/CoupDeGrace/CoupDeGrace.png")},{n:"Cut Down",i:P("Precision/CutDown/CutDown.png")},{n:"Last Stand",i:P("Sorcery/LastStand/LastStand.png")}]
+  ]},
+  Resolve:{ icon:P("7204_Resolve.png"), name:"RESOLVE", rows:[
+    [{n:"Grasp of the Undying",i:P("Resolve/GraspOfTheUndying/GraspOfTheUndying.png")},{n:"Aftershock",i:P("Resolve/VeteranAftershock/VeteranAftershock.png")},{n:"Guardian",i:P("Resolve/Guardian/Guardian.png")}],
+    [{n:"Demolish",i:P("Resolve/Demolish/Demolish.png")},{n:"Font of Life",i:P("Resolve/FontOfLife/FontOfLife.png")},{n:"Shield Bash",i:P("Resolve/MirrorShell/MirrorShell.png")}],
+    [{n:"Conditioning",i:P("Resolve/Conditioning/Conditioning.png")},{n:"Second Wind",i:P("Resolve/SecondWind/SecondWind.png")},{n:"Bone Plating",i:P("Resolve/BonePlating/BonePlating.png")}],
+    [{n:"Overgrowth",i:P("Resolve/Overgrowth/Overgrowth.png")},{n:"Revitalize",i:P("Resolve/Revitalize/Revitalize.png")},{n:"Unflinching",i:P("Sorcery/Unflinching/Unflinching.png")}]
+  ]},
+  Inspiration:{ icon:P("7203_Whimsy.png"), name:"INSPIRATION", rows:[
+    [{n:"Glacial Augment",i:P("Inspiration/GlacialAugment/GlacialAugment.png")},{n:"Unsealed Spellbook",i:P("Inspiration/UnsealedSpellbook/UnsealedSpellbook.png")},{n:"First Strike",i:P("Inspiration/FirstStrike/FirstStrike.png")}],
+    [{n:"Hextech Flashtraption",i:P("Inspiration/HextechFlashtraption/HextechFlashtraption.png")},{n:"Magical Footwear",i:P("Inspiration/MagicalFootwear/MagicalFootwear.png")},{n:"Cash Back",i:P("Inspiration/CashBack/CashBack2.png")}],
+    [{n:"Triple Tonic",i:P("Inspiration/PerfectTiming/AlchemistCabinet.png")},{n:"Time Warp Tonic",i:P("Inspiration/TimeWarpTonic/TimeWarpTonic.png")},{n:"Biscuit Delivery",i:P("Inspiration/BiscuitDelivery/BiscuitDelivery.png")}],
+    [{n:"Cosmic Insight",i:P("Inspiration/CosmicInsight/CosmicInsight.png")},{n:"Approach Velocity",i:P("Resolve/ApproachVelocity/ApproachVelocity.png")},{n:"Jack of All Trades",i:P("Inspiration/JackOfAllTrades/JackofAllTrades2.png")}]
+  ]}
+};
+const SM = PERK + "StatMods/";
+const SHARDS = [
+  [{n:"Adaptive",i:SM+"StatModsAdaptiveForceIcon.png"},{n:"Attack Speed",i:SM+"StatModsAttackSpeedIcon.png"},{n:"Ability Haste",i:SM+"StatModsCDRScalingIcon.png"}],
+  [{n:"Adaptive",i:SM+"StatModsAdaptiveForceIcon.png"},{n:"Move Speed",i:SM+"StatModsMovementSpeedIcon.png"},{n:"Health Scaling",i:SM+"StatModsHealthScalingIcon.png"}],
+  [{n:"Health +65",i:SM+"StatModsHealthPlusIcon.png"},{n:"Tenacity",i:SM+"StatModsTenacityIcon.png"},{n:"Health Scaling",i:SM+"StatModsHealthScalingIcon.png"}]
+];
+/* universal page from the sheet */
+const PAGE = {
+  primary:"Precision",
+  primaryPicks:["Conqueror","Triumph","Legend: Alacrity","Cut Down"],
+  secondary:{tree:"Inspiration", picks:["Biscuit Delivery","Jack of All Trades"]},
+  shardPicks:["Attack Speed","Adaptive","Health +65"],
+  quote:"Primary CONQUEROR - TRIUMPH - ALACRITY - CUTDOWN … Secondary BISCUITS - JOAT … 10% Attackspeed / 9 Adaptive Force / 65 Flat HP"
 };
 
-/* ---------- normalized source data (1:1 from the sheet) ---------- */
-const SRC_BASE = {
-  runes: ["Conqueror","Triumph","Legend: Alacrity","Cut Down"],
-  secondary_default: ["Biscuit Delivery","Jack of All Trades"],
-  shards: ["10% Attack Speed","9 Adaptive Force","65 Flat HP"],
-  quote: "Primary CONQUEROR - TRIUMPH - ALACRITY - CUTDOWN … Secondary BISCUITS - JOAT … 10% Attackspeed / 9 Adaptive Force / 65 Flat HP"
-};
+/* ---------------- default layers (labeled as such in UI) ---------------- */
+const SKILL_ORDER = ["Q","E","W","Q","Q","R","Q","E","Q","E","R","E","E","W","W","R","W","W"];
+const SPELLS_DEFAULT = [["Flash","SummonerFlash"],["Teleport","SummonerTeleport"]];
 
+/* ---------------- normalized matchups (batch of 16, 1:1 from the sheet) ---------------- */
 const M = {
-  "Aatrox": {
-    pre6:"Easy", post6:"Easy", spellIconKey:"AatroxQ",
-    runesOvr:{ list:["Bone Plating","Unflinching"], why:"<b>Every Q knockup procs Unflinching</b> — his whole chain feeds your tenacity rune.", quote:"Bone plating + Unflinching | Every Q knockup procs Unflinching" },
-    wTrigger:"His Q3 — or the W pull-in", openTrigger:"You landed E + have a dash target",
-    openText:"Go in off a hit E, and only with something to dash to.",
-    notesQuote:"Pretty easy matchup just dont burn your Q and only go in when you have something to dash to. HIt your E and go in and Q away when he tries to Q3 you.",
-    plan:[ {k:"LANING", t:"Don’t burn your Q without a target. <b>Hit E → go in</b> — and <b>Q away the moment he winds up Q3</b>." } ],
-    never:"Never burn your Q with nothing to dash to — you need the charge to exit his Q3.",
-    quiz:[
-      { q:"What do you hold your W for?", a:["His Q3 — or the W pull-in","His empowered passive auto"], c:0, why:"<b>“WHAT TO W: Q3 or W pull in.”</b> Straight from the sheet — not the passive auto." },
-      { q:"When do you commit?", a:["Only off a landed E, with a dash target","Any time your Q is up"], c:0, why:"<b>“Only go in when you have something to dash to. Hit your E and go in.”</b>" },
-      { q:"He winds up Q3 mid-fight. Your move?", a:["Q away from the slam","Stand and out-trade it"], c:0, why:"<b>“Q away when he tries to Q3 you.”</b> Keep a Q charge for exactly this." }
-    ]
-  },
-  "Darius": {
-    pre6:"Medium", post6:"Hard", spellIconKey:"DariusQ",
-    runesOvr:{ list:["Lethal Tempo","Bone Plating","Unflinching"], why:"Only if you’re confident and plan to <b>snowball early</b> — says the author.", quote:"Dont go these runes unless you are confident in the matchup and will snowball early game" },
-    wTrigger:"Nothing — “Don’t W here”", openTrigger:"Level 1 alcove cheese",
-    openText:"Q three low melees → Q onto him → commit. With Lethal Tempo + combat summoner he dies.",
-    notesQuote:"IMMEDIATELY run to alcove and ward the 2nd bush … DO NOT SHOW UNTIL the 3 melee minions are low enough for you to Q … Otherwise hold your Q for when he Qs and try not to be in range of his E",
-    plan:[
-      {k:"LEVEL 1", t:"Darius players camp the 3rd bush to zone you. Counter: <b>run to the alcove, ward the 2nd bush, stay hidden</b> until the 3 melees are low — then Q-chain into the all-in."},
-      {k:"OTHERWISE", t:"Hold your Q for his Q and stay out of E range."}
-    ],
-    never:"Never show yourself from the alcove until the three melee minions are low enough to Q.",
-    quiz:[
-      { q:"Level 1: he’s sitting in the third bush. Where do you go?", a:["Alcove — ward the 2nd bush and wait","Contest the bush face to face"], c:0, why:"<b>“IMMEDIATELY run to alcove and ward the 2nd bush.”</b>" },
-      { q:"What do you block with W in this lane?", a:["Nothing — don’t W here","His Q heal"], c:0, why:"The sheet’s W column literally says <b>“Dont W here.”</b>" }
-    ]
-  },
-  "Sett": {
-    pre6:"Unplayable", post6:"Unplayable", spellIconKey:"SettE",
-    runesOvr:{ list:["Bone Plating","Unflinching"], why:"To <b>negate some of his E trade</b>.", quote:"Unflinching to help negate some of his E trade" },
-    wTrigger:"His E", openTrigger:"— (don’t look for one)",
-    openText:"There is no opening. Soak XP, let him push, call your jungler.",
-    notesQuote:"Unplayable matchup don't walk up to the minion wave lvls 1-3 soak xp and let him push. Pray for JG to come … Never double Q him and make sure to have a Q ready to escape the E or W.",
-    plan:[ {k:"LANING", t:"<b>Don’t walk up to the wave levels 1–3.</b> Soak XP, let him push, play for the gank. Don’t get hit by E at full stacks — it’s a guaranteed W after."} ],
-    never:"Never double-Q onto him — always keep a Q charged to escape his E or W.",
-    quiz:[
-      { q:"The verdict on this lane?", a:["Unplayable — soak XP, call jungler","Skill matchup — trade at level 3"], c:0, why:"Sheet verdict: <b>Unplayable / Unplayable.</b> “Soak xp and let him push. Pray for JG.”" },
-      { q:"What must you never do?", a:["Double-Q onto him","Q his minions for stacks"], c:0, why:"<b>“Never double Q him and make sure to have a Q ready to escape the E or W.”</b>" }
-    ]
-  }
+"Aatrox":{d:["Easy","Easy"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"<b>Every Q knockup procs Unflinching</b> — his whole chain feeds your tenacity rune.",q:"Bone plating + Unflinching | Every Q knockup procs Unflinching"},w:"His Q3 — or the W pull-in",open:"You landed E + have a dash target",openT:"Go in off a hit E, only with something to dash to.",
+ plan:[["LANING","Don’t burn your Q without a target. <b>Hit E → go in</b> — and <b>Q away the moment he winds up Q3</b>."]],
+ never:"Never burn your Q with nothing to dash to — you need the charge to exit his Q3.",
+ nq:"Pretty easy matchup just dont burn your Q and only go in when you have something to dash to. Hit your E and go in and Q away when he tries to Q3 you.",wk:"AatroxQ"},
+"Darius":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],keystone:"Lethal Tempo",why:"Keystone swap to <b>Lethal Tempo</b> — “only if you’re confident and will snowball early”.",q:"Lethal Tempo + Bone Plating + Unflinching | Dont go these runes unless you are confident in the matchup and will snowball early game"},w:"Nothing — “Don’t W here”",open:"Level 1 alcove cheese",openT:"Q three low melees → Q onto him → commit (Lethal Tempo + combat summoner = kill).",
+ plan:[["LEVEL 1","Darius camps the 3rd bush to zone you. Counter: <b>run to the alcove, ward the 2nd bush, stay hidden</b> until the 3 melees are low — then Q-chain into the all-in."],["OTHERWISE","Hold your Q for his Q and stay out of E range."]],
+ never:"Never show yourself from the alcove until the three melees are low enough to Q.",
+ nq:"IMMEDIATELY run to alcove and ward the 2nd bush … DO NOT SHOW UNTIL the 3 melee minions are low enough for you to Q",wk:"DariusQ",spellNote:"“…he will die if you have Lethal Tempo and a <b>combat summoner</b>.”"},
+"Sett":{d:["Unplayable","Unplayable"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"To <b>negate some of his E trade</b>.",q:"Unflinching to help negate some of his E trade"},w:"His E",open:"— (don’t look for one)",openT:"There is no opening. Soak XP, let him push, call your jungler.",
+ plan:[["LANING","<b>Don’t walk up to the wave levels 1–3.</b> Soak XP, let him push, play for the gank. Don’t get hit by E at full stacks — it’s a guaranteed W after."]],
+ never:"Never double-Q onto him — always keep a Q charged to escape his E or W.",
+ nq:"Unplayable matchup don't walk up to the minion wave lvls 1-3 soak xp and let him push … Never double Q him and make sure to have a Q ready to escape the E or W.",wk:"SettE"},
+"Jax":{d:["Hard","Unplayable"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"Survive the E-stun trades.",q:"CONQ + Bone Plating + Unflinching"},w:"His E stun",open:"—",openT:"The sheet’s plan is one word, five times.",
+ plan:[["THE PLAN","<b>“DODGE DODGE DODGE DODGE DODGE — BAN BAN BAN BAN BAN.”</b> Verbatim from the source."]],
+ never:"Never queue without banning him, says the author.",
+ nq:"DODGE DODGE DODGE DODGE DODGE / BAN BAN BAN BAN BAN",wk:"JaxE"},
+"Camille":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating"],why:"Blunt her Q2 burst.",q:"Bone Plating"},w:"Her Q2 — or E",open:"Her passive is on cooldown",openT:"Only commit to the all-in when her shield passive is down.",
+ plan:[["LANING","Avoid standing near walls and out of her W sweet spot. <b>W her Q2.</b> Even or behind at 6 — wait for jungle: her R dodges your E and R."]],
+ never:"Never commit while her passive shield is up.",
+ nq:"Avoid standing near walls, and stay out of her W range. Don't commit to an all in unless her passive is on CD … W her Q2",wk:"CamilleQ"},
+"Fiora":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Second Wind"],why:"Her E slows — can take Unflinching for survivability instead.",q:"Second Wind | Her E slows so you can run Unflinching if you want more survivability"},w:"Her W (if you can’t dodge) — wait out the AS slow",open:"Her W is baited out",openT:"E onto her → she W’s → instantly dash to a minion → now all-in.",
+ plan:[["THE TRICK","<b>Bait the W:</b> E onto her, the moment she parries — dash away to a minion, then run her down with W spent."],["POST-6","Deny the 4th vital: hug the wall of a vital, or just leave when she ults."]],
+ never:"Never all-in before her W (parry) is baited out.",
+ nq:"you HAVE to bait out her W … E onto her to get her to W then IMMEDIATELY dash to a minion to dodge the W then you can all in her",wk:"FioraW"},
+"Garen":{d:["Hard","Medium"],ovr:null,w:"His initial Q",open:"His E or Q used on the wave",openT:"Trade only into spent cooldowns.",
+ plan:[["LANING","Kill window is <b>pre-6 only</b>. W his Q opener; don’t tank his E with W — he shreds armor and every following trade goes bad."]],
+ never:"Never stay to trade after tanking a full E — run or Q away.",
+ nq:"You can really only W his initial Q but try not to tank his E with your W … if you ever tank a full E you need to run or Q away don't attempt to trade",wk:"GarenQ"},
+"Gwen":{d:["Medium","Hard"],ovr:null,w:"—",open:"After your BotRK is done",openT:"The author’s only wins came after finishing BotRK.",
+ plan:[["HONEST NOTE","<b>“I honestly don’t know how to play this.”</b> Early she out-damages your Q trades; post-6 she wins every all-in with R. Scale to item."]],
+ never:"Never take fights before Blade of the Ruined King is completed.",
+ nq:"Hard matchup I honestly don't know how to play this … Only time I've won into her was only taking fights after i finish BORK.",wk:"GwenQ",itemNote:"<b>BotRK first</b> — “only taking fights after I finish BORK.”"},
+"K'Sante":{d:["Medium","Medium"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],keystone:"Lethal Tempo",why:"<b>Every Q slow and W knockup procs Unflinching.</b>",q:"Lethal Tempo + Bone Plating + Unflinching | Every Q slow and his W knockup procs Unflinching"},w:"His Q3 knockup — or W",open:"You dodged his Q3",openT:"Win every early all-in as long as Q3 misses.",
+ plan:[["EARLY","Win all-ins <b>if you dodge Q3</b>."],["POST-6","<b>Dodge his W</b> — most of his ult damage lives there. Long windup, obvious animation: respect it."]],
+ never:"Post-6: never eat his W — that’s where most of his R damage comes from.",
+ nq:"Can win every all in early as long as you dodge his Q3. Post6 YOU NEED to dodge his W that is where MOST of his Ult comes from",wk:"KSanteQ"},
+"Kled":{d:["Hard","Medium"],ovr:{tree:"Resolve",picks:["Bone Plating"],why:"Survive the mounted burst.",q:"Bone Plating"},w:"His Q pull-back — or W",open:"His W used on the wave",openT:"Trade when his W is down; hold E for the dismount.",
+ plan:[["DISMOUNT MATH","Only dismount him when you have damage to finish before he remounts. <b>Hold R until after he dismounts</b>; hold E → E into R burst at the dismount moment."]],
+ never:"Never get hit by the Q pull-back, and never R before he’s dismounted.",
+ nq:"Don't use your Ult if he is about to dismount … MAKE SURE TO AVOID HIS Q PULL BACK, if possible hold E till right when he dismounts",wk:"KledQ"},
+"Mordekaiser":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"He usually rushes Rylai’s — <b>Unflinching will always be active</b>.",q:"CONQ + Bone Plating + Unflinching | Usually rushes Rylais so Unflinching will be always on"},w:"His E — or isolated Q",open:"Level 1 · he missed one Q",openT:"Dodge one Q level 1 → immediate all-in, run him down.",
+ plan:[["EARLY","<b>Level 1 is the kill window.</b> Lvl 3+: trade only after his W or E is spent."],["POST-6","Don’t walk up unless very fed — he wins even fights. Save your Q to dodge his Q; delay his 3-hit passive."]],
+ never:"Post-6, never walk up at even HP — he 1v1s you.",
+ nq:"Lvl 1 is the only time you can kill him easily … Post6 don't walk up unless you are VERY fed, cause he will 1v1 you if you are even",wk:"MordekaiserQ"},
+"Renekton":{d:["Hard","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"<b>Negate some of his W trade.</b>",q:"Unflinching helps negate some of his W trade"},w:"His W",open:"His W used on minions — or eaten by your W",openT:"Those are the only two green lights.",
+ plan:[["LANING","W or E start, soak XP. Go in only if he wastes W on the wave or you W his W. <b>Post-6 not fed = farm until jungle.</b>"]],
+ never:"Never trade into his W — wait it out or block it.",
+ nq:"you can only look to go in if he ever uses his W on either minions OR you W his W. Post 6 if not fed just farm till JG comes.",wk:"RenektonW"},
+"Riven":{d:["Medium","Medium"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"<b>Q3 knockup and W stun proc Unflinching.</b>",q:"Q3 knockup and W stun procs Unflinching"},w:"Her Q3 (consistent) — R2 if you can predict",open:"Her Q3 spent / Q on cooldown",openT:"The moment Q3 is down — jump her, with passive stacks ready.",
+ plan:[["EARLY","Rivens burn Qs for CS or gap-close. <b>See Q3 or Q on CD → engage instantly.</b> Stack passive first."],["POST-6","Respect the all-in; walk up only when her Q is down."]],
+ never:"Post-6: never walk up while her Q is up.",
+ nq:"the MOMENT you see her use Q3 OR her Q going on CD you jump on her. Make sure to have stacks before going in.",wk:"RivenQ"},
+"Teemo":{d:["Medium","Medium"],ovr:{tree:"Resolve",picks:["Second Wind"],shard:"Tenacity",why:"Second Wind + <b>Tenacity shard to shorten the blind</b>.",q:"Second Wind + Tenacity and Slow Resist Rune | Tenacity Rune to reduce blind duration"},w:"His Q blind — wait out the duration",open:"Minions taking DoT at lane start",openT:"If the wave burns level 1: 3-stack → Q onto him → run him down.",
+ plan:[["LEVEL 1 READ","Watch the minions: DoT ticking = he’s pushing = <b>3-stack Q all-in window</b>."],["POST-3","Fish E, W the blinds. Post-6: E + W-the-blind + R = kill if even."]],
+ never:"Never trade while blinded — W it out first.",
+ nq:"Look at the minions when lane starts, if they are taking DOT damage look to 3 stack Q onto him and run him down, post3 fish for E and W when he blinds you",wk:"TeemoQ"},
+"Vayne":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating"],why:"Or Second Wind if not confident.",q:"Bone Plating | can go Second Wind if not confident"},w:"Her E (condemn) — or invis Q on R",open:"Level 1 · she steps up to zone",openT:"FULL SEND: Q onto her, exhaust the kite, she burns flash.",
+ plan:[["LEVEL 1","She zones you? <b>Full send with exhaust</b> — Q on, chase, she flashes or dies."],["LEVEL 2+","Predict the Q roll before you E — good Vaynes never get hit by a naked E."]],
+ never:"Never throw E without predicting her Q roll.",
+ nq:"TAKE EXHAUST, lvl 1 if she tries to zone you off minions FULL SEND IT … you have to start predicting where she will Q when you E",wk:"VayneQ",spells:[["Flash","SummonerFlash"],["Exhaust","SummonerExhaust"]],spellNote:"<b>“TAKE EXHAUST”</b> — verbatim, in caps."},
+"Yone":{d:["Easy","Easy"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],keystone:"Lethal Tempo",why:"<b>Q3 and ult proc Unflinching.</b>",q:"Lethal Tempo + Bone Plating + Unflinching | Q3 and Ult procs Unflinching"},w:"His Q3 knockup — or R",open:"Level 1 · 3-stack all-in",openT:"3-stack → Q on → full send. Exhaust his Q3 = you win the 50/50.",
+ plan:[["LEVEL 1","Both sides full send lvl 1. <b>Exhaust the Q3 → win.</b> If he runs Ignite and you have Exhaust — you hard-win."],["LATER","Make him burn W before committing."]],
+ never:"Never all-in with Exhaust down while his Q3 is up.",
+ nq:"GET EXHAUST IN THIS MATCHUP … you exhaust the Q3 if you do you win if you don't exhaust it you lose.",wk:"YoneQ",spells:[["Flash","SummonerFlash"],["Exhaust","SummonerExhaust"]],spellNote:"<b>“GET EXHAUST IN THIS MATCHUP.”</b>"}
 };
 
-/* ---------- render ---------- */
-function runePill(name, ovr){
-  const d = document.createElement("span"); d.className = "rpill" + (ovr ? " ovr" : "");
-  const im = document.createElement("img"); im.src = RUNE_ICONS[name] || "";
-  im.onerror = () => { const s = document.createElement("span"); s.className="icon-fallback"; s.style.cssText="width:24px;height:24px;border-radius:50%"; s.textContent = name[0]; im.replaceWith(s); };
-  d.appendChild(im);
-  d.appendChild(document.createTextNode(name));
-  return d;
-}
-function dchip(label, val){
-  const cls = "dchip d-" + val.toLowerCase();
-  const s = document.createElement("span"); s.className = cls;
-  s.innerHTML = label + "<b>" + val.toUpperCase() + "</b>";
-  return s;
+/* ---------------- roster from the sheet (statuses) ---------------- */
+const PARTIAL_RAW = "Ahri:MM,Akali:HH,Akshan:EE,Ambessa:MM,Anivia:MH,Annie:EE,Ashe:EE,Aurelion Sol:EE,Aurora:MM,Azir:EM,Brand:EM,Braum:EE,Cassiopeia:MH,Cho'Gath:EM,Corki:ME,Diana:EE,Dr. Mundo:EE,Ekko:MM,Evelynn:EE,Fiddlesticks:EM,Fizz:EM,Galio:MM,Gangplank:HM,Gnar:EE,Gragas:EH,Graves:MM,Heimerdinger:EH,Hwei:MH,Illaoi:MM,Jayce:EE,Jhin:EE,Jinx:EE,Kai'Sa:EE,Kalista:ME,Karma:EE,Karthus:HM,Kassadin:EE,Katarina:EE,Kayle:EE,Kennen:MM,LeBlanc:HH,Lee Sin:MM,Lillia:EM,Lissandra:MH,Lucian:ME,Lux:EE,Malphite:MH,Malzahar:EH,Maokai:MM,Mel:EM,Morgana:EM,Naafiri:EE,Nasus:EU,Neeko:ME,Nidalee:EE,Olaf:HH,Orianna:EE,Ornn:EM,Pantheon:EM,Poppy:EM,Qiyana:EM,Quinn:ME,Rammus:EH,Rek'Sai:EM,Rumble:MM,Ryze:EE,Senna:EE,Seraphine:MM,Shen:MM,Shyvana:MM,Singed:EH,Sion:EE,Smolder:EE,Swain:EM,Sylas:MM,Syndra:EE,Tahm Kench:HH,Taliyah:MH,Talon:EE,Tristana:MM,Trundle:HH,Tryndamere:HU,Twisted Fate:EE,Urgot:HH,Varus:EE,Veigar:EE,Vel'Koz:EM,Vex:HH,Viego:MM,Viktor:EE,Vladimir:EE,Volibear:HU,Warwick:UU,Wukong:HU,Xerath:EE,Yasuo:MH,Yorick:EE,Zaahen:HH,Zac:MH,Zed:EE,Ziggs:EE,Zilean:EE,Zoe:MM,Zyra:EE";
+const EMPTY_RAW = "Alistar,Amumu,Aphelios,Bard,Bel'Veth,Blitzcrank,Briar,Caitlyn,Draven,Elise,Ezreal,Hecarim,Ivern,Janna,Jarvan IV,Kayn,Kha'Zix,Kindred,Kog'Maw,Leona,Lulu,Master Yi,Milio,Miss Fortune,Nami,Nautilus,Nilah,Nocturne,Nunu,Pyke,Rakan,Rell,Renata Glasc,Rengar,Samira,Sejuani,Shaco,Sivir,Skarner,Sona,Soraka,Taric,Thresh,Twitch,Udyr,Vi,Xayah,Xin Zhao,Yunara,Yuumi,Zeri";
+const ICON_KEY = {"Aurelion Sol":"AurelionSol","Cho'Gath":"Chogath","Dr. Mundo":"DrMundo","Kai'Sa":"Kaisa","K'Sante":"KSante","LeBlanc":"Leblanc","Lee Sin":"LeeSin","Rek'Sai":"RekSai","Tahm Kench":"TahmKench","Twisted Fate":"TwistedFate","Vel'Koz":"Velkoz","Bel'Veth":"Belveth","Jarvan IV":"JarvanIV","Kha'Zix":"Khazix","Kog'Maw":"KogMaw","Master Yi":"MasterYi","Miss Fortune":"MissFortune","Renata Glasc":"Renata","Xin Zhao":"XinZhao","Wukong":"MonkeyKing"};
+const DL = {E:"Easy",M:"Medium",H:"Hard",U:"Unplayable"};
+const ROSTER = [];
+Object.keys(M).forEach(n => ROSTER.push({n, st:"full", d:M[n].d}));
+PARTIAL_RAW.split(",").forEach(p => { const [n,dd] = p.split(":"); ROSTER.push({n, st:"part", d:[DL[dd[0]], DL[dd[1]]]}); });
+EMPTY_RAW.split(",").forEach(n => ROSTER.push({n, st:"none", d:null}));
+ROSTER.sort((a,b) => a.n.localeCompare(b.n));
+
+const iconUrl = n => `${DD}/img/champion/${ICON_KEY[n] || n.replace(/[^A-Za-z]/g,"")}.png`;
+function mkImg(src, letter, cls){
+  const i = document.createElement("img"); i.src = src; i.alt = letter;
+  i.onerror = () => { const s = document.createElement("span"); s.className = "icon-fallback " + (cls||""); s.textContent = letter; i.replaceWith(s); };
+  return i;
 }
 
+/* ---------------- renderers ---------------- */
+function renderTree(el, hdEl, treeName, picks, keystoneRow, ovrTag, pickClass){
+  const t = TREES[treeName];
+  hdEl.innerHTML = "";
+  hdEl.appendChild(mkImg(t.icon, t.name[0]));
+  hdEl.appendChild(document.createTextNode(t.name));
+  if(ovrTag){ const o = document.createElement("span"); o.className = "ovr-tag"; o.textContent = ovrTag; hdEl.appendChild(o); }
+  el.innerHTML = "";
+  t.rows.forEach((row, ri) => {
+    if(!keystoneRow && ri === 0) return; /* secondary tree: no keystones */
+    const r = document.createElement("div"); r.className = "trow" + (keystoneRow && ri === 0 ? " ks" : "");
+    row.forEach(rn => {
+      const nd = document.createElement("div"); nd.className = "rnode" + (picks.includes(rn.n) ? " pick " + (pickClass||"") : "");
+      nd.title = rn.n;
+      nd.appendChild(mkImg(rn.i, rn.n[0]));
+      r.appendChild(nd);
+    });
+    el.appendChild(r);
+  });
+}
+function renderShards(picks){
+  const el = $("shards"); el.innerHTML = "";
+  SHARDS.forEach((row, ri) => {
+    const r = document.createElement("div"); r.className = "shrow";
+    row.forEach(s => {
+      const nd = document.createElement("div");
+      const picked = picks[ri] === s.n;
+      nd.className = "shnode" + (picked ? " pick" : "");
+      nd.title = s.n;
+      nd.appendChild(mkImg(s.i, s.n[0]));
+      r.appendChild(nd);
+    });
+    el.appendChild(r);
+  });
+}
+function renderSkills(){
+  const g = $("skillgrid");
+  let html = "<table><tr><th></th>";
+  for(let i = 1; i <= 18; i++) html += `<th>${i}</th>`;
+  html += "</tr>";
+  ["Q","W","E","R"].forEach(k => {
+    html += `<tr><td class="rowlab"><img src="${DD}/img/spell/Irelia${k}.png" onerror="this.remove()"></td>`;
+    for(let i = 0; i < 18; i++) html += SKILL_ORDER[i] === k ? `<td class="f-${k.toLowerCase()}">${k}</td>` : "<td></td>";
+    html += "</tr>";
+  });
+  g.innerHTML = html + "</table>";
+  const pr = $("prio"); pr.innerHTML = "<span style='font-size:10px;color:var(--dim2);font-weight:800;letter-spacing:.1em'>MAX</span>";
+  ["Q","E","W"].forEach((k, i) => {
+    if(i){ const g2 = document.createElement("span"); g2.className = "gt"; g2.textContent = "→"; pr.appendChild(g2); }
+    const c = document.createElement("span"); c.className = "pchip";
+    c.appendChild(mkImg(`${DD}/img/spell/Irelia${k}.png`, k)); c.appendChild(document.createTextNode(k));
+    pr.appendChild(c);
+  });
+}
+function renderSpells(m){
+  const el = $("spellrow"); el.innerHTML = "";
+  const spells = m.spells || SPELLS_DEFAULT;
+  const isOvr = !!m.spells;
+  spells.forEach(([name, key], ix) => {
+    const s = document.createElement("div"); s.className = "spell" + (isOvr && ix === 1 ? " ovr" : "");
+    const im = mkImg(`${DD}/img/spell/${key}.png`, name[0]); s.appendChild(im);
+    const e = document.createElement("em"); e.textContent = name.toUpperCase(); s.appendChild(e);
+    el.appendChild(s);
+  });
+  const chip = $("spells-src");
+  if(isOvr){ chip.className = "lchip l-sheet"; chip.textContent = "sheet"; chip.title = m.spellNote ? m.spellNote.replace(/<[^>]+>/g,"") : ""; }
+  else if(m.spellNote){ chip.className = "lchip l-mention"; chip.textContent = "sheet mention"; chip.title = m.spellNote.replace(/<[^>]+>/g,""); }
+  else { chip.className = "lchip l-def"; chip.textContent = "default layer"; chip.title = "Flash + Teleport — standard top-lane default; the sheet doesn’t specify spells for this row."; }
+  if(m.spellNote){
+    const n = document.createElement("div"); n.className = "itemnote"; n.innerHTML = m.spellNote; el.appendChild(n);
+  }
+}
+function renderItems(m){
+  const el = $("items"); el.innerHTML = "";
+  const g1 = document.createElement("div"); g1.className = "igroup";
+  g1.innerHTML = `<div class="gl">Start <span class="lchip l-def" title="Not in source — default layer">default</span></div>`;
+  const r1 = document.createElement("div"); r1.className = "irow";
+  [1055, 2003].forEach(id => { const b = document.createElement("div"); b.className = "bi"; const im = document.createElement("div"); im.className = "im"; im.appendChild(mkImg(`${DD}/img/item/${id}.png`, "?")); b.appendChild(im); r1.appendChild(b); });
+  g1.appendChild(r1); el.appendChild(g1);
+  const g2 = document.createElement("div"); g2.className = "igroup";
+  g2.innerHTML = `<div class="gl">Core <span class="lchip l-mention" title="“Rush BORK” / “play till BORK” — recurring across sheet notes">sheet mention</span></div>`;
+  const r2 = document.createElement("div"); r2.className = "irow";
+  [[3153, true],[3047, false],[6333, false]].forEach(([id, mn], ix) => {
+    if(ix){ const a = document.createElement("span"); a.className = "arrow"; a.textContent = "→"; r2.appendChild(a); }
+    const b = document.createElement("div"); b.className = "bi" + (mn ? " mn" : "");
+    const im = document.createElement("div"); im.className = "im"; im.appendChild(mkImg(`${DD}/img/item/${id}.png`, "?"));
+    b.appendChild(im); r2.appendChild(b);
+  });
+  g2.appendChild(r2); el.appendChild(g2);
+  $("itemnote").innerHTML = m.itemNote ? m.itemNote + " <span style='color:var(--dim2)'>(from this row’s notes)</span>" : "BotRK highlighted — the one item the sheet keeps repeating (“play till BORK”). Steelcaps + Death’s Dance are default-layer.";
+}
+
+const DCLS = {Easy:"d-e", Medium:"d-m", Hard:"d-h", Unplayable:"d-u"};
 let enemy = "Aatrox";
-let qi = 0, score = 0, results = [], locked = false;
+let qi = 0, score = 0, results = [], locked = false, quiz = [];
+
+function genQuiz(name){
+  const m = M[name];
+  const others = Object.keys(M).filter(k => k !== name);
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const qs = [];
+  qs.push({ q:"What do you hold your W for?", a0:m.w, a1:M[pick(others)].w, why:"<b>“WHAT TO W: " + m.w + "”</b> — straight from the sheet row." });
+  qs.push({ q:"The sheet’s verdict on this lane?", a0:`${m.d[0]} pre-6 · ${m.d[1]} post-6`, a1:(() => { let o = pick(others); while(M[o].d[0] === m.d[0] && M[o].d[1] === m.d[1]) o = pick(others); return `${M[o].d[0]} pre-6 · ${M[o].d[1]} post-6`; })(), why:"Row columns: <b>" + m.d[0] + " / " + m.d[1] + "</b>." });
+  qs.push({ q:"What must you NEVER do here?", a0:m.never, a1:M[pick(others)].never, why:"From the notes: <b>“" + m.nq.slice(0, 110) + "…”</b>" });
+  return qs.map(x => { const flip = Math.random() < .5; return { q:x.q, a:flip ? [x.a1, x.a0] : [x.a0, x.a1], c:flip ? 1 : 0, why:x.why }; });
+}
 
 function render(){
   const m = M[enemy];
   $("enemy-name").textContent = enemy.toUpperCase();
-  $("enemy-icon").src = `${DD}/img/champion/${enemy}.png`;
+  const ei = $("enemy-icon"); ei.src = iconUrl(enemy);
   const dr = $("diff-row"); dr.innerHTML = "";
-  dr.appendChild(dchip("PRE-6 ", m.pre6)); dr.appendChild(dchip("POST-6 ", m.post6));
-  /* switcher */
-  document.querySelectorAll(".sw").forEach(b => b.classList.toggle("on", b.dataset.e === enemy));
-  /* runes */
-  const rb = $("runes-base"); rb.innerHTML = "";
-  SRC_BASE.runes.concat(SRC_BASE.secondary_default).forEach(r => rb.appendChild(runePill(r, false)));
-  const sh = $("shards"); sh.innerHTML = "";
-  SRC_BASE.shards.forEach(s => { const e = document.createElement("span"); e.textContent = s; sh.appendChild(e); });
-  const ro = $("runes-ovr"); ro.innerHTML = "";
-  m.runesOvr.list.forEach(r => ro.appendChild(runePill(r, true)));
-  const why = $("runes-why"); why.style.display = "block"; why.innerHTML = m.runesOvr.why;
-  $("src-runes").title = "“" + SRC_BASE.quote + "” + “" + m.runesOvr.quote + "”";
-  /* windows */
-  $("w-icon").src = `${DD}/img/spell/${m.spellIconKey}.png`; $("w-icon").style.display = "";
-  $("w-trigger").textContent = m.wTrigger;
-  $("open-trigger").textContent = m.openTrigger;
-  $("open-text").textContent = m.openText;
-  $("src-notes").title = "“" + m.notesQuote + "”";
-  /* plan + never */
-  const pn = $("plan-notes"); pn.innerHTML = "";
-  m.plan.forEach(p => {
-    const d = document.createElement("div"); d.className = "pnote";
-    d.innerHTML = `<div class="pk">${p.k}</div><p>${p.t}</p>`;
-    pn.appendChild(d);
+  [["PRE-6 ", m.d[0]], ["POST-6 ", m.d[1]]].forEach(([l, v]) => {
+    const s = document.createElement("span"); s.className = "dchip " + DCLS[v];
+    s.innerHTML = l + "<b>" + v.toUpperCase() + "</b>"; dr.appendChild(s);
   });
+  /* runes */
+  const ovr = m.ovr;
+  const primaryPicks = PAGE.primaryPicks.slice();
+  if(ovr && ovr.keystone){ primaryPicks[0] = ovr.keystone; }
+  renderTree($("tree1"), $("tree1-hd"), PAGE.primary, primaryPicks, true, ovr && ovr.keystone ? "keystone override" : null, ovr && ovr.keystone ? "tealpick" : "");
+  if(ovr){ renderTree($("tree2"), $("tree2-hd"), ovr.tree, ovr.picks, false, "override for this matchup", "tealpick"); }
+  else { renderTree($("tree2"), $("tree2-hd"), PAGE.secondary.tree, PAGE.secondary.picks, false, "universal page", ""); }
+  const shardPicks = PAGE.shardPicks.slice();
+  if(ovr && ovr.shard) shardPicks[2] = ovr.shard;
+  renderShards(shardPicks);
+  const why = $("runes-why");
+  if(ovr){ why.style.display = "block"; why.innerHTML = ovr.why; } else { why.style.display = "block"; why.innerHTML = "No rune change for this matchup — <b>run the universal page</b> (sheet’s default rule)."; }
+  $("src-runes").title = "“" + PAGE.quote + "”" + (ovr ? " + “" + ovr.q + "”" : "");
+  /* spells + items */
+  renderSpells(m); renderItems(m);
+  /* windows/plan/never */
+  const wi = $("w-icon"); wi.style.display = ""; wi.src = `${DD}/img/spell/${m.wk}.png`;
+  $("w-trigger").textContent = m.w;
+  $("open-trigger").textContent = m.open;
+  $("open-text").textContent = m.openT;
+  $("src-notes").title = "“" + m.nq + "”";
+  const pn = $("plan-notes"); pn.innerHTML = "";
+  m.plan.forEach(([k, t]) => { const d = document.createElement("div"); d.className = "pnote"; d.innerHTML = `<div class="pk">${k}</div><p>${t}</p>`; pn.appendChild(d); });
   $("never-text").textContent = m.never;
-  /* quiz reset */
-  qi = 0; score = 0; results = [];
-  buildDots(); showQ();
+  /* quiz */
+  quiz = genQuiz(enemy); qi = 0; score = 0; results = [];
+  const dots = $("q-dots"); dots.innerHTML = "";
+  quiz.forEach(() => { const d = document.createElement("div"); d.className = "q-dot"; dots.appendChild(d); });
+  showQ();
 }
 
-function buildDots(){
-  const dots = $("q-dots"); dots.innerHTML = "";
-  M[enemy].quiz.forEach(() => { const d = document.createElement("div"); d.className = "q-dot"; dots.appendChild(d); });
+/* ---------------- selector ---------------- */
+const drop = $("droplist"), inp = $("sel-input");
+$("sel-count").textContent = ROSTER.length + " champions in source · " + Object.keys(M).length + " normalized";
+function buildList(filter){
+  const f = (filter || "").toLowerCase();
+  drop.innerHTML = "";
+  const groups = [["✅ NORMALIZED — OPENS THE CARD","full"],["⏳ IN SOURCE — QUEUED FOR NORMALIZATION","part"],["∅ EMPTY ROW IN SOURCE","none"]];
+  groups.forEach(([label, st]) => {
+    const items = ROSTER.filter(r => r.st === st && r.n.toLowerCase().includes(f));
+    if(!items.length) return;
+    const g = document.createElement("div"); g.className = "dl-group"; g.textContent = label + " (" + items.length + ")"; drop.appendChild(g);
+    items.forEach(r => {
+      const d = document.createElement("div"); d.className = "dl-item " + r.st;
+      d.appendChild(mkImg(iconUrl(r.n), r.n[0]));
+      const n = document.createElement("span"); n.className = "n"; n.textContent = r.n; d.appendChild(n);
+      const s = document.createElement("span"); s.className = "st";
+      s.textContent = r.st === "full" ? (r.d[0] + " / " + r.d[1]) : r.st === "part" ? (r.d[0] + " / " + r.d[1] + " · queued") : "no data";
+      d.appendChild(s);
+      if(r.st === "full") d.addEventListener("click", () => { enemy = r.n; inp.value = ""; drop.classList.remove("open"); render(); });
+      drop.appendChild(d);
+    });
+  });
 }
+inp.addEventListener("focus", () => { buildList(inp.value); drop.classList.add("open"); });
+inp.addEventListener("input", () => { buildList(inp.value); drop.classList.add("open"); });
+document.addEventListener("click", e => { if(!e.target.closest(".selector")) drop.classList.remove("open"); });
+
+/* ---------------- quiz engine ---------------- */
 function paintDots(){
   [...$("q-dots").children].forEach((d, i) => {
     d.className = "q-dot" + (i === qi && i >= results.length ? " cur" : results[i] === true ? " done-y" : results[i] === false ? " done-n" : "");
@@ -373,32 +640,26 @@ function paintDots(){
 }
 function showQ(){
   locked = false;
-  const qs = M[enemy].quiz;
-  $("q-score").textContent = score + " / " + qs.length;
-  if(qi >= qs.length){
-    $("q-q").textContent = score === qs.length ? "Clean read. You know this " + enemy + "." : "Done — " + score + "/" + qs.length + ". The card above has what you missed.";
+  $("q-score").textContent = score + " / " + quiz.length;
+  if(qi >= quiz.length){
+    $("q-q").textContent = score === quiz.length ? "Clean read. You know this " + enemy + "." : "Done — " + score + "/" + quiz.length + ". The card above has what you missed.";
     ["ans0","ans1"].forEach(id => $(id).style.display = "none");
     $("q-why").style.display = "none";
     $("q-next").style.display = "inline-block"; $("q-next").textContent = "↻ AGAIN";
     paintDots(); return;
   }
-  const q = qs[qi];
+  const q = quiz[qi];
   ["ans0","ans1"].forEach(id => $(id).style.display = "flex");
   $("q-q").textContent = q.q;
-  [0,1].forEach(n => {
-    const b = $("ans"+n); b.disabled = false; b.className = "ans";
-    $("ans"+n+"t").textContent = q.a[n]; $("ans"+n+"m").textContent = "";
-  });
-  $("q-why").style.display = "none";
-  $("q-next").style.display = "none";
+  [0,1].forEach(n => { const b = $("ans"+n); b.disabled = false; b.className = "ans"; $("ans"+n+"t").textContent = q.a[n]; $("ans"+n+"m").textContent = ""; });
+  $("q-why").style.display = "none"; $("q-next").style.display = "none";
   paintDots();
 }
 function reveal(pick){
-  if(locked) return; locked = true;
-  const q = M[enemy].quiz[qi];
-  const ok = pick === q.c;
+  if(locked || qi >= quiz.length) return; locked = true;
+  const q = quiz[qi], ok = pick === q.c;
   results.push(ok); if(ok) score++;
-  $("q-score").textContent = score + " / " + M[enemy].quiz.length;
+  $("q-score").textContent = score + " / " + quiz.length;
   [0,1].forEach(n => {
     const b = $("ans"+n); b.disabled = true;
     if(n === q.c){ b.classList.add("correct"); $("ans"+n+"m").textContent = "✓"; }
@@ -412,22 +673,12 @@ function reveal(pick){
 $("ans0").addEventListener("click", () => reveal(0));
 $("ans1").addEventListener("click", () => reveal(1));
 $("q-next").addEventListener("click", () => {
-  if(qi >= M[enemy].quiz.length){ qi = 0; score = 0; results = []; }
+  if(qi >= quiz.length){ quiz = genQuiz(enemy); qi = 0; score = 0; results = []; }
   else qi++;
   showQ();
 });
 
-/* switcher build */
-const sw = $("switch");
-Object.keys(M).forEach(name => {
-  const b = document.createElement("button"); b.className = "sw"; b.dataset.e = name;
-  const im = document.createElement("img"); im.src = `${DD}/img/champion/${name}.png`; im.onerror = () => im.remove();
-  b.appendChild(im);
-  b.appendChild(document.createTextNode("vs " + name));
-  const d = document.createElement("span"); d.className = "d"; d.textContent = M[name].pre6 + " / " + M[name].post6; b.appendChild(d);
-  b.addEventListener("click", () => { enemy = name; render(); });
-  sw.appendChild(b);
-});
+renderSkills();
 render();
 </script>
 </body>
