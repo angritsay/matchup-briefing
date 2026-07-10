@@ -176,8 +176,20 @@
   .why{font-size:11px; color:var(--dim); line-height:1.55; margin-top:12px; border-left:3px solid rgba(10,200,185,.5); background:rgba(10,200,185,.05); border-radius:0 8px 8px 0; padding:8px 12px}
   .why b{color:var(--gold2)}
 
-  /* skills / spells / items */
-  .loadrow{display:grid; grid-template-columns:1.35fr .65fr; gap:16px; margin-top:16px}
+  /* two-column rows: runes+loadout / skills+quiz */
+  .rowA{display:grid; grid-template-columns:1.45fr 1fr; gap:16px; margin-top:16px}
+  .rowB{display:grid; grid-template-columns:1fr 1.15fr; gap:16px; margin-top:16px}
+  .rowA .rtree{grid-template-columns:1.15fr 1fr .5fr}
+  .rowA .rcol{padding:0 10px}
+  .rowA .trow{gap:10px; padding:6px 0}
+  .rowA .rnode img,.rowA .rnode .icon-fallback{width:26px; height:26px}
+  .rowA .trow.ks .rnode img,.rowA .trow.ks .rnode .icon-fallback{width:34px; height:34px}
+  .rowA .shnode img,.rowA .shnode .icon-fallback{width:17px; height:17px}
+  .rowA .shrow{gap:9px; padding:6px 0}
+  .rowB .skillgrid table{border-spacing:2px}
+  .rowB .skillgrid td{width:19px; height:19px; font-size:8px}
+  .rowB .skillgrid .rowlab img{width:19px; height:19px}
+  .rowB .quiz{margin-top:0}
   .skillgrid{margin-top:12px; overflow-x:auto}
   .skillgrid table{border-collapse:separate; border-spacing:3px}
   .skillgrid th{font-size:9px; color:var(--dim2); font-weight:800; padding:0 2px}
@@ -254,7 +266,7 @@
 
   .foot{margin-top:30px; padding-top:16px; border-top:1px solid var(--line); font-size:11px; color:var(--dim2); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; line-height:1.6}
   @media (max-width:900px){
-    .grid,.loadrow,.findrow{grid-template-columns:1fr}
+    .grid,.rowA,.rowB,.findrow{grid-template-columns:1fr}
     .findcol + .findcol{border-left:none; border-top:1px solid var(--line)}
     .rtree{grid-template-columns:1fr; gap:10px}
     .rcol + .rcol{border-left:none; border-top:1px solid var(--line); padding-top:12px}
@@ -314,8 +326,9 @@
     <div class="tips" id="tips"></div>
   </div>
 
-  <!-- runes -->
-  <div class="panel pad rise" style="--d:.16s">
+  <!-- runes + spells/items -->
+  <div class="rowA rise" style="--d:.16s">
+  <div class="panel pad">
     <div class="sec-t">Runes</div>
     <div class="rtree">
       <div class="rcol">
@@ -333,14 +346,6 @@
     </div>
     <div class="why" id="runes-why" style="display:none"></div>
   </div>
-
-  <!-- skills / spells+items -->
-  <div class="loadrow rise" style="--d:.16s">
-    <div class="panel pad">
-      <div class="sec-t">Skill order</div>
-      <div class="skillgrid" id="skillgrid"></div>
-      <div class="prio" id="prio"></div>
-    </div>
     <div class="panel pad">
       <div class="sec-t">Spells</div>
       <div class="spellrow" id="spellrow"></div>
@@ -351,8 +356,14 @@
     </div>
   </div>
 
-  <!-- quiz -->
-  <div class="panel quiz rise" style="--d:.24s">
+  <!-- skill order + quiz -->
+  <div class="rowB rise" style="--d:.2s">
+    <div class="panel pad">
+      <div class="sec-t">Skill order</div>
+      <div class="skillgrid" id="skillgrid"></div>
+      <div class="prio" id="prio"></div>
+    </div>
+  <div class="panel quiz">
     <div class="q-head">
       <h2>KNOW YOUR ENEMY</h2>
       <span class="q-score" id="q-score">0 / 0</span>
@@ -366,6 +377,7 @@
       <div class="q-why" id="q-why"></div>
       <button class="q-next" id="q-next">NEXT →</button>
     </div>
+  </div>
   </div>
 
   <div class="foot">
