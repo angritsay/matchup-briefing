@@ -66,10 +66,12 @@
   .d-u b{color:#ff7286} .d-u{border-color:rgba(232,64,87,.6); background:rgba(232,64,87,.08)}
 
   /* search (left) + recommendations (right) */
-  .findrow{display:grid; grid-template-columns:1.18fr .82fr; gap:0; border-top:1px solid var(--line)}
-  .findcol{padding:16px 22px}
-  .findcol + .findcol{border-left:1px solid var(--line)}
-  .fc-t{font-size:9.5px; font-weight:800; letter-spacing:.2em; color:var(--dim2); text-transform:uppercase; margin-bottom:10px}
+  .searchbar{padding:16px 22px 14px; border-bottom:1px solid var(--line); position:relative}
+  .pk-modes{display:flex; gap:6px; margin-bottom:12px}
+  .pm{font-size:9px; font-weight:800; letter-spacing:.12em; padding:5px 11px; border-radius:6px; border:1px solid var(--line2); color:var(--dim); cursor:pointer; background:none; font-family:var(--ff-body); text-transform:uppercase}
+  .pm.on{color:var(--gold2); border-color:var(--gold3); background:rgba(200,170,110,.08)}
+  .vsc{cursor:pointer; border-radius:12px; padding:5px 8px; margin:-5px -8px; transition:background .15s}
+  .vsc:hover{background:rgba(22,41,74,.45)}
   .sel-box{position:relative}
   .sel-input{width:100%; background:rgba(6,11,22,.85); border:1px solid var(--line2); border-radius:10px; color:var(--txt); font-family:var(--ff-body); font-size:13px; padding:11px 14px 11px 38px; outline:none}
   .sel-input:focus{border-color:var(--gold3)}
@@ -233,8 +235,16 @@
 
   <!-- hero: VS + search | recommendations -->
   <div class="panel rise" style="--d:.08s; position:relative; z-index:30; background:#0c1729">
+    <div class="searchbar">
+      <div class="sel-box">
+        <span class="mag">⌕</span>
+        <input class="sel-input" id="sel-input" type="text" placeholder="Search enemy…" autocomplete="off">
+        <div class="droplist" id="droplist"></div>
+      </div>
+      <div class="sel-hint" id="sel-hint"></div>
+    </div>
     <div class="vs-head">
-      <div class="vsc you">
+      <div class="vsc you" id="you-card" title="Change your champion">
         <img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/champion/Irelia.png" alt="Irelia" onerror="this.remove()">
         <div><div class="side">YOU · TOP</div><div class="nm">IRELIA</div></div>
       </div>
@@ -242,24 +252,9 @@
         <span class="v">VS</span>
         <div class="diff-row" id="diff-row"></div>
       </div>
-      <div class="vsc him">
+      <div class="vsc him" id="enemy-card" title="Change the enemy">
         <img id="enemy-icon" src="" alt="">
         <div><div class="side">ENEMY · TOP</div><div class="nm" id="enemy-name">—</div></div>
-      </div>
-    </div>
-    <div class="findrow">
-      <div class="findcol">
-        <div class="fc-t">Find a matchup</div>
-        <div class="sel-box">
-          <span class="mag">⌕</span>
-          <input class="sel-input" id="sel-input" type="text" placeholder="Search enemy…" autocomplete="off">
-          <div class="droplist" id="droplist"></div>
-        </div>
-        <div class="sel-hint" id="sel-hint"></div>
-      </div>
-      <div class="findcol">
-        <div class="fc-t">Worth a look next</div>
-        <div class="recs" id="recs"></div>
       </div>
     </div>
   </div>
@@ -578,19 +573,19 @@ const REC_POOL = [
   ["Fiora","one trick decides the lane"],
   ["Riven","all about her Q3 timing"]
 ];
-function renderRecs(){
-  const el = $("recs"); el.innerHTML = "";
-  REC_POOL.filter(([n]) => n !== enemy).slice(0, 4).forEach(([n, why]) => {
-    const b = document.createElement("button"); b.className = "rec";
-    b.appendChild(mkImg(iconUrl(n), n[0]));
-    const w = document.createElement("div"); w.className = "rw";
-    w.innerHTML = `<div class="n">vs ${n}</div><div class="why">${why}</div>`;
-    b.appendChild(w);
-    const d = document.createElement("span"); d.className = "d"; d.textContent = M[n].d[0] + " / " + M[n].d[1]; b.appendChild(d);
-    b.addEventListener("click", () => { enemy = n; render(); });
-    el.appendChild(b);
-  });
-}
+/* YOU side — champions with sources, from the registry's Top-10 ranking */
+const YOU_SOURCES = [
+  {n:"Irelia", ok:true, s:"#6 · Manlymam — this demo"},
+  {n:"Volibear", s:"#1 · Federals1"},
+  {n:"Katarina", s:"#2 · Asalano"},
+  {n:"Akali", s:"#3 · 5upremeG0at"},
+  {n:"K'Sante", s:"#4 · r/KSanteMains"},
+  {n:"Kindred", s:"#5 · YuzukiJG"},
+  {n:"Neeko", s:"#7 · ElCeliacoLoco"},
+  {n:"Draven", s:"#8 · Afro_TJ"},
+  {n:"Fiora", s:"#9 · Fiora Bible"},
+  {n:"Gangplank", s:"#10 · Solarbacca"}
+];
 
 function render(){
   const m = M[enemy];
@@ -612,47 +607,98 @@ function render(){
   renderShards(shardPicks);
   const why = $("runes-why"); why.style.display = "block";
   why.innerHTML = ovr ? ovr.why : "No rune change for this matchup — <b>run the universal page</b> (the author’s default rule).";
-  renderSpells(m); renderItems(m); renderTips(m); renderRecs();
+  renderSpells(m); renderItems(m); renderTips(m);
   quiz = genQuiz(enemy); qi = 0; score = 0; results = [];
   const dots = $("q-dots"); dots.innerHTML = "";
   quiz.forEach(() => { const d = document.createElement("div"); d.className = "q-dot"; dots.appendChild(d); });
   showQ();
 }
 
-/* ---------- selector ---------- */
+/* ---------- selector (search on top; recs inside; both sides switchable) ---------- */
 const drop = $("droplist"), inp = $("sel-input");
+let pickerMode = "enemy";
 const nFull = Object.keys(M).length;
-$("sel-hint").textContent = ROSTER.length + " champions in the source · " + nFull + " with full cards · the rest queued";
+$("sel-hint").textContent = ROSTER.length + " champions in the source · " + nFull + " with full cards · click a portrait below to swap either side";
+
+function setMode(mode){
+  pickerMode = mode;
+  inp.placeholder = mode === "you" ? "Search your champion…" : "Search enemy…";
+  buildList(inp.value); drop.classList.add("open");
+}
+function modeHeader(){
+  const w = document.createElement("div"); w.className = "pk-modes";
+  [["enemy","Change enemy"],["you","Change my champion"]].forEach(([m, label]) => {
+    const b = document.createElement("button"); b.className = "pm" + (pickerMode === m ? " on" : "");
+    b.textContent = label;
+    b.addEventListener("click", e => { e.stopPropagation(); setMode(m); });
+    w.appendChild(b);
+  });
+  return w;
+}
+function recsInto(parent){
+  const t = document.createElement("div"); t.className = "pk-t"; t.textContent = "Worth a look next"; parent.appendChild(t);
+  const wrap = document.createElement("div"); wrap.className = "recs"; wrap.style.marginBottom = "13px";
+  REC_POOL.filter(([n]) => n !== enemy).slice(0, 4).forEach(([n, why]) => {
+    const b = document.createElement("button"); b.className = "rec";
+    b.appendChild(mkImg(iconUrl(n), n[0]));
+    const w = document.createElement("div"); w.className = "rw";
+    w.innerHTML = `<div class="n">vs ${n}</div><div class="why">${why}</div>`;
+    b.appendChild(w);
+    const d = document.createElement("span"); d.className = "d"; d.textContent = M[n].d[0] + " / " + M[n].d[1]; b.appendChild(d);
+    b.addEventListener("click", () => { enemy = n; inp.value = ""; drop.classList.remove("open"); render(); });
+    wrap.appendChild(b);
+  });
+  parent.appendChild(wrap);
+}
 function buildList(filter){
   const f = (filter || "").trim().toLowerCase();
   drop.innerHTML = "";
-  const matches = st => ROSTER.filter(r => r.st === st && r.n.toLowerCase().includes(f));
-  const addGrid = (items, label) => {
+  drop.appendChild(modeHeader());
+  const addGrid = (items, label, mk) => {
     if(!items.length) return;
     const t = document.createElement("div"); t.className = "pk-t"; t.textContent = label; drop.appendChild(t);
     const g = document.createElement("div"); g.className = "pk-grid";
-    items.forEach(r => {
+    items.forEach(mk.bind(null, g));
+    drop.appendChild(g);
+  };
+  if(pickerMode === "you"){
+    const items = YOU_SOURCES.filter(y => y.n.toLowerCase().includes(f));
+    addGrid(items, "Champions with ranked sources — registry top-10", (g, y) => {
       const b = document.createElement("button");
-      b.className = "pk-tile " + (r.st === "full" ? "full" : "dim");
-      b.title = r.st === "full" ? (r.n + " · " + r.d[0] + " / " + r.d[1])
-              : r.st === "part" ? (r.n + " · in source, queued for normalization") : (r.n + " · empty row in source");
-      b.appendChild(mkImg(iconUrl(r.n), r.n[0]));
-      const nm = document.createElement("div"); nm.className = "nm"; nm.textContent = r.n; b.appendChild(nm);
-      if(r.st === "full") b.addEventListener("click", () => { enemy = r.n; inp.value = ""; drop.classList.remove("open"); render(); });
+      b.className = "pk-tile " + (y.ok ? "full" : "dim");
+      b.title = y.n + " · " + y.s + (y.ok ? "" : " — not normalized in this demo");
+      b.appendChild(mkImg(iconUrl(y.n), y.n[0]));
+      const nm = document.createElement("div"); nm.className = "nm"; nm.textContent = y.n; b.appendChild(nm);
+      if(y.ok) b.addEventListener("click", () => { inp.value = ""; drop.classList.remove("open"); render(); });
       g.appendChild(b);
     });
-    drop.appendChild(g);
+    const note = document.createElement("div"); note.className = "pk-note";
+    note.textContent = "Demo: only Irelia is normalized end-to-end. The rest are ranked sources from the registry, queued for the pipeline.";
+    drop.appendChild(note);
+    return;
+  }
+  const matches = st => ROSTER.filter(r => r.st === st && r.n.toLowerCase().includes(f));
+  const mkEnemyTile = (g, r) => {
+    const b = document.createElement("button");
+    b.className = "pk-tile " + (r.st === "full" ? "full" : "dim");
+    b.title = r.st === "full" ? (r.n + " · " + r.d[0] + " / " + r.d[1])
+            : r.st === "part" ? (r.n + " · in source, queued for normalization") : (r.n + " · empty row in source");
+    b.appendChild(mkImg(iconUrl(r.n), r.n[0]));
+    const nm = document.createElement("div"); nm.className = "nm"; nm.textContent = r.n; b.appendChild(nm);
+    if(r.st === "full") b.addEventListener("click", () => { enemy = r.n; inp.value = ""; drop.classList.remove("open"); render(); });
+    g.appendChild(b);
   };
   const full = matches("full"), part = matches("part"), none = matches("none");
   if(!f){
-    addGrid(full, "Full cards · " + full.length);
+    recsInto(drop);
+    addGrid(full, "All full cards · " + full.length, mkEnemyTile);
     const note = document.createElement("div"); note.className = "pk-note";
     note.textContent = "+ " + part.length + " queued · " + none.length + " empty in source — type to search all";
     drop.appendChild(note);
   } else {
-    addGrid(full, "Full cards");
-    addGrid(part, "In source — queued");
-    addGrid(none, "Empty in source");
+    addGrid(full, "Full cards", mkEnemyTile);
+    addGrid(part, "In source — queued", mkEnemyTile);
+    addGrid(none, "Empty in source", mkEnemyTile);
     if(!full.length && !part.length && !none.length){
       const note = document.createElement("div"); note.className = "pk-note"; note.style.borderTop = "none"; note.style.marginTop = "0";
       note.textContent = "Nothing in the source for “" + filter + "”"; drop.appendChild(note);
@@ -661,7 +707,9 @@ function buildList(filter){
 }
 inp.addEventListener("focus", () => { buildList(inp.value); drop.classList.add("open"); });
 inp.addEventListener("input", () => { buildList(inp.value); drop.classList.add("open"); });
-document.addEventListener("click", e => { if(!e.target.closest(".sel-box")) drop.classList.remove("open"); });
+$("you-card").addEventListener("click", () => { setMode("you"); inp.focus(); });
+$("enemy-card").addEventListener("click", () => { setMode("enemy"); inp.focus(); });
+document.addEventListener("click", e => { if(!e.target.closest(".sel-box") && !e.target.closest(".vsc")) drop.classList.remove("open"); });
 document.addEventListener("keydown", e => { if(e.key === "Escape") drop.classList.remove("open"); });
 
 /* ---------- quiz engine ---------- */
