@@ -275,7 +275,7 @@
     <div class="ava">M</div>
     <div class="who">
       <b>Counterpicks by Manlymam</b>
-      <div class="sub">Challenger Irelia OTP · ~1000 games of matchup data · updated for S16 (May 2026) · <a href="https://docs.google.com/spreadsheets/d/1QYbG_Ed_kGak8er6YR_h_3y8Vij12vvG2JU1avjO93o" target="_blank">original sheet ↗</a></div>
+      <div class="sub">Challenger Irelia OTP · ~1000 games of matchup data · updated for S16 (May 2026) · <a href="https://docs.google.com/spreadsheets/d/1QYbG_Ed_kGak8er6YR_h_3y8Vij12vvG2JU1avjO93o" target="_blank">original sheet ↗</a> · normalized batch: top-10 most-played top matchups, fed from the structured tips doc</div>
     </div>
     <div class="rank"><div class="rr">#6 / 27</div><div class="rs">SOURCE QUALITY RANK</div></div>
   </div>
@@ -438,27 +438,10 @@ const M = {
  tips:[{k:"note",t:"Avoid standing near walls and out of her W sweet spot."},{k:"w",l:"What to block with W",t:"Her <b>Q2</b> — or the E."},{k:"note",l:"Post-6",t:"Even or behind — wait for jungle: her R dodges your E and R."}],
  never:"Never commit while her passive shield is up.",
  nq:"Don't commit to an all in unless her passive is on CD … W her Q2"},
-"Fiora":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Second Wind"],why:"Her E slows — can take Unflinching for survivability instead."},w:"Her W (if you can’t dodge)",
- tips:[{k:"go",l:"The trick",t:"<b>Bait the W:</b> E onto her → she parries → dash away to a minion → now all-in with her W spent."},{k:"note",l:"Post-6",t:"Deny the 4th vital: hug the wall of a vital, or just leave when she ults."}],
- never:"Never all-in before her W (parry) is baited out.",
- nq:"you HAVE to bait out her W … E onto her to get her to W then IMMEDIATELY dash to a minion"},
 "Garen":{d:["Hard","Medium"],ovr:null,w:"His initial Q",
  tips:[{k:"note",t:"Kill window is <b>pre-6 only</b>."},{k:"w",l:"What to block with W",t:"His <b>initial Q</b> — don’t tank his E with W: he shreds armor and every following trade goes bad."},{k:"go",l:"Your window",t:"His E or Q used on the wave."}],
  never:"Never stay to trade after tanking a full E — run or Q away.",
  nq:"You can really only W his initial Q … if you ever tank a full E you need to run or Q away don't attempt to trade"},
-"Gwen":{d:["Medium","Hard"],ovr:null,w:null,
- tips:[{k:"note",l:"The author, honestly",t:"<b>“I honestly don’t know how to play this.”</b> Early she out-damages your Q trades; post-6 she wins every all-in with R."},{k:"go",l:"Your window",t:"After your <b>BotRK is finished</b> — the author’s only wins came after it."}],
- never:"Never take fights before Blade of the Ruined King is completed.",
- nq:"Hard matchup I honestly don't know how to play this … Only time I've won into her was only taking fights after i finish BORK.",
- itemNote:"<b>BotRK first</b> — “only taking fights after I finish BORK.”"},
-"K'Sante":{d:["Medium","Medium"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],keystone:"Lethal Tempo",why:"<b>Every Q slow and W knockup procs Unflinching.</b>"},w:"His Q3 knockup — or W",
- tips:[{k:"go",l:"Early",t:"Win every all-in <b>if you dodge his Q3</b>."},{k:"w",l:"What to block with W",t:"His <b>Q3 knockup</b> — or the W."},{k:"note",l:"Post-6",t:"<b>Dodge his W</b> — most of his ult damage lives there. Long windup, obvious animation."}],
- never:"Post-6: never eat his W — that’s where most of his R damage comes from.",
- nq:"Can win every all in early as long as you dodge his Q3. Post6 YOU NEED to dodge his W"},
-"Kled":{d:["Hard","Medium"],ovr:{tree:"Resolve",picks:["Bone Plating"],why:"Survive the mounted burst."},w:"His Q pull-back — or W",
- tips:[{k:"note",l:"Dismount math",t:"Only dismount him when you have damage to finish before he remounts. <b>Hold R until after he dismounts</b>; hold E for the dismount moment."},{k:"w",l:"What to block with W",t:"His <b>Q pull-back</b> — or the W."},{k:"go",l:"Your window",t:"His W used on the minion wave."}],
- never:"Never get hit by the Q pull-back, and never R before he’s dismounted.",
- nq:"Don't use your Ult if he is about to dismount … MAKE SURE TO AVOID HIS Q PULL BACK"},
 "Mordekaiser":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"He usually rushes Rylai’s — <b>Unflinching will always be active</b>."},w:"His E — or isolated Q",
  tips:[{k:"go",l:"Level 1",t:"<b>The kill window.</b> Dodge one Q → immediate all-in, run him down."},{k:"note",t:"Lvl 3+: trade only after his W or E is spent. Save your Q to dodge his Q; delay his 3-hit passive."},{k:"w",l:"What to block with W",t:"His <b>E</b> — or an isolated Q."}],
  never:"Post-6, never walk up at even HP — he 1v1s you.",
@@ -467,28 +450,18 @@ const M = {
  tips:[{k:"note",t:"W or E start, soak XP. <b>Post-6 not fed = farm until jungle.</b>"},{k:"go",l:"Your window",t:"His W used on minions — or eaten by your W. The only two green lights."}],
  never:"Never trade into his W — wait it out or block it.",
  nq:"you can only look to go in if he ever uses his W on either minions OR you W his W"},
-"Riven":{d:["Medium","Medium"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"<b>Q3 knockup and W stun proc Unflinching.</b>"},w:"Her Q3 — R2 if you can predict",
- tips:[{k:"go",l:"Your window",t:"The moment her <b>Q3 is spent / Q on cooldown</b> — jump her, with passive stacks ready."},{k:"w",l:"What to block with W",t:"Her <b>Q3</b> (consistent) — R2 if you can predict it."},{k:"note",l:"Post-6",t:"Respect the all-in; walk up only when her Q is down."}],
- never:"Post-6: never walk up while her Q is up.",
- nq:"the MOMENT you see her use Q3 OR her Q going on CD you jump on her"},
 "Teemo":{d:["Medium","Medium"],ovr:{tree:"Resolve",picks:["Second Wind"],shard:"Tenacity",why:"Second Wind + <b>Tenacity shard to shorten the blind</b>."},w:"His Q blind — wait it out",
  tips:[{k:"note",l:"Level 1 read",t:"Watch the minions at lane start: <b>DoT ticking = 3-stack Q all-in window</b>."},{k:"w",l:"What to block with W",t:"His <b>Q blind</b> — wait out the duration inside W."},{k:"note",l:"Post-6",t:"Not behind? E + W-the-blind + R = kill."}],
  never:"Never trade while blinded — W it out first.",
  nq:"if they are taking DOT damage look to 3 stack Q onto him and run him down … W when he blinds you"},
-"Vayne":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating"],why:"Or Second Wind if not confident."},w:"Her E (condemn) — or invis Q on R",
- tips:[{k:"go",l:"Level 1",t:"She steps up to zone you? <b>FULL SEND</b> — Q on, chase with Exhaust, she flashes or dies."},{k:"note",t:"Level 2+: <b>predict the Q roll before you E</b> — good Vaynes never eat a naked E."},{k:"w",l:"What to block with W",t:"Her <b>condemn (E)</b> — or the invis Q during R."}],
- never:"Never throw E without predicting her Q roll.",
- nq:"TAKE EXHAUST, lvl 1 if she tries to zone you off minions FULL SEND IT",
- spells:[["Flash","SummonerFlash"],["Exhaust","SummonerExhaust"]],spellNote:"<b>“TAKE EXHAUST”</b> — the author, in caps."},
-"Yone":{d:["Easy","Easy"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],keystone:"Lethal Tempo",why:"<b>Q3 and ult proc Unflinching.</b>"},w:"His Q3 knockup — or R",
- tips:[{k:"go",l:"Level 1",t:"Both sides full send. <b>Exhaust the Q3 → you win the 50/50.</b> He runs Ignite? You hard-win."},{k:"w",l:"What to block with W",t:"His <b>Q3 knockup</b> — or the R."},{k:"note",t:"Later: make him burn W before committing."}],
- never:"Never all-in with Exhaust down while his Q3 is up.",
- nq:"GET EXHAUST IN THIS MATCHUP … you exhaust the Q3 if you do you win if you don't exhaust it you lose.",
- spells:[["Flash","SummonerFlash"],["Exhaust","SummonerExhaust"]],spellNote:"<b>“GET EXHAUST IN THIS MATCHUP.”</b>"}
+"Malphite":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Second Wind","Unflinching"],why:"Doc line: <b>Second Wind + Unflinching</b>."},w:"His E — wait out the attack-speed slow",
+ tips:[{k:"go",l:"Your window",t:"<b>Pre-6, before his first back</b> — the only kill window; it gets much harder afterwards."},{k:"note",t:"After his first reset you can’t kill him — <b>don’t fall behind until BotRK</b>, then maybe you 1v1."},{k:"w",l:"What to block with W",t:"His <b>E</b> — wait out the attack-speed slow inside W."}],
+ never:"Never look for the kill after his first reset — farm to BotRK instead.",
+ nq:"Your only kill window is pre-6, before his first back … just don't fall behind until BORK, then maybe you can 1v1."}
 };
 
 /* ---------- roster ---------- */
-const PARTIAL_RAW = "Ahri:MM,Akali:HH,Akshan:EE,Ambessa:MM,Anivia:MH,Annie:EE,Ashe:EE,Aurelion Sol:EE,Aurora:MM,Azir:EM,Brand:EM,Braum:EE,Cassiopeia:MH,Cho'Gath:EM,Corki:ME,Diana:EE,Dr. Mundo:EE,Ekko:MM,Evelynn:EE,Fiddlesticks:EM,Fizz:EM,Galio:MM,Gangplank:HM,Gnar:EE,Gragas:EH,Graves:MM,Heimerdinger:EH,Hwei:MH,Illaoi:MM,Jayce:EE,Jhin:EE,Jinx:EE,Kai'Sa:EE,Kalista:ME,Karma:EE,Karthus:HM,Kassadin:EE,Katarina:EE,Kayle:EE,Kennen:MM,LeBlanc:HH,Lee Sin:MM,Lillia:EM,Lissandra:MH,Lucian:ME,Lux:EE,Malphite:MH,Malzahar:EH,Maokai:MM,Mel:EM,Morgana:EM,Naafiri:EE,Nasus:EU,Neeko:ME,Nidalee:EE,Olaf:HH,Orianna:EE,Ornn:EM,Pantheon:EM,Poppy:EM,Qiyana:EM,Quinn:ME,Rammus:EH,Rek'Sai:EM,Rumble:MM,Ryze:EE,Senna:EE,Seraphine:MM,Shen:MM,Shyvana:MM,Singed:EH,Sion:EE,Smolder:EE,Swain:EM,Sylas:MM,Syndra:EE,Tahm Kench:HH,Taliyah:MH,Talon:EE,Tristana:MM,Trundle:HH,Tryndamere:HU,Twisted Fate:EE,Urgot:HH,Varus:EE,Veigar:EE,Vel'Koz:EM,Vex:HH,Viego:MM,Viktor:EE,Vladimir:EE,Volibear:HU,Warwick:UU,Wukong:HU,Xerath:EE,Yasuo:MH,Yorick:EE,Zaahen:HH,Zac:MH,Zed:EE,Ziggs:EE,Zilean:EE,Zoe:MM,Zyra:EE";
+const PARTIAL_RAW = "Ahri:MM,Akali:HH,Akshan:EE,Ambessa:MM,Anivia:MH,Annie:EE,Ashe:EE,Aurelion Sol:EE,Aurora:MM,Azir:EM,Brand:EM,Braum:EE,Cassiopeia:MH,Cho'Gath:EM,Corki:ME,Diana:EE,Dr. Mundo:EE,Ekko:MM,Evelynn:EE,Fiddlesticks:EM,Fizz:EM,Galio:MM,Gangplank:HM,Gnar:EE,Gragas:EH,Graves:MM,Heimerdinger:EH,Hwei:MH,Illaoi:MM,Jayce:EE,Jhin:EE,Jinx:EE,Kai'Sa:EE,Kalista:ME,Karma:EE,Karthus:HM,Kassadin:EE,Katarina:EE,Kayle:EE,Kennen:MM,LeBlanc:HH,Lee Sin:MM,Lillia:EM,Lissandra:MH,Lucian:ME,Lux:EE,Malzahar:EH,Fiora:MH,Gwen:MH,K'Sante:MM,Kled:HM,Riven:MM,Vayne:MH,Yone:EE,Maokai:MM,Mel:EM,Morgana:EM,Naafiri:EE,Nasus:EU,Neeko:ME,Nidalee:EE,Olaf:HH,Orianna:EE,Ornn:EM,Pantheon:EM,Poppy:EM,Qiyana:EM,Quinn:ME,Rammus:EH,Rek'Sai:EM,Rumble:MM,Ryze:EE,Senna:EE,Seraphine:MM,Shen:MM,Shyvana:MM,Singed:EH,Sion:EE,Smolder:EE,Swain:EM,Sylas:MM,Syndra:EE,Tahm Kench:HH,Taliyah:MH,Talon:EE,Tristana:MM,Trundle:HH,Tryndamere:HU,Twisted Fate:EE,Urgot:HH,Varus:EE,Veigar:EE,Vel'Koz:EM,Vex:HH,Viego:MM,Viktor:EE,Vladimir:EE,Volibear:HU,Warwick:UU,Wukong:HU,Xerath:EE,Yasuo:MH,Yorick:EE,Zaahen:HH,Zac:MH,Zed:EE,Ziggs:EE,Zilean:EE,Zoe:MM,Zyra:EE";
 const EMPTY_RAW = "Alistar,Amumu,Aphelios,Bard,Bel'Veth,Blitzcrank,Briar,Caitlyn,Draven,Elise,Ezreal,Hecarim,Ivern,Janna,Jarvan IV,Kayn,Kha'Zix,Kindred,Kog'Maw,Leona,Lulu,Master Yi,Milio,Miss Fortune,Nami,Nautilus,Nilah,Nocturne,Nunu,Pyke,Rakan,Rell,Renata Glasc,Rengar,Samira,Sejuani,Shaco,Sivir,Skarner,Sona,Soraka,Taric,Thresh,Twitch,Udyr,Vi,Xayah,Xin Zhao,Yunara,Yuumi,Zeri";
 const ICON_KEY = {"Aurelion Sol":"AurelionSol","Cho'Gath":"Chogath","Dr. Mundo":"DrMundo","Kai'Sa":"Kaisa","K'Sante":"KSante","LeBlanc":"Leblanc","Lee Sin":"LeeSin","Rek'Sai":"RekSai","Tahm Kench":"TahmKench","Twisted Fate":"TwistedFate","Vel'Koz":"Velkoz","Bel'Veth":"Belveth","Jarvan IV":"JarvanIV","Kha'Zix":"Khazix","Kog'Maw":"KogMaw","Master Yi":"MasterYi","Miss Fortune":"MissFortune","Renata Glasc":"Renata","Xin Zhao":"XinZhao","Wukong":"MonkeyKing"};
 const DL = {E:"Easy",M:"Medium",H:"Hard",U:"Unplayable"};
@@ -591,7 +564,7 @@ function renderTips(m){
   list.forEach(t => {
     const d = document.createElement("div"); d.className = "tip k-" + t.k;
     const ic = document.createElement("div"); ic.className = "ic";
-    const WK = {"Aatrox":"AatroxQ","Darius":"DariusQ","Sett":"SettE","Jax":"JaxE","Camille":"CamilleQ","Fiora":"FioraW","Garen":"GarenQ","Gwen":"GwenQ","K'Sante":"KSanteQ","Kled":"KledQ","Mordekaiser":"MordekaiserE","Renekton":"RenektonW","Riven":"RivenQ","Teemo":"TeemoQ","Vayne":"VayneE","Yone":"YoneQ"};
+    const WK = {"Aatrox":"AatroxQ","Darius":"DariusQ","Sett":"SettE","Jax":"JaxE","Camille":"CamilleQ","Garen":"GarenQ","Malphite":"MalphiteE","Mordekaiser":"MordekaiserE","Renekton":"RenektonW","Teemo":"TeemoQ"};
     if(t.k === "w" && WK[enemy]) ic.appendChild(mkImg(`${DD}/img/spell/${WK[enemy]}.png`, "W"));
     else if(t.k === "go") ic.appendChild(mkImg(`${DD}/img/spell/IreliaE.png`, "E"));
     else if(t.k === "never") ic.textContent = "⛔";
@@ -605,7 +578,7 @@ function renderTips(m){
 }
 
 /* author's own record per matchup (from the sheet's WR/W/L columns) */
-const AWR = {"Aatrox":[36,11],"Darius":[0,3],"Sett":[0,1],"Jax":[20,5],"Camille":[50,2],"Fiora":[50,2],"Garen":[50,2],"Gwen":[50,6],"K'Sante":[100,2],"Kled":[0,2],"Mordekaiser":[38,8],"Renekton":[43,7],"Riven":[75,8],"Teemo":[75,4],"Vayne":[36,11],"Yone":[65,31]};
+const AWR = {"Aatrox":[36,11],"Darius":[0,3],"Sett":[0,1],"Jax":[20,5],"Camille":[50,2],"Garen":[50,2],"Malphite":[70,10],"Mordekaiser":[38,8],"Renekton":[43,7],"Teemo":[75,4]};
 function mkPill(name, active, onPick){
   const b = document.createElement("button"); b.className = "pill" + (active ? " on" : "");
   b.appendChild(mkImg(iconUrl(name), name[0]));
@@ -625,7 +598,7 @@ function mkPill(name, active, onPick){
   b.addEventListener("click", onPick);
   return b;
 }
-const TITLES = {"Aatrox":"The Darkin Blade","Darius":"The Hand of Noxus","Sett":"The Boss","Jax":"Grandmaster at Arms","Camille":"The Steel Shadow","Fiora":"The Grand Duelist","Garen":"The Might of Demacia","Gwen":"The Hallowed Seamstress","K'Sante":"The Pride of Nazumah","Kled":"The Cantankerous Cavalier","Mordekaiser":"The Iron Revenant","Renekton":"The Butcher of the Sands","Riven":"The Exile","Teemo":"The Swift Scout","Vayne":"The Night Hunter","Yone":"The Unforgotten"};
+const TITLES = {"Aatrox":"The Darkin Blade","Darius":"The Hand of Noxus","Sett":"The Boss","Jax":"Grandmaster at Arms","Camille":"The Steel Shadow","Garen":"The Might of Demacia","Malphite":"Shard of the Monolith","Mordekaiser":"The Iron Revenant","Renekton":"The Butcher of the Sands","Teemo":"The Swift Scout"};
 const splashUrl = n => `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ICON_KEY[n] || n.replace(/[^A-Za-z]/g,"")}_0.jpg`;
 function heroTags(m){
   const [a, b] = m.d, tags = [];
@@ -684,9 +657,9 @@ const REC_POOL = [
   ["Darius","the classic counter question"],
   ["Jax","the author says: ban it"],
   ["Sett","hardest verdict in the sheet"],
-  ["Yone","free lane if you take Exhaust"],
-  ["Fiora","one trick decides the lane"],
-  ["Riven","all about her Q3 timing"]
+  ["Malphite","kill pre-6 or farm to BotRK"],
+  ["Garen","pre-6 only kill window"],
+  ["Teemo","read the minions at level 1"]
 ];
 /* YOU side — champions with sources, from the registry's Top-10 ranking */
 const YOU_SOURCES = [
