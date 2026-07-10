@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matchup Page — generated from source · Irelia (Manlymam sheet)</title>
+<meta property="og:title" content="Matchup Page — generated 1:1 from a community source">
+<meta property="og:description" content="Every block on this page comes from a Challenger matchup sheet. Empty blocks = not present in source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg0:#050a14; --panel:#0e1b30; --panel2:#122340; --panel3:#16294a;
+    --line:#1e3251; --line2:#2a4270;
+    --gold:#c8aa6e; --gold2:#f0e6d2; --gold3:#785a28;
+    --teal:#0ac8b9; --red:#e84057; --warn:#f5b04d; --orange:#ff9f43;
+    --txt:#e8eef7; --dim:#93a5c2; --dim2:#5b6f92;
+    --ff-disp:"Cinzel", Georgia, serif; --ff-body:"Inter", -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{background:
+      radial-gradient(1000px 460px at 20% -10%, rgba(10,200,185,.08) 0%, transparent 55%),
+      radial-gradient(1000px 460px at 80% -10%, rgba(232,64,87,.08) 0%, transparent 55%),
+      var(--bg0);
+    color:var(--txt); font-family:var(--ff-body); font-size:14px; min-height:100vh; padding:34px 20px 90px}
+  .page{max-width:980px; margin:0 auto}
+  @keyframes rise{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
+  .rise{animation:rise .5s cubic-bezier(.2,.7,.2,1) both; animation-delay:var(--d,0s)}
+  .top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px}
+  .mark{font-family:var(--ff-disp); font-weight:800; font-size:17px; letter-spacing:.24em; color:var(--gold2)}
+  .mark b{color:var(--teal)}
+  .ep{font-size:10px; letter-spacing:.2em; color:var(--dim2); font-weight:700; text-transform:uppercase}
+  .panel{background:linear-gradient(180deg, rgba(18,35,64,.55), rgba(9,17,32,.9)); border:1px solid var(--line); border-radius:16px}
+
+  /* source banner */
+  .src-banner{display:flex; gap:14px; align-items:center; padding:13px 18px; border:1px solid rgba(10,200,185,.35); border-radius:14px;
+    background:linear-gradient(90deg, rgba(10,200,185,.10), rgba(10,20,40,.6)); margin-bottom:16px; flex-wrap:wrap}
+  .src-banner .tag{flex:none; font-size:9px; font-weight:800; letter-spacing:.18em; color:var(--teal); border:1px dashed rgba(10,200,185,.5); border-radius:5px; padding:3px 9px}
+  .src-banner p{font-size:11.5px; color:var(--dim); line-height:1.55}
+  .src-banner p b{color:var(--gold2)}
+  .src-banner a{color:var(--teal); text-decoration:none}
+
+  /* vs head */
+  .vs-head{display:grid; grid-template-columns:1fr auto 1fr; gap:16px; padding:18px 22px; align-items:center}
+  .vsc{display:flex; align-items:center; gap:12px; min-width:0}
+  .vsc.him{flex-direction:row-reverse; text-align:right}
+  .vsc img{width:56px; height:56px; border-radius:12px; border:1px solid var(--line2)}
+  .vsc.you img{box-shadow:0 0 0 1px rgba(10,200,185,.6), 0 0 20px rgba(10,200,185,.18)}
+  .vsc.him img{box-shadow:0 0 0 1px rgba(232,64,87,.6), 0 0 20px rgba(232,64,87,.15)}
+  .vsc .side{font-size:9px; font-weight:800; letter-spacing:.24em}
+  .vsc.you .side{color:var(--teal)} .vsc.him .side{color:#ff7286}
+  .vsc .nm{font-family:var(--ff-disp); font-size:20px; font-weight:700; letter-spacing:.1em; color:var(--gold2)}
+  .vs-mid{text-align:center}
+  .vs-mid .v{font-family:var(--ff-disp); font-weight:800; letter-spacing:.3em; font-size:13px; color:var(--gold); border:1px solid var(--gold3); border-radius:20px; padding:6px 12px 5px 16px; display:inline-block}
+  .diff-row{display:flex; gap:8px; justify-content:center; margin-top:10px}
+  .dchip{font-size:9.5px; font-weight:800; letter-spacing:.1em; padding:5px 11px; border-radius:6px; border:1px solid var(--line2); color:var(--dim)}
+  .dchip b{margin-left:5px}
+  .d-easy{border-color:rgba(10,200,185,.5)} .d-easy b{color:var(--teal)}
+  .d-medium{border-color:rgba(200,170,110,.5)} .d-medium b{color:var(--gold)}
+  .d-hard{border-color:rgba(255,159,67,.5)} .d-hard b{color:var(--orange)}
+  .d-unplayable{border-color:rgba(232,64,87,.6); background:rgba(232,64,87,.08)} .d-unplayable b{color:#ff7286}
+
+  /* enemy switcher */
+  .switch{display:flex; gap:8px; padding:0 22px 16px; flex-wrap:wrap}
+  .sw{appearance:none; display:flex; align-items:center; gap:9px; border:1px solid var(--line); background:rgba(10,20,40,.6); color:var(--dim); border-radius:10px; padding:7px 14px 7px 8px; cursor:pointer; font-family:var(--ff-body); font-weight:700; font-size:12px; transition:all .15s}
+  .sw img{width:26px; height:26px; border-radius:6px}
+  .sw:hover{color:var(--txt); border-color:var(--line2)}
+  .sw.on{border-color:var(--gold3); color:var(--gold2); background:rgba(200,170,110,.08)}
+  .sw .d{font-size:8.5px; font-weight:800; letter-spacing:.08em; padding:2px 6px; border-radius:4px; border:1px solid var(--line2)}
+
+  .grid{display:grid; grid-template-columns:1fr 1.15fr; gap:16px; margin-top:16px}
+  .panel.pad{padding:18px 20px}
+  .sec-t{font-size:10px; font-weight:800; letter-spacing:.22em; color:var(--gold); text-transform:uppercase; display:flex; align-items:center; gap:10px}
+  .sec-t::after{content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--gold3), transparent)}
+  .q-src{margin-left:auto; flex:none; font-size:9px; letter-spacing:.06em; color:var(--dim2); border:1px dashed var(--line2); border-radius:4px; padding:2px 7px; cursor:help; text-transform:none}
+
+  /* runes */
+  .runes-two{display:flex; flex-direction:column; gap:14px; margin-top:14px}
+  .rgroup .rgt{font-size:9px; font-weight:800; letter-spacing:.16em; color:var(--dim2); margin-bottom:8px; display:flex; gap:8px; align-items:center}
+  .rgroup .rgt img{width:16px; height:16px}
+  .rrow{display:flex; gap:8px; flex-wrap:wrap}
+  .rpill{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--gold3); background:rgba(200,170,110,.06); border-radius:22px; padding:5px 13px 5px 6px; font-size:11.5px; font-weight:700}
+  .rpill img,.rpill .icon-fallback{width:24px; height:24px; border-radius:50%; border:1px solid var(--gold3); background:#0a1428}
+  .rpill.ovr{border-color:rgba(10,200,185,.55); background:rgba(10,200,185,.07)}
+  .icon-fallback{display:inline-flex; align-items:center; justify-content:center; background:var(--panel3); color:var(--gold); font-weight:800; border:1px solid var(--line2); font-size:10px}
+  .why{font-size:11px; color:var(--dim); line-height:1.55; margin-top:9px; border-left:3px solid rgba(10,200,185,.5); background:rgba(10,200,185,.05); border-radius:0 8px 8px 0; padding:8px 12px}
+  .why b{color:var(--gold2)}
+  .shards{margin-top:4px; font-size:10px; color:var(--dim); display:flex; gap:6px; flex-wrap:wrap}
+  .shards span{border:1px solid var(--line); border-radius:14px; padding:3px 9px; background:rgba(10,20,40,.5)}
+
+  /* empty block */
+  .empty-block{border:1.5px dashed var(--line2); border-radius:12px; padding:14px 16px; margin-top:14px; color:var(--dim2); font-size:11.5px; line-height:1.6; background:rgba(10,20,40,.3)}
+  .empty-block b{color:var(--dim); font-weight:800; letter-spacing:.14em; font-size:9px; text-transform:uppercase; display:block; margin-bottom:5px}
+
+  /* windows + plan */
+  .windows{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px}
+  .win{border-radius:12px; padding:12px 13px; border:1px solid rgba(232,64,87,.32); background:linear-gradient(180deg, rgba(60,21,34,.5), rgba(26,11,18,.45))}
+  .win.opp{border-color:rgba(10,200,185,.4); background:linear-gradient(180deg, rgba(13,60,58,.48), rgba(7,26,26,.45))}
+  .win .w-k{font-size:8.5px; font-weight:800; letter-spacing:.16em; color:#ff8c9c; display:flex; align-items:center; gap:7px}
+  .win.opp .w-k{color:var(--teal)}
+  .win img{width:24px; height:24px; border-radius:5px; border:1px solid var(--line2)}
+  .win h4{font-size:12px; font-weight:800; margin-top:7px}
+  .win p{font-size:10.5px; color:var(--dim); line-height:1.5; margin-top:4px}
+  .plan-notes{margin-top:14px; display:flex; flex-direction:column; gap:9px}
+  .pnote{background:rgba(18,35,64,.5); border:1px solid var(--line); border-radius:11px; padding:12px 14px}
+  .pnote .pk{font-size:8.5px; font-weight:800; letter-spacing:.18em; color:var(--teal)}
+  .pnote p{font-size:12.5px; color:var(--dim); line-height:1.65; margin-top:5px}
+  .pnote p b{color:var(--gold2)}
+  @keyframes redpulse{0%,100%{box-shadow:inset 0 0 26px rgba(232,64,87,.08)} 50%{box-shadow:inset 0 0 30px rgba(232,64,87,.15), 0 0 20px -6px rgba(232,64,87,.3)}}
+  .never{display:flex; gap:13px; align-items:center; border:1px solid rgba(232,64,87,.55); border-radius:13px; padding:13px 16px; margin-top:12px;
+    background:linear-gradient(90deg, rgba(232,64,87,.16), rgba(232,64,87,.04)); animation:redpulse 3s ease-in-out infinite}
+  .never .sk{flex:none; width:36px; height:36px; border-radius:9px; background:rgba(232,64,87,.16); border:1px solid rgba(232,64,87,.5); display:flex; align-items:center; justify-content:center; font-size:16px}
+  .never h4{font-size:9.5px; font-weight:800; letter-spacing:.26em; color:#ff7286}
+  .never p{font-size:12.5px; line-height:1.5; margin-top:3px; color:var(--gold2)}
+
+  /* quiz */
+  .quiz{margin-top:16px; padding:20px 22px}
+  .q-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+  .q-head h2{font-family:var(--ff-disp); font-size:17px; letter-spacing:.12em; color:var(--gold2); font-weight:700}
+  .q-score{margin-left:auto; font-size:10.5px; font-weight:800; letter-spacing:.12em; color:var(--gold); border:1px solid var(--gold3); border-radius:18px; padding:5px 12px}
+  .q-note{font-size:10.5px; color:var(--dim2); margin-top:4px}
+  .q-body{display:flex; flex-direction:column; gap:11px; margin-top:14px}
+  .q-q{font-size:15px; font-weight:800; line-height:1.45}
+  .ans{appearance:none; text-align:left; font-family:var(--ff-body); border:1px solid var(--line2); background:rgba(18,35,64,.5); color:var(--txt); border-radius:11px; padding:12px 15px; font-size:13px; font-weight:600; cursor:pointer; display:flex; gap:11px; align-items:center; transition:all .15s; line-height:1.4}
+  .ans .k{flex:none; width:24px; height:24px; border-radius:6px; border:1px solid var(--line2); display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:800; color:var(--dim)}
+  .ans .mk{margin-left:auto; font-weight:800; opacity:0}
+  .ans:hover:not(:disabled){border-color:var(--gold3); transform:translateX(3px)}
+  .ans:disabled{cursor:default}
+  .ans.correct{border-color:var(--teal); background:rgba(10,200,185,.09)} .ans.correct .mk{opacity:1; color:var(--teal)}
+  @keyframes shake{0%,100%{transform:none} 30%{transform:translateX(-5px)} 65%{transform:translateX(4px)}}
+  .ans.wrong{border-color:var(--red); background:rgba(232,64,87,.09); animation:shake .3s} .ans.wrong .mk{opacity:1; color:#ff7286}
+  .ans.faded{opacity:.45}
+  .q-why{border-left:3px solid var(--teal); background:rgba(10,200,185,.06); border-radius:0 9px 9px 0; padding:10px 13px; font-size:11.5px; color:var(--dim); line-height:1.6; display:none}
+  .q-why b{color:var(--gold2)}
+  .q-next{appearance:none; align-self:flex-start; border:1px solid var(--gold3); border-radius:9px; font-weight:800; font-size:11px; letter-spacing:.12em; padding:10px 18px; cursor:pointer; color:#141b2a; background:linear-gradient(180deg,#ecd7a4,var(--gold) 60%,#a8894f); display:none; font-family:var(--ff-body)}
+  .q-dots{display:flex; gap:6px; margin-top:12px}
+  .q-dot{width:26px; height:5px; border-radius:3px; background:var(--panel3); border:1px solid var(--line)}
+  .q-dot.cur{background:var(--gold)} .q-dot.done-y{background:var(--teal)} .q-dot.done-n{background:var(--red)}
+
+  .foot{margin-top:30px; padding-top:16px; border-top:1px solid var(--line); font-size:11px; color:var(--dim2); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; line-height:1.6}
+  @media (max-width:840px){ .grid{grid-template-columns:1fr} .windows{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top rise">
+    <span class="mark">MATCH<b>UP</b></span>
+    <span class="ep">Pipeline demo · page rendered from source data only</span>
+  </div>
+
+  <div class="src-banner rise" style="--d:.04s">
+    <span class="tag">SOURCE 1:1</span>
+    <p><b>Every content block below comes from one community source</b> — “The ULTIMATE Irelia matchups Guide” by <b>Manlymam</b> (Challenger claim, ~1000 games) · sheet verified <b>2026-05-28 · S16</b> · fetched via CSV export 2026-07-10 · <a href="https://docs.google.com/spreadsheets/d/1QYbG_Ed_kGak8er6YR_h_3y8Vij12vvG2JU1avjO93o" target="_blank">open source sheet ↗</a>. Dashed blocks = not present in the source. Hover “source” chips to see the verbatim quote.</p>
+  </div>
+
+  <!-- VS header + switcher -->
+  <div class="panel rise" style="--d:.08s">
+    <div class="vs-head">
+      <div class="vsc you">
+        <img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/champion/Irelia.png" alt="Irelia" onerror="this.remove()">
+        <div><div class="side">YOU · TOP</div><div class="nm">IRELIA</div></div>
+      </div>
+      <div class="vs-mid">
+        <span class="v">VS</span>
+        <div class="diff-row" id="diff-row"></div>
+      </div>
+      <div class="vsc him">
+        <img id="enemy-icon" src="" alt="" onerror="">
+        <div><div class="side">ENEMY · TOP</div><div class="nm" id="enemy-name">—</div></div>
+      </div>
+    </div>
+    <div class="switch" id="switch"></div>
+  </div>
+
+  <div class="grid rise" style="--d:.12s">
+    <!-- runes -->
+    <div class="panel pad">
+      <div class="sec-t">Runes <span class="q-src" id="src-runes" title="">source</span></div>
+      <div class="runes-two">
+        <div class="rgroup">
+          <div class="rgt"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7201_Precision.png" onerror="this.remove()" alt="">UNIVERSAL PAGE — EVERY GAME</div>
+          <div class="rrow" id="runes-base"></div>
+          <div class="shards" id="shards"></div>
+        </div>
+        <div class="rgroup">
+          <div class="rgt"><img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7204_Resolve.png" onerror="this.remove()" alt="">THIS MATCHUP — OVERRIDE</div>
+          <div class="rrow" id="runes-ovr"></div>
+          <div class="why" id="runes-why" style="display:none"></div>
+        </div>
+      </div>
+      <div class="empty-block"><b>Build &amp; skill order — not in source</b>Next pipeline layer fills this: other sheet tabs → ddragon enemytips → expert default. Nothing invented here.</div>
+    </div>
+
+    <!-- windows + plan -->
+    <div class="panel pad">
+      <div class="sec-t">How to play it <span class="q-src" id="src-notes" title="">source</span></div>
+      <div class="windows">
+        <div class="win">
+          <div class="w-k"><img id="w-icon" src="" onerror="this.style.display='none'" alt="">HOLD YOUR W FOR</div>
+          <h4 id="w-trigger">—</h4>
+          <p>Column “WHAT TO W” in the source — a ready-made threat-window trigger.</p>
+        </div>
+        <div class="win opp">
+          <div class="w-k"><img src="https://ddragon.leagueoflegends.com/cdn/16.13.1/img/spell/IreliaE.png" onerror="this.style.display='none'" alt="">YOUR OPENING</div>
+          <h4 id="open-trigger">—</h4>
+          <p id="open-text">—</p>
+        </div>
+      </div>
+      <div class="plan-notes" id="plan-notes"></div>
+      <div class="never"><div class="sk">⛔</div><div><h4>NEVER DO THIS</h4><p id="never-text">—</p></div></div>
+    </div>
+  </div>
+
+  <!-- quiz -->
+  <div class="panel quiz rise" style="--d:.16s">
+    <div class="q-head">
+      <h2>KNOW YOUR ENEMY</h2>
+      <span class="q-score" id="q-score">0 / 0</span>
+    </div>
+    <div class="q-note">Questions generated from the same sheet row — verdict, W-trigger, “never”. Answers quote the source.</div>
+    <div class="q-dots" id="q-dots"></div>
+    <div class="q-body" id="q-body">
+      <div class="q-q" id="q-q">—</div>
+      <button class="ans" id="ans0"><span class="k">A</span><span id="ans0t"></span><span class="mk" id="ans0m"></span></button>
+      <button class="ans" id="ans1"><span class="k">B</span><span id="ans1t"></span><span class="mk" id="ans1m"></span></button>
+      <div class="q-why" id="q-why"></div>
+      <button class="q-next" id="q-next">NEXT →</button>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>Pipeline demo — content 1:1 from Manlymam’s sheet (fetched 2026-07-10, source verified 2026-05-28). Personal author stats (W/L per matchup) intentionally not rendered.</span>
+    <span>League of Legends assets © Riot Games (Data Dragon).</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+const DD = "https://ddragon.leagueoflegends.com/cdn/16.13.1";
+const PERK = "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/";
+const $ = id => document.getElementById(id);
+
+const RUNE_ICONS = {
+  "Conqueror": PERK+"Precision/Conqueror/Conqueror.png",
+  "Triumph": PERK+"Precision/Triumph.png",
+  "Legend: Alacrity": PERK+"Precision/LegendAlacrity/LegendAlacrity.png",
+  "Cut Down": PERK+"Precision/CutDown/CutDown.png",
+  "Biscuit Delivery": PERK+"Inspiration/BiscuitDelivery/BiscuitDelivery.png",
+  "Jack of All Trades": PERK+"Inspiration/JackOfAllTrades/JackofAllTrades2.png",
+  "Bone Plating": PERK+"Resolve/BonePlating/BonePlating.png",
+  "Unflinching": PERK+"Sorcery/Unflinching/Unflinching.png",
+  "Second Wind": PERK+"Resolve/SecondWind/SecondWind.png",
+  "Lethal Tempo": PERK+"Precision/LethalTempo/LethalTempoTemp.png"
+};
+
+/* ---------- normalized source data (1:1 from the sheet) ---------- */
+const SRC_BASE = {
+  runes: ["Conqueror","Triumph","Legend: Alacrity","Cut Down"],
+  secondary_default: ["Biscuit Delivery","Jack of All Trades"],
+  shards: ["10% Attack Speed","9 Adaptive Force","65 Flat HP"],
+  quote: "Primary CONQUEROR - TRIUMPH - ALACRITY - CUTDOWN … Secondary BISCUITS - JOAT … 10% Attackspeed / 9 Adaptive Force / 65 Flat HP"
+};
+
+const M = {
+  "Aatrox": {
+    pre6:"Easy", post6:"Easy", spellIconKey:"AatroxQ",
+    runesOvr:{ list:["Bone Plating","Unflinching"], why:"<b>Every Q knockup procs Unflinching</b> — his whole chain feeds your tenacity rune.", quote:"Bone plating + Unflinching | Every Q knockup procs Unflinching" },
+    wTrigger:"His Q3 — or the W pull-in", openTrigger:"You landed E + have a dash target",
+    openText:"Go in off a hit E, and only with something to dash to.",
+    notesQuote:"Pretty easy matchup just dont burn your Q and only go in when you have something to dash to. HIt your E and go in and Q away when he tries to Q3 you.",
+    plan:[ {k:"LANING", t:"Don’t burn your Q without a target. <b>Hit E → go in</b> — and <b>Q away the moment he winds up Q3</b>." } ],
+    never:"Never burn your Q with nothing to dash to — you need the charge to exit his Q3.",
+    quiz:[
+      { q:"What do you hold your W for?", a:["His Q3 — or the W pull-in","His empowered passive auto"], c:0, why:"<b>“WHAT TO W: Q3 or W pull in.”</b> Straight from the sheet — not the passive auto." },
+      { q:"When do you commit?", a:["Only off a landed E, with a dash target","Any time your Q is up"], c:0, why:"<b>“Only go in when you have something to dash to. Hit your E and go in.”</b>" },
+      { q:"He winds up Q3 mid-fight. Your move?", a:["Q away from the slam","Stand and out-trade it"], c:0, why:"<b>“Q away when he tries to Q3 you.”</b> Keep a Q charge for exactly this." }
+    ]
+  },
+  "Darius": {
+    pre6:"Medium", post6:"Hard", spellIconKey:"DariusQ",
+    runesOvr:{ list:["Lethal Tempo","Bone Plating","Unflinching"], why:"Only if you’re confident and plan to <b>snowball early</b> — says the author.", quote:"Dont go these runes unless you are confident in the matchup and will snowball early game" },
+    wTrigger:"Nothing — “Don’t W here”", openTrigger:"Level 1 alcove cheese",
+    openText:"Q three low melees → Q onto him → commit. With Lethal Tempo + combat summoner he dies.",
+    notesQuote:"IMMEDIATELY run to alcove and ward the 2nd bush … DO NOT SHOW UNTIL the 3 melee minions are low enough for you to Q … Otherwise hold your Q for when he Qs and try not to be in range of his E",
+    plan:[
+      {k:"LEVEL 1", t:"Darius players camp the 3rd bush to zone you. Counter: <b>run to the alcove, ward the 2nd bush, stay hidden</b> until the 3 melees are low — then Q-chain into the all-in."},
+      {k:"OTHERWISE", t:"Hold your Q for his Q and stay out of E range."}
+    ],
+    never:"Never show yourself from the alcove until the three melee minions are low enough to Q.",
+    quiz:[
+      { q:"Level 1: he’s sitting in the third bush. Where do you go?", a:["Alcove — ward the 2nd bush and wait","Contest the bush face to face"], c:0, why:"<b>“IMMEDIATELY run to alcove and ward the 2nd bush.”</b>" },
+      { q:"What do you block with W in this lane?", a:["Nothing — don’t W here","His Q heal"], c:0, why:"The sheet’s W column literally says <b>“Dont W here.”</b>" }
+    ]
+  },
+  "Sett": {
+    pre6:"Unplayable", post6:"Unplayable", spellIconKey:"SettE",
+    runesOvr:{ list:["Bone Plating","Unflinching"], why:"To <b>negate some of his E trade</b>.", quote:"Unflinching to help negate some of his E trade" },
+    wTrigger:"His E", openTrigger:"— (don’t look for one)",
+    openText:"There is no opening. Soak XP, let him push, call your jungler.",
+    notesQuote:"Unplayable matchup don't walk up to the minion wave lvls 1-3 soak xp and let him push. Pray for JG to come … Never double Q him and make sure to have a Q ready to escape the E or W.",
+    plan:[ {k:"LANING", t:"<b>Don’t walk up to the wave levels 1–3.</b> Soak XP, let him push, play for the gank. Don’t get hit by E at full stacks — it’s a guaranteed W after."} ],
+    never:"Never double-Q onto him — always keep a Q charged to escape his E or W.",
+    quiz:[
+      { q:"The verdict on this lane?", a:["Unplayable — soak XP, call jungler","Skill matchup — trade at level 3"], c:0, why:"Sheet verdict: <b>Unplayable / Unplayable.</b> “Soak xp and let him push. Pray for JG.”" },
+      { q:"What must you never do?", a:["Double-Q onto him","Q his minions for stacks"], c:0, why:"<b>“Never double Q him and make sure to have a Q ready to escape the E or W.”</b>" }
+    ]
+  }
+};
+
+/* ---------- render ---------- */
+function runePill(name, ovr){
+  const d = document.createElement("span"); d.className = "rpill" + (ovr ? " ovr" : "");
+  const im = document.createElement("img"); im.src = RUNE_ICONS[name] || "";
+  im.onerror = () => { const s = document.createElement("span"); s.className="icon-fallback"; s.style.cssText="width:24px;height:24px;border-radius:50%"; s.textContent = name[0]; im.replaceWith(s); };
+  d.appendChild(im);
+  d.appendChild(document.createTextNode(name));
+  return d;
+}
+function dchip(label, val){
+  const cls = "dchip d-" + val.toLowerCase();
+  const s = document.createElement("span"); s.className = cls;
+  s.innerHTML = label + "<b>" + val.toUpperCase() + "</b>";
+  return s;
+}
+
+let enemy = "Aatrox";
+let qi = 0, score = 0, results = [], locked = false;
+
+function render(){
+  const m = M[enemy];
+  $("enemy-name").textContent = enemy.toUpperCase();
+  $("enemy-icon").src = `${DD}/img/champion/${enemy}.png`;
+  const dr = $("diff-row"); dr.innerHTML = "";
+  dr.appendChild(dchip("PRE-6 ", m.pre6)); dr.appendChild(dchip("POST-6 ", m.post6));
+  /* switcher */
+  document.querySelectorAll(".sw").forEach(b => b.classList.toggle("on", b.dataset.e === enemy));
+  /* runes */
+  const rb = $("runes-base"); rb.innerHTML = "";
+  SRC_BASE.runes.concat(SRC_BASE.secondary_default).forEach(r => rb.appendChild(runePill(r, false)));
+  const sh = $("shards"); sh.innerHTML = "";
+  SRC_BASE.shards.forEach(s => { const e = document.createElement("span"); e.textContent = s; sh.appendChild(e); });
+  const ro = $("runes-ovr"); ro.innerHTML = "";
+  m.runesOvr.list.forEach(r => ro.appendChild(runePill(r, true)));
+  const why = $("runes-why"); why.style.display = "block"; why.innerHTML = m.runesOvr.why;
+  $("src-runes").title = "“" + SRC_BASE.quote + "” + “" + m.runesOvr.quote + "”";
+  /* windows */
+  $("w-icon").src = `${DD}/img/spell/${m.spellIconKey}.png`; $("w-icon").style.display = "";
+  $("w-trigger").textContent = m.wTrigger;
+  $("open-trigger").textContent = m.openTrigger;
+  $("open-text").textContent = m.openText;
+  $("src-notes").title = "“" + m.notesQuote + "”";
+  /* plan + never */
+  const pn = $("plan-notes"); pn.innerHTML = "";
+  m.plan.forEach(p => {
+    const d = document.createElement("div"); d.className = "pnote";
+    d.innerHTML = `<div class="pk">${p.k}</div><p>${p.t}</p>`;
+    pn.appendChild(d);
+  });
+  $("never-text").textContent = m.never;
+  /* quiz reset */
+  qi = 0; score = 0; results = [];
+  buildDots(); showQ();
+}
+
+function buildDots(){
+  const dots = $("q-dots"); dots.innerHTML = "";
+  M[enemy].quiz.forEach(() => { const d = document.createElement("div"); d.className = "q-dot"; dots.appendChild(d); });
+}
+function paintDots(){
+  [...$("q-dots").children].forEach((d, i) => {
+    d.className = "q-dot" + (i === qi && i >= results.length ? " cur" : results[i] === true ? " done-y" : results[i] === false ? " done-n" : "");
+  });
+}
+function showQ(){
+  locked = false;
+  const qs = M[enemy].quiz;
+  $("q-score").textContent = score + " / " + qs.length;
+  if(qi >= qs.length){
+    $("q-q").textContent = score === qs.length ? "Clean read. You know this " + enemy + "." : "Done — " + score + "/" + qs.length + ". The card above has what you missed.";
+    ["ans0","ans1"].forEach(id => $(id).style.display = "none");
+    $("q-why").style.display = "none";
+    $("q-next").style.display = "inline-block"; $("q-next").textContent = "↻ AGAIN";
+    paintDots(); return;
+  }
+  const q = qs[qi];
+  ["ans0","ans1"].forEach(id => $(id).style.display = "flex");
+  $("q-q").textContent = q.q;
+  [0,1].forEach(n => {
+    const b = $("ans"+n); b.disabled = false; b.className = "ans";
+    $("ans"+n+"t").textContent = q.a[n]; $("ans"+n+"m").textContent = "";
+  });
+  $("q-why").style.display = "none";
+  $("q-next").style.display = "none";
+  paintDots();
+}
+function reveal(pick){
+  if(locked) return; locked = true;
+  const q = M[enemy].quiz[qi];
+  const ok = pick === q.c;
+  results.push(ok); if(ok) score++;
+  $("q-score").textContent = score + " / " + M[enemy].quiz.length;
+  [0,1].forEach(n => {
+    const b = $("ans"+n); b.disabled = true;
+    if(n === q.c){ b.classList.add("correct"); $("ans"+n+"m").textContent = "✓"; }
+    else if(n === pick){ b.classList.add("wrong"); $("ans"+n+"m").textContent = "✗"; }
+    else b.classList.add("faded");
+  });
+  const w = $("q-why"); w.innerHTML = q.why; w.style.display = "block";
+  $("q-next").style.display = "inline-block"; $("q-next").textContent = "NEXT →";
+  paintDots();
+}
+$("ans0").addEventListener("click", () => reveal(0));
+$("ans1").addEventListener("click", () => reveal(1));
+$("q-next").addEventListener("click", () => {
+  if(qi >= M[enemy].quiz.length){ qi = 0; score = 0; results = []; }
+  else qi++;
+  showQ();
+});
+
+/* switcher build */
+const sw = $("switch");
+Object.keys(M).forEach(name => {
+  const b = document.createElement("button"); b.className = "sw"; b.dataset.e = name;
+  const im = document.createElement("img"); im.src = `${DD}/img/champion/${name}.png`; im.onerror = () => im.remove();
+  b.appendChild(im);
+  b.appendChild(document.createTextNode("vs " + name));
+  const d = document.createElement("span"); d.className = "d"; d.textContent = M[name].pre6 + " / " + M[name].post6; b.appendChild(d);
+  b.addEventListener("click", () => { enemy = name; render(); });
+  sw.appendChild(b);
+});
+render();
+</script>
+</body>
+</html>
