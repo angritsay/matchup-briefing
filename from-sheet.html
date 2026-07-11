@@ -72,14 +72,10 @@
   .pm.on{color:var(--gold2); border-color:var(--gold3); background:rgba(200,170,110,.08)}
   /* ===== splash hero ===== */
   .hero-art{display:grid; grid-template-columns:1fr 1fr; height:236px; position:relative; border-radius:15px 15px 0 0; overflow:hidden}
-  .half{position:relative; overflow:hidden; border:none; padding:0; background:none; cursor:pointer; font-family:var(--ff-body); color:var(--txt); text-align:left}
+  .half{position:relative; overflow:hidden; border:none; padding:0; background:none; cursor:default; font-family:var(--ff-body); color:var(--txt); text-align:left}
   .half img.splash{width:100%; height:100%; object-fit:cover; object-position:50% 15%; display:block; transition:transform .5s ease, filter .3s; filter:saturate(.95)}
   .half.you::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(5,10,20,.2), rgba(5,10,20,.85) 97%), linear-gradient(0deg, rgba(5,10,20,.85), transparent 55%); box-shadow:inset 4px 0 30px -12px rgba(10,200,185,.6); pointer-events:none}
   .half.him::after{content:""; position:absolute; inset:0; background:linear-gradient(270deg, rgba(5,10,20,.2), rgba(5,10,20,.85) 97%), linear-gradient(0deg, rgba(5,10,20,.85), transparent 55%); box-shadow:inset -4px 0 30px -12px rgba(232,64,87,.55); pointer-events:none}
-  .half:hover img.splash{transform:scale(1.06); filter:saturate(1.1) brightness(1.15)}
-  .half .swap{position:absolute; top:13px; z-index:3; opacity:0; transition:opacity .2s; font-size:9px; letter-spacing:.16em; font-weight:800; color:var(--gold2); background:rgba(5,10,20,.88); border:1px solid var(--gold3); border-radius:16px; padding:6px 12px; pointer-events:none}
-  .half.you .swap{left:16px} .half.him .swap{right:16px}
-  .half:hover .swap{opacity:1}
   .idplate{position:absolute; bottom:14px; z-index:2; pointer-events:none}
   .half.you .idplate{left:20px} .half.him .idplate{right:20px; text-align:right}
   .idplate .side{font-size:9px; font-weight:800; letter-spacing:.3em}
@@ -92,8 +88,8 @@
     border:1px solid var(--gold3); box-shadow:0 0 0 4px rgba(5,10,20,.85), 0 0 0 5px var(--gold3), 0 0 34px rgba(200,170,110,.35);
     display:flex; align-items:center; justify-content:center; pointer-events:none}
   .vs-medal span{font-family:var(--ff-disp); font-weight:800; letter-spacing:.22em; font-size:15px; color:var(--gold); margin-right:-4px}
-  .vs-tags{position:absolute; top:calc(44% + 48px); left:50%; transform:translateX(-50%); z-index:4; display:flex; gap:8px; justify-content:center; flex-wrap:wrap; max-width:92%; pointer-events:none}
-  .vs-tags .htag{background:rgba(5,10,20,.88); white-space:nowrap}
+  .tagsrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; padding:0 22px}
+  .innersec{padding:16px 22px 20px}
   /* change buttons + wr pills under each half */
   .swaprow{display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line)}
   .swapcol{padding:12px 18px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; min-width:0}
@@ -297,16 +293,13 @@
     <div class="hero-art">
       <button class="half you" id="you-card" title="Change your champion">
         <img class="splash" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Irelia_0.jpg" alt="Irelia" onerror="this.remove()">
-        <span class="swap">⌕ CHANGE CHAMPION</span>
         <span class="idplate"><span class="side">YOU · TOP</span><span class="nm" style="display:block">IRELIA</span><span class="rl">The Blade Dancer</span></span>
       </button>
       <button class="half him" id="enemy-card" title="Change the enemy">
         <img class="splash" id="enemy-splash" src="" alt="">
-        <span class="swap">⌕ CHANGE CHAMPION</span>
         <span class="idplate"><span class="side">ENEMY · TOP</span><span class="nm" id="enemy-name" style="display:block">—</span><span class="rl" id="enemy-rl">—</span></span>
       </button>
       <div class="vs-medal"><span>VS</span></div>
-      <div class="vs-tags" id="hero-tags"></div>
     </div>
     <div class="swaprow">
       <div class="swapcol">
@@ -328,12 +321,11 @@
       <div class="wr-lbls"><span class="y" id="wr-y">—</span><span class="g" id="wr-g">—</span><span class="h" id="wr-h">—</span></div>
       <div class="wrtrack"><div class="wy" id="wr-fill" style="width:50%"></div><div class="wh"></div><div class="tick"></div></div>
     </div>
-  </div>
-
-  <!-- tips -->
-  <div class="panel pad rise" style="--d:.12s">
-    <div class="sec-t">How to play it</div>
-    <div class="tips" id="tips"></div>
+    <div class="tagsrow" id="hero-tags"></div>
+    <div class="innersec">
+      <div class="sec-t">How to play it</div>
+      <div class="tips" id="tips"></div>
+    </div>
   </div>
 
   <!-- runes + spells/items -->
@@ -851,8 +843,6 @@ function buildList(filter){
   }
 }
 inp.addEventListener("input", () => buildList(inp.value));
-$("you-card").addEventListener("click", e => { e.stopPropagation(); openPicker("you"); });
-$("enemy-card").addEventListener("click", e => { e.stopPropagation(); openPicker("enemy"); });
 $("chg-you").addEventListener("click", e => { e.stopPropagation(); openPicker("you"); });
 $("chg-him").addEventListener("click", e => { e.stopPropagation(); openPicker("enemy"); });
 document.addEventListener("click", e => { if(!e.target.closest(".droplist") && !e.target.closest(".half")) drop.classList.remove("open"); });
