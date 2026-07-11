@@ -112,6 +112,21 @@
   .wrtrack .wh{background:linear-gradient(90deg,#a02a3d,var(--red)); flex:1}
   .wrtrack .tick{position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(240,230,210,.35)}
   .wrline.na .wrtrack{opacity:.4}
+  /* personal history strip (riot-adapter data) */
+  .yourbar{display:flex; align-items:center; gap:11px; flex-wrap:wrap; margin:0 22px 16px; padding:11px 15px; border:1px solid rgba(157,123,255,.4); border-radius:12px; background:linear-gradient(90deg, rgba(157,123,255,.12), rgba(10,20,40,.55))}
+  .yourbar .yb-tag{flex:none; font-size:8.5px; font-weight:800; letter-spacing:.16em; color:var(--purple); border:1px solid rgba(157,123,255,.5); border-radius:5px; padding:3px 8px}
+  .yourbar .yb-main{font-size:13.5px; font-weight:800; color:var(--gold2)}
+  .yourbar .yb-main b.win{color:var(--teal)} .yourbar .yb-main b.loss{color:#ff7286}
+  .yourbar .yb-sub{font-size:11px; color:var(--dim)}
+  .yourbar .yb-src{margin-left:auto; font-size:9.5px; color:var(--dim2); display:flex; align-items:center; gap:6px}
+  .yourbar .yb-src::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--purple); box-shadow:0 0 8px var(--purple)}
+  .yourbar.na{border-color:var(--line2); background:rgba(10,20,40,.4)}
+  .yourbar.na .yb-tag{color:var(--dim2); border-color:var(--line2)}
+  .yourbar.na .yb-src::before{background:var(--dim2); box-shadow:none}
+  /* rune diff note */
+  .runediff{margin-top:10px; display:flex; gap:9px; align-items:flex-start; border-left:3px solid rgba(157,123,255,.6); background:rgba(157,123,255,.07); border-radius:0 8px 8px 0; padding:8px 12px; font-size:11px; color:var(--dim); line-height:1.55}
+  .runediff .rd-t{flex:none; font-size:8px; font-weight:800; letter-spacing:.12em; color:var(--purple); border:1px solid rgba(157,123,255,.5); border-radius:4px; padding:2px 6px; margin-top:1px}
+  .runediff b{color:var(--gold2)}
   .picker-wrap{position:relative}
   .sel-box{position:relative}
   .sel-input{width:100%; background:rgba(6,11,22,.85); border:1px solid var(--line2); border-radius:10px; color:var(--txt); font-family:var(--ff-body); font-size:13px; padding:11px 14px 11px 38px; outline:none}
@@ -322,6 +337,12 @@
       <div class="wrtrack"><div class="wy" id="wr-fill" style="width:50%"></div><div class="wh"></div><div class="tick"></div></div>
     </div>
     <div class="tagsrow" id="hero-tags"></div>
+    <div class="yourbar" id="yourbar">
+      <span class="yb-tag">YOUR HISTORY</span>
+      <span class="yb-main" id="yb-main">—</span>
+      <span class="yb-sub" id="yb-sub"></span>
+      <span class="yb-src" id="yb-src">synced from your last 20 ranked games</span>
+    </div>
     <div class="innersec">
       <div class="sec-t">How to play it</div>
       <div class="tips" id="tips"></div>
@@ -347,6 +368,7 @@
       </div>
     </div>
     <div class="why" id="runes-why" style="display:none"></div>
+    <div class="runediff" id="runediff" style="display:none"></div>
   </div>
     <div class="panel pad">
       <div class="sec-t">Spells</div>
@@ -648,6 +670,53 @@ function renderHeroMeta(m){
   }
 }
 
+/* ---------- personal data (shape from riot-adapter GetMatchesResp) ---------- */
+// matchupRecords[].{games,wins,losses,lastPlayedDays}; yourRunes = keystone/secondary from last games
+const PERSONAL = {
+  connected: true,
+  records: {
+    "Aatrox":{games:11,wins:4,losses:7,lastPlayedDays:3},
+    "Darius":{games:3,wins:0,losses:3,lastPlayedDays:12},
+    "Sett":{games:1,wins:0,losses:1,lastPlayedDays:20},
+    "Jax":{games:5,wins:1,losses:4,lastPlayedDays:6},
+    "Garen":{games:2,wins:1,losses:1,lastPlayedDays:9},
+    "Malphite":{games:10,wins:7,losses:3,lastPlayedDays:2},
+    "Mordekaiser":{games:8,wins:3,losses:5,lastPlayedDays:4},
+    "Renekton":{games:7,wins:3,losses:4,lastPlayedDays:5},
+    "Teemo":{games:4,wins:3,losses:1,lastPlayedDays:8}
+  },
+  // your habitual page from the last 20 games (Conqueror + Second Wind / Unflinching)
+  yourRunes:{ keystone:"Conqueror", secondary:["Second Wind","Unflinching"] }
+};
+const RUNE_LABEL = { "Second Wind":"Second Wind", "Unflinching":"Unflinching", "Bone Plating":"Bone Plating", "Lethal Tempo":"Lethal Tempo" };
+
+function renderPersonal(m){
+  const yb = $("yourbar"), rec = PERSONAL.connected ? PERSONAL.records[enemy] : null;
+  if(rec && rec.games > 0){
+    yb.classList.remove("na");
+    $("yb-main").innerHTML = "You vs " + enemy + ": <b class='win'>" + rec.wins + "W</b>–<b class='loss'>" + rec.losses + "L</b> (" + Math.round(rec.wins / rec.games * 100) + "%)";
+    $("yb-sub").textContent = "over your last " + rec.games + " games · last played " + rec.lastPlayedDays + "d ago";
+    $("yb-src").textContent = "from your match history";
+  } else {
+    yb.classList.add("na");
+    $("yb-main").innerHTML = "No recent games vs " + enemy;
+    $("yb-sub").textContent = "play this lane to build your record";
+    $("yb-src").textContent = PERSONAL.connected ? "from your match history" : "connect your Riot account";
+  }
+  // rune diff: your usual page vs this matchup's recommended override
+  const rd = $("runediff");
+  const ovr = m.ovr;
+  const want = ovr ? (ovr.keystone ? [ovr.keystone].concat(ovr.picks) : ovr.picks) : [];
+  const yours = [PERSONAL.yourRunes.keystone].concat(PERSONAL.yourRunes.secondary);
+  const missing = want.filter(r => !yours.includes(r) && RUNE_LABEL[r]);
+  if(PERSONAL.connected && ovr && missing.length){
+    rd.style.display = "flex";
+    rd.innerHTML = "<span class='rd-t'>HEADS UP</span><div>Your last games ran <b>" + PERSONAL.yourRunes.secondary.join(" + ") + "</b>. This matchup wants <b>" + missing.join(" + ") + "</b> instead — swap before you lock in.</div>";
+  } else {
+    rd.style.display = "none";
+  }
+}
+
 const DCLS = {Easy:"d-e", Medium:"d-m", Hard:"d-h", Unplayable:"d-u"};
 let enemy = "Aatrox";
 let qi = 0, score = 0, results = [], locked = false, quiz = [];
@@ -750,7 +819,7 @@ function render(){
   renderShards(shardPicks);
   const why = $("runes-why"); why.style.display = "block";
   why.innerHTML = ovr ? ovr.why : "No rune change for this matchup — <b>run the universal page</b>, our every-game default.";
-  renderSpells(m); renderItems(m); renderTips(m); renderSwapPills();
+  renderSpells(m); renderItems(m); renderTips(m); renderSwapPills(); renderPersonal(m);
   quiz = genQuiz(enemy); qi = 0; score = 0; results = [];
   const dots = $("q-dots"); dots.innerHTML = "";
   quiz.forEach(() => { const d = document.createElement("div"); d.className = "q-dot"; dots.appendChild(d); });
