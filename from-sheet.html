@@ -94,6 +94,16 @@
   .vs-medal span{font-family:var(--ff-disp); font-weight:800; letter-spacing:.22em; font-size:15px; color:var(--gold); margin-right:-4px}
   .vs-tags{position:absolute; top:calc(44% + 48px); left:50%; transform:translateX(-50%); z-index:4; display:flex; gap:8px; justify-content:center; flex-wrap:wrap; max-width:92%; pointer-events:none}
   .vs-tags .htag{background:rgba(5,10,20,.88); white-space:nowrap}
+  /* change buttons + wr pills under each half */
+  .swaprow{display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line)}
+  .swapcol{padding:12px 18px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; min-width:0}
+  .swapcol + .swapcol{border-left:1px solid var(--line)}
+  .chgbtn{appearance:none; flex:none; display:inline-flex; align-items:center; gap:7px; border:1px solid var(--gold3); border-radius:9px; background:rgba(200,170,110,.08); color:var(--gold2); font-family:var(--ff-body); font-weight:800; font-size:9.5px; letter-spacing:.12em; padding:9px 13px; cursor:pointer; text-transform:uppercase; transition:background .15s, box-shadow .15s}
+  .chgbtn:hover{background:rgba(200,170,110,.16); box-shadow:0 0 14px rgba(200,170,110,.25)}
+  .pill.mini{padding:3.5px 9px 3.5px 4px; gap:7px}
+  .pill.mini img,.pill.mini .icon-fallback{width:22px; height:22px}
+  .pill.mini .pn{font-size:10px}
+  .pill.mini .pd{font-size:7.5px; padding:2px 6px}
   .htag{font-size:9.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; padding:6px 13px; border-radius:7px; border:1px solid var(--line2); color:var(--dim); background:rgba(10,20,40,.6)}
   .htag.good{color:var(--teal); border-color:rgba(10,200,185,.45)}
   .htag.warn{color:var(--gold); border-color:rgba(200,170,110,.45)}
@@ -297,6 +307,16 @@
       </button>
       <div class="vs-medal"><span>VS</span></div>
       <div class="vs-tags" id="hero-tags"></div>
+    </div>
+    <div class="swaprow">
+      <div class="swapcol">
+        <button class="chgbtn" id="chg-you">⇄ Change champion</button>
+        <div class="pillrow" id="you-pills"></div>
+      </div>
+      <div class="swapcol">
+        <button class="chgbtn" id="chg-him">⇄ Change enemy</button>
+        <div class="pillrow" id="enemy-pills"></div>
+      </div>
     </div>
     <div class="picker-wrap">
       <div class="droplist" id="droplist">
@@ -663,6 +683,49 @@ const REC_POOL = [
   ["Garen","pre-6 only kill window"],
   ["Teemo","read the minions at level 1"]
 ];
+/* who to swap YOURSELF to, per current enemy: [best, best, worst] — sample values */
+const YOU_RECS = {
+ "Aatrox":[["Fiora",54],["Vayne",53],["Kayle",46]],
+ "Camille":[["Renekton",53],["Malphite",52],["Yasuo",47]],
+ "Darius":[["Vayne",55],["Quinn",54],["Nasus",45]],
+ "Garen":[["Vayne",55],["Quinn",53],["Nasus",46]],
+ "Jax":[["Malphite",54],["Poppy",53],["Riven",46]],
+ "Malphite":[["Fiora",54],["Vayne",53],["Tryndamere",45]],
+ "Mordekaiser":[["Fiora",54],["Vayne",53],["Nasus",46]],
+ "Renekton":[["Quinn",53],["Vayne",52],["Yasuo",46]],
+ "Sett":[["Vayne",54],["Gnar",53],["Tryndamere",46]],
+ "Teemo":[["Kled",53],["Renekton",52],["Tryndamere",46]]
+};
+function wrPill(name, wr, title, onClick){
+  const b = document.createElement("button"); b.className = "pill mini";
+  b.appendChild(mkImg(iconUrl(name), name[0]));
+  const n = document.createElement("span"); n.className = "pn"; n.textContent = name; b.appendChild(n);
+  const d = document.createElement("span");
+  d.className = "pd " + (wr >= 52 ? "pd-e" : wr >= 48 ? "pd-m" : "pd-u");
+  d.textContent = wr + "%";
+  b.appendChild(d);
+  b.title = title;
+  b.addEventListener("click", e => { e.stopPropagation(); onClick(); });
+  return b;
+}
+function renderSwapPills(){
+  /* you side: 2 best picks into current enemy + 1 worst */
+  const yp = $("you-pills"); yp.innerHTML = "";
+  (YOU_RECS[enemy] || []).forEach(([n, wr], ix) => {
+    const best = ix < 2;
+    yp.appendChild(wrPill(n, wr, (best ? "Strong into " : "Struggles into ") + enemy + " — " + wr + "% winrate", () => openPicker("you")));
+  });
+  /* enemy side: where Irelia does best (2) and worst (1) */
+  const ep = $("enemy-pills"); ep.innerHTML = "";
+  const ranked = Object.keys(AWR).filter(n => M[n] && n !== enemy && AWR[n][1] >= 4)
+    .sort((a, b) => AWR[b][0] - AWR[a][0]);
+  const picks = ranked.slice(0, 2).concat(ranked.slice(-1));
+  picks.forEach((n, ix) => {
+    const wr = AWR[n][0], best = ix < 2;
+    ep.appendChild(wrPill(n, wr, "vs " + n + " — " + (best ? "one of your best lanes" : "your toughest lane") + " · " + wr + "% winrate", () => { enemy = n; render(); }));
+  });
+}
+
 /* YOU side — more champions coming */
 const YOU_SOURCES = [
   {n:"Irelia", ok:true},
@@ -695,7 +758,7 @@ function render(){
   renderShards(shardPicks);
   const why = $("runes-why"); why.style.display = "block";
   why.innerHTML = ovr ? ovr.why : "No rune change for this matchup — <b>run the universal page</b>, our every-game default.";
-  renderSpells(m); renderItems(m); renderTips(m);
+  renderSpells(m); renderItems(m); renderTips(m); renderSwapPills();
   quiz = genQuiz(enemy); qi = 0; score = 0; results = [];
   const dots = $("q-dots"); dots.innerHTML = "";
   quiz.forEach(() => { const d = document.createElement("div"); d.className = "q-dot"; dots.appendChild(d); });
@@ -790,6 +853,8 @@ function buildList(filter){
 inp.addEventListener("input", () => buildList(inp.value));
 $("you-card").addEventListener("click", e => { e.stopPropagation(); openPicker("you"); });
 $("enemy-card").addEventListener("click", e => { e.stopPropagation(); openPicker("enemy"); });
+$("chg-you").addEventListener("click", e => { e.stopPropagation(); openPicker("you"); });
+$("chg-him").addEventListener("click", e => { e.stopPropagation(); openPicker("enemy"); });
 document.addEventListener("click", e => { if(!e.target.closest(".droplist") && !e.target.closest(".half")) drop.classList.remove("open"); });
 document.addEventListener("keydown", e => { if(e.key === "Escape") drop.classList.remove("open"); });
 
