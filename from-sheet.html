@@ -235,26 +235,28 @@
   .itemnote{font-size:10.5px; color:var(--dim); line-height:1.5; margin-top:9px}
   .itemnote b{color:var(--warn)}
 
-  /* ===== tips — glanceable 15-second read ===== */
-  .tips{margin-top:14px; display:grid; grid-template-columns:repeat(3, 1fr); gap:11px}
-  .tip{display:flex; flex-direction:column; gap:10px; border:1px solid var(--line); border-radius:13px; padding:15px 15px 14px; background:rgba(18,35,64,.5); min-height:118px}
-  .tip .ic{flex:none; width:44px; height:44px; border-radius:11px; border:1px solid var(--line2); overflow:hidden; display:flex; align-items:center; justify-content:center; background:#0a1428; font-size:20px; position:relative}
-  .tip .ic img{width:100%; height:100%; display:block}
-  .tip .ic .verb{position:absolute; bottom:-7px; left:50%; transform:translateX(-50%); font-size:7px; font-weight:800; letter-spacing:.08em; padding:2px 6px; border-radius:8px; white-space:nowrap; text-transform:uppercase; border:1px solid}
-  .tip .hl{font-size:15px; font-weight:800; line-height:1.25; color:var(--gold2)}
-  .tip .sub{font-size:11px; color:var(--dim2); line-height:1.45}
-  .tip .sub b{color:var(--dim); font-weight:700}
-  .tip.k-w{border-color:rgba(232,64,87,.35); background:linear-gradient(180deg, rgba(60,21,34,.4), rgba(18,35,64,.5))}
-  .tip.k-w .ic{border-color:rgba(232,64,87,.55); box-shadow:0 0 14px rgba(232,64,87,.3)} .tip.k-w .verb{color:#ff8c9c; background:rgba(60,21,34,.95); border-color:rgba(232,64,87,.6)}
-  .tip.k-go{border-color:rgba(10,200,185,.4); background:linear-gradient(180deg, rgba(13,60,58,.35), rgba(18,35,64,.5))}
-  .tip.k-go .ic{border-color:rgba(10,200,185,.55); box-shadow:0 0 14px rgba(10,200,185,.3)} .tip.k-go .verb{color:var(--teal); background:rgba(8,30,30,.95); border-color:rgba(10,200,185,.6)}
-  .tip.k-note{border-color:rgba(200,170,110,.3)} .tip.k-note .ic{border-color:var(--gold3); color:var(--gold)} .tip.k-note .verb{color:var(--gold); background:rgba(30,25,15,.95); border-color:var(--gold3)}
-  @keyframes redpulse{0%,100%{box-shadow:inset 0 0 26px rgba(232,64,87,.08)} 50%{box-shadow:inset 0 0 30px rgba(232,64,87,.15), 0 0 20px -6px rgba(232,64,87,.3)}}
-  .tip.k-never{grid-column:1 / -1; flex-direction:row; align-items:center; gap:14px; min-height:0; border-color:rgba(232,64,87,.55); background:linear-gradient(90deg, rgba(232,64,87,.14), rgba(232,64,87,.03)); animation:redpulse 3s ease-in-out infinite}
-  .tip.k-never .ic{border-color:rgba(232,64,87,.5); background:rgba(232,64,87,.14)}
-  .tip.k-never .hl{font-size:14px; color:#ff9daa}
-  .tip.k-never .nvbody .lead{font-size:9px; font-weight:800; letter-spacing:.22em; color:#ff7286; margin-bottom:3px}
-  @media (max-width:840px){ .tips{grid-template-columns:1fr} .tip.k-never{grid-column:1} }
+  /* ===== how to play — DO / DON'T, glanceable ===== */
+  .playgrid{margin-top:14px; display:grid; grid-template-columns:1.5fr 1fr; gap:14px}
+  .pcol{border:1px solid var(--line); border-radius:13px; padding:14px 15px 15px}
+  .pcol.do{border-color:rgba(10,200,185,.32); background:linear-gradient(180deg, rgba(13,60,58,.22), rgba(10,20,40,.45))}
+  .pcol.dont{border-color:rgba(232,64,87,.38); background:linear-gradient(180deg, rgba(60,21,34,.22), rgba(10,20,40,.45))}
+  .pcol-h{display:flex; align-items:center; gap:9px; font-size:10px; font-weight:800; letter-spacing:.22em; margin-bottom:13px}
+  .pcol.do .pcol-h{color:var(--teal)} .pcol.dont .pcol-h{color:#ff7286}
+  .pc-ico{flex:none; width:19px; height:19px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; border:1.5px solid}
+  .pcol.do .pc-ico{color:var(--teal); border-color:var(--teal)} .pcol.dont .pc-ico{color:#ff7286; border-color:#ff7286}
+  .prows{display:flex; flex-direction:column; gap:10px}
+  .prow{display:flex; gap:11px; align-items:center}
+  .prow .ic{flex:none; width:38px; height:38px; border-radius:9px; border:1px solid var(--line2); overflow:hidden; background:#0a1428; display:flex; align-items:center; justify-content:center; font-size:16px}
+  .prow .ic img{width:100%; height:100%; display:block}
+  .prow .tx{min-width:0}
+  .prow .tx .h{font-size:13.5px; font-weight:800; color:var(--gold2); line-height:1.2}
+  .prow .tx .s{font-size:10.5px; color:var(--dim2); margin-top:2px; line-height:1.35}
+  .pcol.do .prow .ic{border-color:rgba(10,200,185,.5); box-shadow:0 0 10px rgba(10,200,185,.2)}
+  @keyframes redpulse{0%,100%{box-shadow:inset 0 0 0 rgba(232,64,87,0)} 50%{box-shadow:inset 0 0 24px rgba(232,64,87,.12)}}
+  .pcol.dont{animation:redpulse 3s ease-in-out infinite}
+  .pcol.dont .prow .ic{border-color:rgba(232,64,87,.5); background:rgba(232,64,87,.14); box-shadow:0 0 10px rgba(232,64,87,.2)}
+  .pcol.dont .prow .tx .h{color:#ff9daa}
+  @media (max-width:840px){ .playgrid{grid-template-columns:1fr} }
 
   /* quiz */
   .quiz{margin-top:16px; padding:20px 22px}
@@ -323,7 +325,16 @@
     <div class="tagsrow" id="hero-tags"></div>
     <div class="innersec">
       <div class="sec-t">How to play it</div>
-      <div class="tips" id="tips"></div>
+      <div class="playgrid">
+        <div class="pcol do">
+          <div class="pcol-h"><span class="pc-ico">✓</span> DO</div>
+          <div class="prows" id="do-rows"></div>
+        </div>
+        <div class="pcol dont">
+          <div class="pcol-h"><span class="pc-ico">✕</span> DON’T</div>
+          <div class="prows" id="dont-rows"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -571,28 +582,27 @@ function renderItems(m){
   $("itemnote").innerHTML = m.itemNote || "<b>BotRK</b> is the spike this lane plays toward — rush it; the rest is our standard setup.";
 }
 const WK = {"Aatrox":"AatroxQ","Darius":"DariusQ","Sett":"SettE","Jax":"JaxE","Camille":"CamilleQ","Garen":"GarenQ","Malphite":"MalphiteE","Mordekaiser":"MordekaiserE","Renekton":"RenektonW","Teemo":"TeemoQ"};
-const VERB = {w:"BLOCK W", go:"GO IN", note:"PLAN"};
+function playRow(iconEl, h, s){
+  const r = document.createElement("div"); r.className = "prow";
+  const ic = document.createElement("div"); ic.className = "ic"; ic.appendChild(iconEl); r.appendChild(ic);
+  const tx = document.createElement("div"); tx.className = "tx";
+  tx.innerHTML = `<div class="h">${h}</div>` + (s ? `<div class="s">${s}</div>` : "");
+  r.appendChild(tx);
+  return r;
+}
 function renderTips(m){
-  const el = $("tips"); el.innerHTML = "";
+  const doEl = $("do-rows"), dontEl = $("dont-rows");
+  doEl.innerHTML = ""; dontEl.innerHTML = "";
   (m.tips || []).slice(0, 3).forEach(t => {
-    const d = document.createElement("div"); d.className = "tip k-" + t.k;
-    const ic = document.createElement("div"); ic.className = "ic";
-    if(t.k === "w" && WK[enemy]) ic.appendChild(mkImg(`${DD}/img/spell/${WK[enemy]}.png`, "W"));
-    else if(t.k === "go") ic.appendChild(mkImg(`${DD}/img/spell/IreliaE.png`, "E"));
-    else ic.appendChild(mkImg(`${DD}/img/spell/IreliaQ.png`, "Q"));
-    const vb = document.createElement("span"); vb.className = "verb"; vb.textContent = VERB[t.k] || "PLAN"; ic.appendChild(vb);
-    d.appendChild(ic);
-    const hl = document.createElement("div"); hl.className = "hl"; hl.innerHTML = t.h || t.l || t.t; d.appendChild(hl);
-    if(t.s){ const s = document.createElement("div"); s.className = "sub"; s.innerHTML = t.s; d.appendChild(s); }
-    el.appendChild(d);
+    let icon;
+    if(t.k === "w" && WK[enemy]) icon = mkImg(`${DD}/img/spell/${WK[enemy]}.png`, "W");
+    else if(t.k === "go") icon = mkImg(`${DD}/img/spell/IreliaE.png`, "E");
+    else icon = mkImg(`${DD}/img/spell/IreliaQ.png`, "Q");
+    doEl.appendChild(playRow(icon, t.h || t.l || t.t, t.s || ""));
   });
   if(m.never){
-    const nv = document.createElement("div"); nv.className = "tip k-never";
-    const ic = document.createElement("div"); ic.className = "ic"; ic.textContent = "⛔"; nv.appendChild(ic);
-    const body = document.createElement("div"); body.className = "nvbody";
-    body.innerHTML = `<div class="lead">NEVER DO THIS</div><div class="hl">${m.neverShort || m.never}</div>`;
-    nv.appendChild(body);
-    el.appendChild(nv);
+    const ic = document.createElement("span"); ic.textContent = "⛔";
+    dontEl.appendChild(playRow(ic, m.neverShort || m.never, ""));
   }
 }
 
