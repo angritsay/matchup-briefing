@@ -76,6 +76,9 @@
   .half img.splash{width:100%; height:100%; object-fit:cover; object-position:50% 15%; display:block; transition:transform .5s ease, filter .3s; filter:saturate(.95)}
   .half.you::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(5,10,20,.2), rgba(5,10,20,.85) 97%), linear-gradient(0deg, rgba(5,10,20,.85), transparent 55%); box-shadow:inset 4px 0 30px -12px rgba(10,200,185,.6); pointer-events:none}
   .half.him::after{content:""; position:absolute; inset:0; background:linear-gradient(270deg, rgba(5,10,20,.2), rgba(5,10,20,.85) 97%), linear-gradient(0deg, rgba(5,10,20,.85), transparent 55%); box-shadow:inset -4px 0 30px -12px rgba(232,64,87,.55); pointer-events:none}
+  .half-chg{position:absolute; top:14px; z-index:5; appearance:none; cursor:pointer; font-family:var(--ff-body); font-weight:800; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold2); background:rgba(5,10,20,.82); border:1px solid var(--gold3); border-radius:18px; padding:7px 14px; transition:background .15s, box-shadow .15s}
+  .half-chg:hover{background:rgba(200,170,110,.2); box-shadow:0 0 16px rgba(200,170,110,.4)}
+  .half.you .half-chg{left:16px} .half.him .half-chg{right:16px}
   .idplate{position:absolute; bottom:14px; z-index:2; pointer-events:none}
   .half.you .idplate{left:20px} .half.him .idplate{right:20px; text-align:right}
   .idplate .side{font-size:9px; font-weight:800; letter-spacing:.3em}
@@ -112,21 +115,11 @@
   .wrtrack .wh{background:linear-gradient(90deg,#a02a3d,var(--red)); flex:1}
   .wrtrack .tick{position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(240,230,210,.35)}
   .wrline.na .wrtrack{opacity:.4}
-  /* personal history strip (riot-adapter data) */
-  .yourbar{display:flex; align-items:center; gap:11px; flex-wrap:wrap; margin:0 22px 16px; padding:11px 15px; border:1px solid rgba(157,123,255,.4); border-radius:12px; background:linear-gradient(90deg, rgba(157,123,255,.12), rgba(10,20,40,.55))}
-  .yourbar .yb-tag{flex:none; font-size:8.5px; font-weight:800; letter-spacing:.16em; color:var(--purple); border:1px solid rgba(157,123,255,.5); border-radius:5px; padding:3px 8px}
-  .yourbar .yb-main{font-size:13.5px; font-weight:800; color:var(--gold2)}
-  .yourbar .yb-main b.win{color:var(--teal)} .yourbar .yb-main b.loss{color:#ff7286}
-  .yourbar .yb-sub{font-size:11px; color:var(--dim)}
-  .yourbar .yb-src{margin-left:auto; font-size:9.5px; color:var(--dim2); display:flex; align-items:center; gap:6px}
-  .yourbar .yb-src::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--purple); box-shadow:0 0 8px var(--purple)}
-  .yourbar.na{border-color:var(--line2); background:rgba(10,20,40,.4)}
-  .yourbar.na .yb-tag{color:var(--dim2); border-color:var(--line2)}
-  .yourbar.na .yb-src::before{background:var(--dim2); box-shadow:none}
-  /* rune diff note */
-  .runediff{margin-top:10px; display:flex; gap:9px; align-items:flex-start; border-left:3px solid rgba(157,123,255,.6); background:rgba(157,123,255,.07); border-radius:0 8px 8px 0; padding:8px 12px; font-size:11px; color:var(--dim); line-height:1.55}
-  .runediff .rd-t{flex:none; font-size:8px; font-weight:800; letter-spacing:.12em; color:var(--purple); border:1px solid rgba(157,123,255,.5); border-radius:4px; padding:2px 6px; margin-top:1px}
-  .runediff b{color:var(--gold2)}
+  /* personal record badge on enemy portrait (riot-adapter data) */
+  .rec-badge{position:absolute; top:14px; right:calc(16px + 118px); z-index:5; display:none; align-items:center; gap:4px; padding:6px 12px; border-radius:20px; background:rgba(5,10,20,.9); border:1px solid rgba(157,123,255,.55); box-shadow:0 0 16px rgba(157,123,255,.25); font-family:var(--ff-disp); font-weight:800; font-size:15px}
+  .rec-badge b.win{color:var(--teal)} .rec-badge b.loss{color:#ff7286} .rec-badge .dash{color:var(--dim2)}
+  .rec-badge .rb-sub{font-family:var(--ff-body); font-size:8px; font-weight:800; letter-spacing:.08em; color:var(--purple); text-transform:uppercase; margin-left:6px; border-left:1px solid var(--line2); padding-left:8px}
+  @media (max-width:640px){ .rec-badge{right:16px; top:52px} }
   .picker-wrap{position:relative}
   .sel-box{position:relative}
   .sel-input{width:100%; background:rgba(6,11,22,.85); border:1px solid var(--line2); border-radius:10px; color:var(--txt); font-family:var(--ff-body); font-size:13px; padding:11px 14px 11px 38px; outline:none}
@@ -242,24 +235,26 @@
   .itemnote{font-size:10.5px; color:var(--dim); line-height:1.5; margin-top:9px}
   .itemnote b{color:var(--warn)}
 
-  /* ===== tips (flexible, visual) ===== */
-  .tips{margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:10px}
-  .tip{display:flex; gap:13px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:13px 15px; background:rgba(18,35,64,.5)}
-  .tip .ic{flex:none; width:38px; height:38px; border-radius:9px; border:1px solid var(--line2); overflow:hidden; display:flex; align-items:center; justify-content:center; background:#0a1428; font-size:16px}
+  /* ===== tips — glanceable 15-second read ===== */
+  .tips{margin-top:14px; display:grid; grid-template-columns:repeat(3, 1fr); gap:11px}
+  .tip{display:flex; flex-direction:column; gap:10px; border:1px solid var(--line); border-radius:13px; padding:15px 15px 14px; background:rgba(18,35,64,.5); min-height:118px}
+  .tip .ic{flex:none; width:44px; height:44px; border-radius:11px; border:1px solid var(--line2); overflow:hidden; display:flex; align-items:center; justify-content:center; background:#0a1428; font-size:20px; position:relative}
   .tip .ic img{width:100%; height:100%; display:block}
-  .tip .tl{font-size:8.5px; font-weight:800; letter-spacing:.18em; margin-bottom:5px; text-transform:uppercase}
-  .tip p{font-size:12.5px; color:var(--dim); line-height:1.6}
-  .tip p b{color:var(--gold2)}
+  .tip .ic .verb{position:absolute; bottom:-7px; left:50%; transform:translateX(-50%); font-size:7px; font-weight:800; letter-spacing:.08em; padding:2px 6px; border-radius:8px; white-space:nowrap; text-transform:uppercase; border:1px solid}
+  .tip .hl{font-size:15px; font-weight:800; line-height:1.25; color:var(--gold2)}
+  .tip .sub{font-size:11px; color:var(--dim2); line-height:1.45}
+  .tip .sub b{color:var(--dim); font-weight:700}
   .tip.k-w{border-color:rgba(232,64,87,.35); background:linear-gradient(180deg, rgba(60,21,34,.4), rgba(18,35,64,.5))}
-  .tip.k-w .tl{color:#ff8c9c} .tip.k-w .ic{border-color:rgba(232,64,87,.5); box-shadow:0 0 12px rgba(232,64,87,.25)}
+  .tip.k-w .ic{border-color:rgba(232,64,87,.55); box-shadow:0 0 14px rgba(232,64,87,.3)} .tip.k-w .verb{color:#ff8c9c; background:rgba(60,21,34,.95); border-color:rgba(232,64,87,.6)}
   .tip.k-go{border-color:rgba(10,200,185,.4); background:linear-gradient(180deg, rgba(13,60,58,.35), rgba(18,35,64,.5))}
-  .tip.k-go .tl{color:var(--teal)} .tip.k-go .ic{border-color:rgba(10,200,185,.5); box-shadow:0 0 12px rgba(10,200,185,.25)}
-  .tip.k-note .tl{color:var(--gold)} .tip.k-note .ic{border-color:var(--gold3); color:var(--gold)}
+  .tip.k-go .ic{border-color:rgba(10,200,185,.55); box-shadow:0 0 14px rgba(10,200,185,.3)} .tip.k-go .verb{color:var(--teal); background:rgba(8,30,30,.95); border-color:rgba(10,200,185,.6)}
+  .tip.k-note{border-color:rgba(200,170,110,.3)} .tip.k-note .ic{border-color:var(--gold3); color:var(--gold)} .tip.k-note .verb{color:var(--gold); background:rgba(30,25,15,.95); border-color:var(--gold3)}
   @keyframes redpulse{0%,100%{box-shadow:inset 0 0 26px rgba(232,64,87,.08)} 50%{box-shadow:inset 0 0 30px rgba(232,64,87,.15), 0 0 20px -6px rgba(232,64,87,.3)}}
-  .tip.k-never{grid-column:1 / -1; align-items:center; border-color:rgba(232,64,87,.55); background:linear-gradient(90deg, rgba(232,64,87,.14), rgba(232,64,87,.03)); animation:redpulse 3s ease-in-out infinite}
-  .tip.k-never .tl{color:#ff7286} .tip.k-never p{color:var(--gold2); font-size:13px}
+  .tip.k-never{grid-column:1 / -1; flex-direction:row; align-items:center; gap:14px; min-height:0; border-color:rgba(232,64,87,.55); background:linear-gradient(90deg, rgba(232,64,87,.14), rgba(232,64,87,.03)); animation:redpulse 3s ease-in-out infinite}
   .tip.k-never .ic{border-color:rgba(232,64,87,.5); background:rgba(232,64,87,.14)}
-  @media (max-width:840px){ .tips{grid-template-columns:1fr} }
+  .tip.k-never .hl{font-size:14px; color:#ff9daa}
+  .tip.k-never .nvbody .lead{font-size:9px; font-weight:800; letter-spacing:.22em; color:#ff7286; margin-bottom:3px}
+  @media (max-width:840px){ .tips{grid-template-columns:1fr} .tip.k-never{grid-column:1} }
 
   /* quiz */
   .quiz{margin-top:16px; padding:20px 22px}
@@ -306,25 +301,18 @@
   <!-- hero: VS + search | recommendations -->
   <div class="panel rise" style="--d:.08s; position:relative; z-index:30; background:#0c1729">
     <div class="hero-art">
-      <button class="half you" id="you-card" title="Change your champion">
+      <div class="half you">
         <img class="splash" src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Irelia_0.jpg" alt="Irelia" onerror="this.remove()">
+        <button class="half-chg" id="chg-you">⇄ Change</button>
         <span class="idplate"><span class="side">YOU · TOP</span><span class="nm" style="display:block">IRELIA</span><span class="rl">The Blade Dancer</span></span>
-      </button>
-      <button class="half him" id="enemy-card" title="Change the enemy">
+      </div>
+      <div class="half him">
         <img class="splash" id="enemy-splash" src="" alt="">
+        <button class="half-chg" id="chg-him">⇄ Change</button>
+        <span class="rec-badge" id="rec-badge"></span>
         <span class="idplate"><span class="side">ENEMY · TOP</span><span class="nm" id="enemy-name" style="display:block">—</span><span class="rl" id="enemy-rl">—</span></span>
-      </button>
+      </div>
       <div class="vs-medal"><span>VS</span></div>
-    </div>
-    <div class="swaprow">
-      <div class="swapcol">
-        <button class="chgbtn" id="chg-you">⇄ Change champion</button>
-        <div class="pillrow" id="you-pills"></div>
-      </div>
-      <div class="swapcol">
-        <button class="chgbtn" id="chg-him">⇄ Change enemy</button>
-        <div class="pillrow" id="enemy-pills"></div>
-      </div>
     </div>
     <div class="picker-wrap">
       <div class="droplist" id="droplist">
@@ -332,17 +320,7 @@
         <div id="drop-body"></div>
       </div>
     </div>
-    <div class="wrline" id="wrline">
-      <div class="wr-lbls"><span class="y" id="wr-y">—</span><span class="g" id="wr-g">—</span><span class="h" id="wr-h">—</span></div>
-      <div class="wrtrack"><div class="wy" id="wr-fill" style="width:50%"></div><div class="wh"></div><div class="tick"></div></div>
-    </div>
     <div class="tagsrow" id="hero-tags"></div>
-    <div class="yourbar" id="yourbar">
-      <span class="yb-tag">YOUR HISTORY</span>
-      <span class="yb-main" id="yb-main">—</span>
-      <span class="yb-sub" id="yb-sub"></span>
-      <span class="yb-src" id="yb-src">synced from your last 20 ranked games</span>
-    </div>
     <div class="innersec">
       <div class="sec-t">How to play it</div>
       <div class="tips" id="tips"></div>
@@ -368,7 +346,6 @@
       </div>
     </div>
     <div class="why" id="runes-why" style="display:none"></div>
-    <div class="runediff" id="runediff" style="display:none"></div>
   </div>
     <div class="panel pad">
       <div class="sec-t">Spells</div>
@@ -455,44 +432,44 @@ const SPELLS_DEFAULT = [["Flash","SummonerFlash"],["Teleport","SummonerTeleport"
 /* ---------- normalized matchups (tips: flexible, max 4 + optional never) ---------- */
 const M = {
 "Aatrox":{d:["Easy","Easy"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"<b>Every Q knockup procs Unflinching</b> — his whole chain feeds your tenacity rune."},w:"His Q3 — or the W pull-in",
- tips:[{k:"w",l:"What to block with W",t:"His <b>Q3</b> — or the W pull-in."},{k:"go",l:"Your window",t:"Go in <b>off a landed E</b>, and only with something to dash to."},{k:"note",t:"Don’t burn your Q without a target. Hit E → go in — and <b>Q away the moment he winds up Q3</b>."}],
- never:"Never burn your Q with nothing to dash to — you need the charge to exit his Q3.",
+ tips:[{k:"w",h:"Block his Q3",s:"or the W pull-in"},{k:"go",h:"Go in off a landed E",s:"only with a dash target"}],
+ never:"Never burn your Q with nothing to dash to — you need the charge to exit his Q3.",neverShort:"Never dash on his Q1 — bait. Dash after Q2.",
  nq:"Pretty easy matchup just dont burn your Q and only go in when you have something to dash to."},
 "Darius":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],keystone:"Lethal Tempo",why:"Keystone swap to <b>Lethal Tempo</b> — “only if you’re confident and will snowball early”."},w:"Nothing — “Don’t W here”",
- tips:[{k:"note",l:"Level 1",t:"Darius camps the 3rd bush to zone you. Counter: <b>run to the alcove, ward the 2nd bush, stay hidden</b> until the 3 melees are low — then Q-chain into the all-in (Lethal Tempo + combat summoner = kill)."},{k:"w",l:"What to block with W",t:"Nothing — <b>“Don’t W here.”</b>"},{k:"note",t:"Otherwise hold your Q for his Q and stay out of E range."}],
- never:"Never show yourself from the alcove until the three melees are low enough to Q.",
+ tips:[{k:"note",h:"Alcove cheese at lvl 1",s:"ward 2nd bush, hide, then Q-chain"},{k:"w",h:"Don’t W here",s:"nothing worth blocking"},{k:"go",h:"Trade on his Q cooldown",s:"stay out of E range"}],
+ never:"Never show yourself from the alcove until the three melees are low enough to Q.",neverShort:"Never show from the alcove early.",
  nq:"IMMEDIATELY run to alcove and ward the 2nd bush … DO NOT SHOW UNTIL the 3 melee minions are low enough for you to Q"},
 "Sett":{d:["Unplayable","Unplayable"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"To <b>negate some of his E trade</b>."},w:"His E",
- tips:[{k:"note",l:"Laning",t:"<b>Don’t walk up to the wave levels 1–3.</b> Soak XP, let him push, play for the gank."},{k:"w",l:"What to block with W",t:"His <b>E</b>. Don’t get hit by it at full stacks — a guaranteed W follows."}],
- never:"Never double-Q onto him — always keep a Q charged to escape his E or W.",
+ tips:[{k:"note",h:"Don’t walk up 1–3",s:"soak XP, play for the gank"},{k:"w",h:"Block his E",s:"full-stack E = free W"}],
+ never:"Never double-Q onto him — always keep a Q charged to escape his E or W.",neverShort:"Never double-Q — keep an escape Q.",
  nq:"Unplayable matchup … Never double Q him and make sure to have a Q ready to escape the E or W."},
 "Jax":{d:["Hard","Unplayable"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"Survive the E-stun trades."},w:"His E stun",
- tips:[{k:"note",l:"The plan",t:"<b>DODGE. DODGE. DODGE.</b> And if you can’t dodge — <b>ban him</b>."},{k:"w",l:"What to block with W",t:"His <b>E stun</b>."}],
- never:"Never queue into this without banning him.",
+ tips:[{k:"note",h:"Dodge — or ban",s:"unplayable if he’s good"},{k:"w",h:"Block his E stun",s:"your only defence"}],
+ never:"Never queue into this without banning him.",neverShort:"Never queue in without banning him.",
  nq:"DODGE DODGE DODGE DODGE DODGE / BAN BAN BAN BAN BAN"},
 "Camille":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating"],why:"Blunt her Q2 burst."},w:"Her Q2 — or E",
- tips:[{k:"note",t:"Avoid standing near walls and out of her W sweet spot."},{k:"w",l:"What to block with W",t:"Her <b>Q2</b> — or the E."},{k:"note",l:"Post-6",t:"Even or behind — wait for jungle: her R dodges your E and R."}],
- never:"Never commit while her passive shield is up.",
+ tips:[{k:"go",h:"All-in when passive is down",s:"stay off walls & W range"},{k:"w",h:"Block her Q2",s:"or the E"},{k:"note",h:"Post-6: wait for jungle",s:"her R dodges yours"}],
+ never:"Never commit while her passive shield is up.",neverShort:"Never all-in into her passive shield.",
  nq:"Don't commit to an all in unless her passive is on CD … W her Q2"},
 "Garen":{d:["Hard","Medium"],ovr:null,w:"His initial Q",
- tips:[{k:"note",t:"Kill window is <b>pre-6 only</b>."},{k:"w",l:"What to block with W",t:"His <b>initial Q</b> — don’t tank his E with W: he shreds armor and every following trade goes bad."},{k:"go",l:"Your window",t:"His E or Q used on the wave."}],
- never:"Never stay to trade after tanking a full E — run or Q away.",
+ tips:[{k:"go",h:"Kill window is pre-6",s:"trade on his spent E/Q"},{k:"w",h:"Block his first Q",s:"never tank a full E"}],
+ never:"Never stay to trade after tanking a full E — run or Q away.",neverShort:"Never trade after tanking a full E.",
  nq:"You can really only W his initial Q … if you ever tank a full E you need to run or Q away don't attempt to trade"},
 "Mordekaiser":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"He usually rushes Rylai’s — <b>Unflinching will always be active</b>."},w:"His E — or isolated Q",
- tips:[{k:"go",l:"Level 1",t:"<b>The kill window.</b> Dodge one Q → immediate all-in, run him down."},{k:"note",t:"Lvl 3+: trade only after his W or E is spent. Save your Q to dodge his Q; delay his 3-hit passive."},{k:"w",l:"What to block with W",t:"His <b>E</b> — or an isolated Q."}],
- never:"Post-6, never walk up at even HP — he 1v1s you.",
+ tips:[{k:"go",h:"Lvl 1 is the kill",s:"dodge a Q → all-in"},{k:"w",h:"Block his E",s:"or an isolated Q"},{k:"note",h:"Post-6: don’t walk up",s:"he wins even fights"}],
+ never:"Post-6, never walk up at even HP — he 1v1s you.",neverShort:"Post-6: never walk up at even HP.",
  nq:"Lvl 1 is the only time you can kill him easily … Post6 don't walk up unless you are VERY fed"},
 "Renekton":{d:["Hard","Hard"],ovr:{tree:"Resolve",picks:["Bone Plating","Unflinching"],why:"<b>Negate some of his W trade.</b>"},w:"His W",
- tips:[{k:"note",t:"W or E start, soak XP. <b>Post-6 not fed = farm until jungle.</b>"},{k:"go",l:"Your window",t:"His W used on minions — or eaten by your W. The only two green lights."}],
- never:"Never trade into his W — wait it out or block it.",
+ tips:[{k:"go",h:"Go on his spent W",s:"or W his W — only greens"},{k:"note",h:"Not fed post-6? Farm",s:"wait for jungle"}],
+ never:"Never trade into his W — wait it out or block it.",neverShort:"Never trade into his W.",
  nq:"you can only look to go in if he ever uses his W on either minions OR you W his W"},
 "Teemo":{d:["Medium","Medium"],ovr:{tree:"Resolve",picks:["Second Wind"],shard:"Tenacity",why:"Second Wind + <b>Tenacity shard to shorten the blind</b>."},w:"His Q blind — wait it out",
- tips:[{k:"note",l:"Level 1 read",t:"Watch the minions at lane start: <b>DoT ticking = 3-stack Q all-in window</b>."},{k:"w",l:"What to block with W",t:"His <b>Q blind</b> — wait out the duration inside W."},{k:"note",l:"Post-6",t:"Not behind? E + W-the-blind + R = kill."}],
- never:"Never trade while blinded — W it out first.",
+ tips:[{k:"note",h:"Read the minions lvl 1",s:"DoT ticking → 3-stack all-in"},{k:"w",h:"Block his Q blind",s:"wait it out in W"},{k:"note",h:"Post-6: E + W-blind + R",s:"kill if even"}],
+ never:"Never trade while blinded — W it out first.",neverShort:"Never trade while blinded.",
  nq:"if they are taking DOT damage look to 3 stack Q onto him and run him down … W when he blinds you"},
 "Malphite":{d:["Medium","Hard"],ovr:{tree:"Resolve",picks:["Second Wind","Unflinching"],why:"<b>Second Wind + Unflinching</b> — heal back the Q poke, tenacity into his slows."},w:"His E — wait out the attack-speed slow",
- tips:[{k:"go",l:"Your window",t:"<b>Pre-6, before his first back</b> — the only kill window; it gets much harder afterwards."},{k:"note",t:"After his first reset you can’t kill him — <b>don’t fall behind until BotRK</b>, then maybe you 1v1."},{k:"w",l:"What to block with W",t:"His <b>E</b> — wait out the attack-speed slow inside W."}],
- never:"Never look for the kill after his first reset — farm to BotRK instead.",
+ tips:[{k:"go",h:"Kill before his first back",s:"pre-6 only"},{k:"note",h:"After his reset: don’t int",s:"farm to BotRK"},{k:"w",h:"Block his E",s:"wait out the AS slow"}],
+ never:"Never look for the kill after his first reset — farm to BotRK instead.",neverShort:"Never force the kill after his first back.",
  nq:"Your only kill window is pre-6, before his first back … just don't fall behind until BORK, then maybe you can 1v1."}
 };
 
@@ -593,24 +570,30 @@ function renderItems(m){
   mk("Core", [3153, 3047, 6333], 0);
   $("itemnote").innerHTML = m.itemNote || "<b>BotRK</b> is the spike this lane plays toward — rush it; the rest is our standard setup.";
 }
+const WK = {"Aatrox":"AatroxQ","Darius":"DariusQ","Sett":"SettE","Jax":"JaxE","Camille":"CamilleQ","Garen":"GarenQ","Malphite":"MalphiteE","Mordekaiser":"MordekaiserE","Renekton":"RenektonW","Teemo":"TeemoQ"};
+const VERB = {w:"BLOCK W", go:"GO IN", note:"PLAN"};
 function renderTips(m){
   const el = $("tips"); el.innerHTML = "";
-  const list = (m.tips || []).slice(0, 4);
-  if(m.never) list.push({k:"never", l:"Never do this", t:m.never});
-  list.forEach(t => {
+  (m.tips || []).slice(0, 3).forEach(t => {
     const d = document.createElement("div"); d.className = "tip k-" + t.k;
     const ic = document.createElement("div"); ic.className = "ic";
-    const WK = {"Aatrox":"AatroxQ","Darius":"DariusQ","Sett":"SettE","Jax":"JaxE","Camille":"CamilleQ","Garen":"GarenQ","Malphite":"MalphiteE","Mordekaiser":"MordekaiserE","Renekton":"RenektonW","Teemo":"TeemoQ"};
     if(t.k === "w" && WK[enemy]) ic.appendChild(mkImg(`${DD}/img/spell/${WK[enemy]}.png`, "W"));
     else if(t.k === "go") ic.appendChild(mkImg(`${DD}/img/spell/IreliaE.png`, "E"));
-    else if(t.k === "never") ic.textContent = "⛔";
-    else ic.textContent = "◆";
+    else ic.appendChild(mkImg(`${DD}/img/spell/IreliaQ.png`, "Q"));
+    const vb = document.createElement("span"); vb.className = "verb"; vb.textContent = VERB[t.k] || "PLAN"; ic.appendChild(vb);
     d.appendChild(ic);
-    const body = document.createElement("div");
-    body.innerHTML = (t.l ? `<div class="tl">${t.l}</div>` : "") + `<p>${t.t}</p>`;
-    d.appendChild(body);
+    const hl = document.createElement("div"); hl.className = "hl"; hl.innerHTML = t.h || t.l || t.t; d.appendChild(hl);
+    if(t.s){ const s = document.createElement("div"); s.className = "sub"; s.innerHTML = t.s; d.appendChild(s); }
     el.appendChild(d);
   });
+  if(m.never){
+    const nv = document.createElement("div"); nv.className = "tip k-never";
+    const ic = document.createElement("div"); ic.className = "ic"; ic.textContent = "⛔"; nv.appendChild(ic);
+    const body = document.createElement("div"); body.className = "nvbody";
+    body.innerHTML = `<div class="lead">NEVER DO THIS</div><div class="hl">${m.neverShort || m.never}</div>`;
+    nv.appendChild(body);
+    el.appendChild(nv);
+  }
 }
 
 /* winrate per matchup (sample) */
@@ -653,21 +636,6 @@ function renderHeroMeta(m){
   heroTags(m).forEach(([t, cls]) => {
     const s = document.createElement("span"); s.className = "htag " + cls; s.textContent = t; el.appendChild(s);
   });
-  const [wr, g] = AWR[enemy] || [null, 0];
-  const line = $("wrline");
-  if(g >= 4){
-    line.classList.remove("na");
-    $("wr-y").textContent = "IRELIA " + wr + "%";
-    $("wr-h").textContent = (100 - wr) + "% " + enemy.toUpperCase();
-    $("wr-g").textContent = "matchup winrate · ranked solo";
-    $("wr-fill").style.width = wr + "%";
-  } else {
-    line.classList.add("na");
-    $("wr-y").textContent = "IRELIA —";
-    $("wr-h").textContent = "— " + enemy.toUpperCase();
-    $("wr-g").textContent = "winrate coming soon";
-    $("wr-fill").style.width = "50%";
-  }
 }
 
 /* ---------- personal data (shape from riot-adapter GetMatchesResp) ---------- */
@@ -688,32 +656,16 @@ const PERSONAL = {
   // your habitual page from the last 20 games (Conqueror + Second Wind / Unflinching)
   yourRunes:{ keystone:"Conqueror", secondary:["Second Wind","Unflinching"] }
 };
-const RUNE_LABEL = { "Second Wind":"Second Wind", "Unflinching":"Unflinching", "Bone Plating":"Bone Plating", "Lethal Tempo":"Lethal Tempo" };
-
-function renderPersonal(m){
-  const yb = $("yourbar"), rec = PERSONAL.connected ? PERSONAL.records[enemy] : null;
+// Personal record surfaces as a compact badge on the enemy portrait.
+function renderPersonal(){
+  const b = $("rec-badge");
+  if(!b) return;
+  const rec = PERSONAL.connected ? PERSONAL.records[enemy] : null;
   if(rec && rec.games > 0){
-    yb.classList.remove("na");
-    $("yb-main").innerHTML = "You vs " + enemy + ": <b class='win'>" + rec.wins + "W</b>–<b class='loss'>" + rec.losses + "L</b> (" + Math.round(rec.wins / rec.games * 100) + "%)";
-    $("yb-sub").textContent = "over your last " + rec.games + " games · last played " + rec.lastPlayedDays + "d ago";
-    $("yb-src").textContent = "from your match history";
+    b.style.display = "flex";
+    b.innerHTML = "<b class='win'>" + rec.wins + "W</b><span class='dash'>–</span><b class='loss'>" + rec.losses + "L</b><span class='rb-sub'>your record · " + rec.lastPlayedDays + "d</span>";
   } else {
-    yb.classList.add("na");
-    $("yb-main").innerHTML = "No recent games vs " + enemy;
-    $("yb-sub").textContent = "play this lane to build your record";
-    $("yb-src").textContent = PERSONAL.connected ? "from your match history" : "connect your Riot account";
-  }
-  // rune diff: your usual page vs this matchup's recommended override
-  const rd = $("runediff");
-  const ovr = m.ovr;
-  const want = ovr ? (ovr.keystone ? [ovr.keystone].concat(ovr.picks) : ovr.picks) : [];
-  const yours = [PERSONAL.yourRunes.keystone].concat(PERSONAL.yourRunes.secondary);
-  const missing = want.filter(r => !yours.includes(r) && RUNE_LABEL[r]);
-  if(PERSONAL.connected && ovr && missing.length){
-    rd.style.display = "flex";
-    rd.innerHTML = "<span class='rd-t'>HEADS UP</span><div>Your last games ran <b>" + PERSONAL.yourRunes.secondary.join(" + ") + "</b>. This matchup wants <b>" + missing.join(" + ") + "</b> instead — swap before you lock in.</div>";
-  } else {
-    rd.style.display = "none";
+    b.style.display = "none";
   }
 }
 
@@ -819,7 +771,7 @@ function render(){
   renderShards(shardPicks);
   const why = $("runes-why"); why.style.display = "block";
   why.innerHTML = ovr ? ovr.why : "No rune change for this matchup — <b>run the universal page</b>, our every-game default.";
-  renderSpells(m); renderItems(m); renderTips(m); renderSwapPills(); renderPersonal(m);
+  renderSpells(m); renderItems(m); renderTips(m); renderPersonal();
   quiz = genQuiz(enemy); qi = 0; score = 0; results = [];
   const dots = $("q-dots"); dots.innerHTML = "";
   quiz.forEach(() => { const d = document.createElement("div"); d.className = "q-dot"; dots.appendChild(d); });
